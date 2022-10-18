@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class BusinessCategory extends Model {
+    use HasFactory;
+    protected $table = "m_business_category_tab";
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'business_category',
+        'status'
+    ];
+
+    public function company() {
+        return $this->hasMany(Company::class, 'm_business_category_id', 'id');
+    }
+}

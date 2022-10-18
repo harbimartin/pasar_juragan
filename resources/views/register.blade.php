@@ -8,9 +8,7 @@
                 <h1 class="mb-4 max-w-2xl text-4xl font-bold leading-none md:text-5xl xl:text-4xl border-b border-gray-700">
                     Register</h1>
                 <div class="flex-col gap-1">
-                    @if ($errors->any())
-                        {!! implode('', $errors->all('<div class="px-3 py-1 rounded-md flex text-red-800 bg-red-100">:message</div>')) !!}
-                    @endif
+                    <x-error-box></x-error-box>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="comp_name">
                             Nama Perusahaan
@@ -18,6 +16,19 @@
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="comp_name" name="comp_name" type="text" placeholder="Nama Perusahaan...">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="m_business_category_id">
+                            Kategori Bisnis
+                        </label>
+                        <select
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="m_business_category_id" name="m_business_category_id">
+                            <option selected disabled>-- Pilih Kategori Bisnis --</option>
+                            @foreach ($select['business_category'] as $option)
+                                <option value="{{ $option->id }}">{{ $option->business_category }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="comp_npwp">

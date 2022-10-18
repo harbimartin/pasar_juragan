@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helper\WeNoMana;
+use App\Models\BusinessCategory;
 use App\Models\Company;
-use App\Models\CompanyAddress;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Throwable;
 
@@ -17,7 +18,10 @@ class RegisterController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view('register');
+        $select = [
+            "business_category" => BusinessCategory::where('status', 1)->get()
+        ];
+        return view('register', ["select" => $select]);
     }
 
     /**
@@ -36,13 +40,14 @@ class RegisterController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        $credentials = $request->validate([
+        $request->validate([
             'comp_name' => ['required'],
-            'comp_npwp' => ['required'],
+            'comp_npwp' => ['required', 'unique:m_company_tab'],
             'comp_address_detail' => ['required'],
+            'm_business_category_id' => ['required', 'exists:m_business_category_tab,id'],
             'username_name' => ['required'],
             'username_position' => ['required'],
-            'username_mail' => ['required', 'email'],
+            'username_mail' => ['required', 'email', 'unique:user_tab'],
             'username_phone' => ['required'],
             'password' => ['required'],
             'repassword' => ['required']
@@ -50,25 +55,49 @@ class RegisterController extends Controller {
 
         if ($request->password != $request->repassword)
             return back()->withErrors([
-                'password' => 'Password is not match!'
+                'password' => 'Password dan konfirmasi password tidak sama!'
             ]);
-        // TODO : Check NPWP dan Email tidak boleh sama
 
         $request['password'] = Hash::make($request->password);
         $request['is_super_admin'] = 1;
         $request['status'] = 1;
+
         try {
-            $company = Company::create($request->only(['comp_name', 'comp_npwp', 'status']));
+            DB::beginTransaction();
+            $company = Company::create($request->only(['comp_name', 'comp_npwp', 'm_business_category_id', 'status']));
             $company->address()->create($request->only(['comp_address_detail', 'status']));
             $request['status'] = 0;
-            $company->user()->create($request->only(['username_mail', 'password', 'username_position', 'username_name', 'username_phone', 'is_super_admin', 'status']));
+            $user = $company->user()->create($request->only(['username_mail', 'password', 'username_position', 'username_name', 'username_phone', 'is_super_admin', 'status']));
+
+            // SECTION : Untuk Kirim Email Aktivasi Email ke WeNoMana
+            $data = [
+                "name" => $request->username_name,
+                "intro" => "Anda telah mendaftarkan akun Pasar Juragan anda dengan data sebagai berikut :",
+                "table" => [
+                    "Nama Perusahaan" => $request->comp_name,
+                    "Kategori Bisnis" => $company->category->business_category,
+                    "NPWP Perusahaan" => $request->comp_npwp,
+                    "Alamat Perusahaan" => $request->comp_address_detail,
+                    "Nama Pengguna" => $request->username_name,
+                    "Jabatan Pengguna" => $request->username_position,
+                    "No. Handphone" => $request->username_phone,
+                ],
+                "exclusive_link" => [
+                    "note" => "Klik Disini untuk Aktivasi Akun Juragan anda.",
+                    "link" => url('aktivasi/email') . '?id=' . Crypt::encryptString($user->id),
+                ],
+                "close" => "Jika ini bukan anda, silahkan abaikan email ini. Terimakasih.",
+                "note" => "Email ini secara otomatis dikirim melalui sistem, kami harap anda tidak membalas email ini."
+            ];
+            WeNoMana::send_email($request->username_name, $request->username_mail, "Pasar Juragan : Aktivasi Akun", view('mail.mails', $data)->render());
+            // END SECTION
+            DB::commit();
         } catch (Throwable $th) {
+            DB::rollBack();
             return back()->withErrors([
                 'error' => $th->getMessage()
             ]);
         }
-        // TODO : Ngirim Email
-        // TODO : Message berhasil, dan minta konfirmasi untuk ngecek email
         return redirect(route('register'));
     }
 

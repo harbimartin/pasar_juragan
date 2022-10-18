@@ -41,7 +41,7 @@ class AuthController extends Controller {
 
             if ($user->status == 0)
                 return back()->withErrors([
-                    'email' => 'Silahkan melakukan aktivasi melalui Email yang kami kirim. <a href="" class="px-2 bg-red">Kirim Ulang Email Aktivasi</a>',
+                    'email' => 'Silahkan melakukan aktivasi melalui Email yang kami kirim.<br>Belum mendapatkan Email? <a href="" class="px-2 bg-red-700 hover:bg-red-800 bg-red text-white font-semibold rounded py-0.5 text-sm">Kirim Ulang Email Aktivasi</a>',
                 ]);
 
             $request->session()->regenerate();

@@ -17,8 +17,13 @@ class Company extends Model {
         'comp_code',
         'comp_name',
         'comp_npwp',
+        'm_business_category_id',
         'status'
     ];
+
+    public function category() {
+        return $this->hasOne(BusinessCategory::class, 'id', 'm_business_category_id');
+    }
 
     public function address() {
         return $this->hasMany(CompanyAddress::class, 'm_company_id', 'id');
