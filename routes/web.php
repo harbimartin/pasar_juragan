@@ -9,6 +9,7 @@ use App\Http\Controllers\Dashboard\JuraganGudangController;
 use App\Http\Controllers\Dashboard\ProfileCompanyController;
 use App\Http\Controllers\Dashboard\ProfileUserController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\ViewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +33,8 @@ Route::get('aktivasi/email', [AuthController::class, 'activation']);
 Route::any('/home', function () {
     return view('landpage.home');
 })->name('home');
+
+Route::get('/get-storage/{module}', [ViewController::class, 'get_file'])->name('storage');
 
 Route::group([
     'middleware' => 'auth',
