@@ -4,11 +4,11 @@ namespace App\Http\Middleware;
 
 use App\Providers\RouteServiceProvider;
 use Closure;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class RedirectIfAuthenticated
-{
+class RedirectIfAuthenticated {
     /**
      * Handle an incoming request.
      *
@@ -17,8 +17,7 @@ class RedirectIfAuthenticated
      * @param  string|null  ...$guards
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, ...$guards)
-    {
+    public function handle(Request $request, Closure $next, ...$guards) {
         $guards = empty($guards) ? [null] : $guards;
 
         foreach ($guards as $guard) {

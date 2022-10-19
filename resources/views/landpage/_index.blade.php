@@ -20,11 +20,19 @@
                     <span class="self-center text-2xl font-semibold whitespace-nowrap">Pasar Juragan</span>
                 </a>
                 <div class="flex items-center lg:order-2">
-                    <a href="{{ route('login') }}"
-                        class="text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 focus:outline-none">Log
-                        in</a>
-                    <a href="{{ route('register') }}"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 focus:outline-none">Daftar</a>
+                    @if (Auth::user())
+                        <a href="#"
+                            class="text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 focus:outline-none">{{ Auth::user()->username_name }}</a>
+                        <a href="{{ route('dashboard.home') }}"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 focus:outline-none">Menuju
+                            Dashboard</a>
+                    @else
+                        <a href="{{ route('login') }}"
+                            class="text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 focus:outline-none">Log
+                            in</a>
+                        <a href="{{ route('register') }}"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 focus:outline-none">Daftar</a>
+                    @endif
                     <button data-collapse-toggle="mobile-menu-2" type="button"
                         class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
                         aria-controls="mobile-menu-2" aria-expanded="false">

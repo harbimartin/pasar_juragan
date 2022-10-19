@@ -30,6 +30,10 @@ class User extends Authenticatable implements JWTSubject {
         'status',
     ];
 
+    public function company() {
+        return $this->hasOne(Company::class, 'id', 'm_company_id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

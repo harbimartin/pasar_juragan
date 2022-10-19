@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class AuthController extends Controller {
     /**
@@ -12,7 +14,12 @@ class AuthController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view('login');
+        return view('landpage.login');
+    }
+
+    public function logout() {
+        Auth::logout();
+        return redirect(route('home'));
     }
 
     /**
@@ -92,5 +99,20 @@ class AuthController extends Controller {
      */
     public function destroy($id) {
         //
+    }
+
+    public function activation(Request $request) {
+        $id = Crypt::decryptString($request->id);
+
+        if ($user = User::find($id)) {
+            if ($user->status == 0) {
+                $user->update([
+                    'status' => 1
+                ]);
+                return view('activation', ['success' => true]);
+            }
+            return $user;
+        }
+        return view('activation', ['success' => false]);
     }
 }

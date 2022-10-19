@@ -21,7 +21,7 @@ class RegisterController extends Controller {
         $select = [
             "business_category" => BusinessCategory::where('status', 1)->get()
         ];
-        return view('register', ["select" => $select]);
+        return view('landpage.register', ["select" => $select]);
     }
 
     /**
