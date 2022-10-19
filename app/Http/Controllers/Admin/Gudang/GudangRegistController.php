@@ -1,24 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin\Gudang;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class AuthAdminController extends Controller {
+class GudangRegistController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view('admin.login');
-    }
-
-    public function logout() {
-        Auth::guard('admin')->logout();
-        return redirect(route('admin.login'));
+        return view('admin.gudang.regist');
     }
 
     /**
@@ -37,28 +31,7 @@ class AuthAdminController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        // return $request->toArray();
-        $credentials = $request->validate([
-            'username_mail' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-        if (Auth::guard('admin')->attempt($credentials)) {
-            $user = Auth::guard('admin')->user();
-
-            if ($user->status == 0) {
-                Auth::guard('admin')->logout();
-                return back()->withErrors([
-                    'email' => 'Silahkan melakukan aktivasi melalui Email yang kami kirim.<br>Belum mendapatkan Email? <a href="" class="px-2 bg-red-700 hover:bg-red-800 bg-red text-white font-semibold rounded py-0.5 text-sm">Kirim Ulang Email Aktivasi</a>',
-                ]);
-            }
-
-            $request->session()->regenerate();
-            return redirect(route('admin.home'));
-        }
-
-        return back()->withErrors([
-            'email' => 'Email dan Username anda tidak cocok.',
-        ]);
+        //
     }
 
     /**

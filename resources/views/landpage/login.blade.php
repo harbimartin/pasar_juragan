@@ -38,7 +38,9 @@
                 </div>
                 <div class="py-20 text-center">
                     Tidak Punya Akun? <a href="{{ route('register') }}"
-                        class="cursor-pointer hover:text-blue-700 underline">Daftar Sekarang.</a>
+                        class="cursor-pointer hover:text-blue-700 underline">Daftar Sekarang.</a><br>
+                    <a href="{{ route('admin.login') }}" class="cursor-pointer hover:text-blue-700 underline">Juragan
+                        Tanah</a>
                 </div>
             </form>
             <div class="hidden lg:flex w-screen relative flex">

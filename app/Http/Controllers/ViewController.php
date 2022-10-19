@@ -12,7 +12,7 @@ class ViewController extends Controller {
         // return json_encode([$request->toArray(), $module]);
         switch ($module) {
             case 'company':
-                $filename = Auth::user()->company->comp_logo;
+                $filename = Auth::guard('user')->user()->company->comp_logo;
                 return response()->download(storage_path('file_logo\\') . $filename, $filename);
                 break;
         }

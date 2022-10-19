@@ -1,4 +1,4 @@
-@extends('landpage._index')
+@extends('admin._auth_index')
 @section('content')
     <section class="bg-white">
         <div class="flex max-w-screen lg:gap-8 xl:gap-0 lg:py-4 lg:grid-cols-2 h-screen">

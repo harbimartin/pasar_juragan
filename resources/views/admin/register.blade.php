@@ -1,4 +1,4 @@
-@extends('landpage._index')
+@extends('admin._auth_index')
 @section('content')
     <section>
         <div class="grid mx-auto max-w-screen-xl lg:gap-8 xl:gap-0 w-1/2">
@@ -9,7 +9,7 @@
                     Register</h1>
                 <div class="flex-col gap-1">
                     <x-error-box></x-error-box>
-                    <div class="mb-4">
+                    {{-- <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="comp_name">
                             Nama Perusahaan
                         </label>
@@ -45,10 +45,10 @@
                         <textarea
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="comp_address_detail" name="comp_address_detail" placeholder="Alamat Perusahaan..." rows="4"></textarea>
-                    </div>
+                    </div> --}}
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="username_name">
-                            Nama Pendaftar
+                            Nama Admin
                         </label>
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -56,7 +56,7 @@
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="username_position">
-                            Jabatan Pendaftar
+                            Jabatan Admin
                         </label>
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -64,7 +64,7 @@
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="username_mail">
-                            Email Pendaftar
+                            Email Admin
                         </label>
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -72,7 +72,7 @@
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="username_phone">
-                            No. Hp Pendaftar
+                            No. Hp Admin
                         </label>
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"

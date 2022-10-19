@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pasar Juragan</title>
+    <title>Juragan Tanah</title>
     <meta name="description"
         content="Get started with a free landing page built with Tailwind CSS and the Flowbite Blocks system.">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,21 +17,19 @@
             <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
                 <a href="{{ route('home') }}" class="flex items-center">
                     <!-- <img src="https://flowbite.com/docs/images/logo.svg" class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" /> -->
-                    <span class="self-center text-2xl font-semibold whitespace-nowrap">Pasar Juragan</span>
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap">Juragan Tanah</span>
                 </a>
                 <div class="flex items-center lg:order-2">
-                    @if (Auth::guard('user')->user())
+                    @if (Auth::guard('admin')->user())
                         <a href="#"
-                            class="text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 focus:outline-none">{{ Auth::guard('user')->user()->username_name }}</a>
-                        <a href="{{ route('dashboard.home') }}"
+                            class="text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 focus:outline-none">{{ Auth::guard('admin')->user()->username_name }}</a>
+                        <a href="{{ route('admin.home') }}"
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 focus:outline-none">Menuju
                             Dashboard</a>
                     @else
-                        <a href="{{ route('login') }}"
+                        <a href="{{ route('admin.login') }}"
                             class="text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 focus:outline-none">Log
                             in</a>
-                        <a href="{{ route('register') }}"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 focus:outline-none">Daftar</a>
                     @endif
                     <button data-collapse-toggle="mobile-menu-2" type="button"
                         class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
@@ -56,26 +54,6 @@
                             <a href="{{ route('home') }}"
                                 class="block py-2 pr-4 pl-3 text-white rounded bg-blue-700 lg:bg-transparent lg:text-blue-700 lg:p-0"
                                 aria-current="page">Home</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0">Company</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0">Marketplace</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0">Features</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0">Team</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0">Contact</a>
                         </li>
                     </ul>
                 </div>

@@ -21,9 +21,9 @@
                     <span class="self-center text-2xl font-semibold whitespace-nowrap">Pasar Juragan</span>
                 </a>
                 <div class="flex items-center lg:order-2">
-                    @if (Auth::user())
+                    @if (Auth::guard('user')->user())
                         <a href="#"
-                            class="text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 focus:outline-none">{{ Auth::user()->username_name }}</a>
+                            class="text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 focus:outline-none">{{ Auth::guard('user')->user()->username_name }}</a>
                         <a href="{{ route('dashboard.home') }}"
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 focus:outline-none">Menuju
                             Dashboard</a>
@@ -84,8 +84,7 @@
         </nav>
     </header> --}}
 
-    <section class="fixed h-screen navigation w-full md:h-screen md:max-h-screen md:border-gray-300"
-        style="width:15vw;">
+    <section class="fixed h-screen navigation w-full md:h-screen md:max-h-screen md:border-gray-300" style="width:15vw;">
         {{-- < class=" md:border-r fw-nav"> --}}
         <div class="md:hidden block">
             <div class="flex justify-end py-2 px-2" v-on:click="show = !show">
@@ -97,8 +96,8 @@
                 <img src="{{ url('/assets/avatar.svg') }}" class="rounded-full mr-4 md:mx-auto bg-black" alt="avatar"
                     width="96" height="96">
                 <?php
-                $username = Auth::user()->username_name;
-                $nik = Auth::user()->username_position;
+                $username = Auth::guard('user')->user()->username_name;
+                $nik = Auth::guard('user')->user()->username_position;
                 ?>
                 <div class="my-auto md:my-2">
                     <h6 class="font-semibold">{{ $username }}</h6>
@@ -133,5 +132,6 @@
         @yield('content')
     </div>
 </body>
-@extends('dashboard.vue')
+@extends('components.vue')
+
 </html>

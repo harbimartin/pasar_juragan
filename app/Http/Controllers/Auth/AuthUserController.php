@@ -19,7 +19,7 @@ class AuthUserController extends Controller {
     }
 
     public function logout() {
-        Auth::logout();
+        Auth::guard('user')->logout();
         return redirect(route('home'));
     }
 
@@ -44,8 +44,8 @@ class AuthUserController extends Controller {
             'username_mail' => ['required', 'email'],
             'password' => ['required'],
         ]);
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
+        if (Auth::guard('user')->attempt($credentials)) {
+            $user = Auth::guard('user')->user();
 
             if ($user->status == 0) {
                 Auth::logout();

@@ -41,7 +41,7 @@ class ApiController extends Controller {
                 auth()->guard('api')->logout();
                 return response()->json([
                     "error_code" => 0,
-                    "message" => "Sampai berjumpa kembali " . Auth::user()->username_name
+                    "message" => "Sampai berjumpa kembali " . Auth::guard('user')->user()->username_name
                 ]);
             } else {
                 return response()->json([

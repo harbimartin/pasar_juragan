@@ -1,11 +1,11 @@
-@extends('landpage._index')
+@extends('admin._auth_index')
 @section('content')
     <section class="bg-white">
         <div class="grid mx-auto max-w-screen-xl lg:gap-8 xl:gap-0 lg:py-4 lg:grid-cols-2 h-screen overflow-hidden">
             <form class="place-self-center mr-auto w-full px-20" method="POST" action="{{ request()->fullUrl() }}">
                 @csrf
                 <h1 class="mb-4 max-w-2xl text-4xl font-bold leading-none md:text-5xl xl:text-4xl border-b border-gray-700">
-                    Login</h1>
+                    Login Juragan Tanah</h1>
                 <div class="flex flex-col gap-1">
                     <x-error-box></x-error-box>
                     <div class="mb-4">
@@ -37,8 +37,8 @@
                     </div>
                 </div>
                 <div class="py-20 text-center">
-                    Tidak Punya Akun? <a href="{{ route('register') }}"
-                        class="cursor-pointer hover:text-blue-700 underline">Daftar Sekarang.</a>
+                    Tidak Punya Akun?
+                    <a href="#" class="cursor-pointer hover:text-blue-700 underline">Hubungi Tim Teknis.</a>
                 </div>
             </form>
             <div class="hidden lg:flex w-screen relative flex">
@@ -46,13 +46,12 @@
                     alt="mockup">
                 <div class="text-white absolute top-1/3 px-20 bg-black bg-opacity-50 py-6">
                     <div class="text-4xl font-semibold pb-2 border-b">
-                        Pasar Juragan
+                        Juragan Tanah
                     </div>
                     <div class="text-xl font-light">
-                        Menjamin kegiatan proses logistik yang aman ditangan anda.
+                        Kegiatan proses logistik di tangan anda.
                     </div>
                 </div>
             </div>
-        </div>
     </section>
 @endsection

@@ -1,24 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Throwable;
 
-class AuthAdminController extends Controller {
+class ProfileUserController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view('admin.login');
-    }
-
-    public function logout() {
-        Auth::guard('admin')->logout();
-        return redirect(route('admin.login'));
+        $data = Auth::guard('admin')->user();
+        return view('admin.profile_user.index', ['data' => $data]);
     }
 
     /**
@@ -37,28 +35,7 @@ class AuthAdminController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        // return $request->toArray();
-        $credentials = $request->validate([
-            'username_mail' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-        if (Auth::guard('admin')->attempt($credentials)) {
-            $user = Auth::guard('admin')->user();
-
-            if ($user->status == 0) {
-                Auth::guard('admin')->logout();
-                return back()->withErrors([
-                    'email' => 'Silahkan melakukan aktivasi melalui Email yang kami kirim.<br>Belum mendapatkan Email? <a href="" class="px-2 bg-red-700 hover:bg-red-800 bg-red text-white font-semibold rounded py-0.5 text-sm">Kirim Ulang Email Aktivasi</a>',
-                ]);
-            }
-
-            $request->session()->regenerate();
-            return redirect(route('admin.home'));
-        }
-
-        return back()->withErrors([
-            'email' => 'Email dan Username anda tidak cocok.',
-        ]);
+        return view('admin.profile_user.index');
     }
 
     /**
@@ -89,7 +66,22 @@ class AuthAdminController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        //
+        switch ($request->__type) {
+            case 'update':
+                try {
+                    if (Auth::guard('user')->user()->m_company_id != $id)
+                        return back()->withErrors([
+                            'update' => "Anda tidak punya otoritas untuk melakukan update pada Perusahaan ini."
+                        ]);
+                    User::find($id)->update($request->toArray());
+                } catch (Throwable $th) {
+                    return back()->withErrors([
+                        'update' => $th->getMessage()
+                    ]);
+                }
+                break;
+        }
+        return redirect($request->_last_);
     }
 
     /**

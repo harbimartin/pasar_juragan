@@ -19,7 +19,7 @@ abstract class ProfileCompanyController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $data = Auth::user()->company;
+        $data = Auth::guard('user')->user()->company;
         $select = [
             'business_category' => BusinessCategory::where('status', 1)->get()
         ];
@@ -71,7 +71,7 @@ abstract class ProfileCompanyController extends Controller {
                 break;
             case 'update':
                 try {
-                    if (Auth::user()->m_company_id != $id)
+                    if (Auth::guard('user')->user()->m_company_id != $id)
                         return back()->withErrors([
                             'update' => "Anda tidak punya otoritas untuk melakukan update pada Perusahaan ini."
                         ]);

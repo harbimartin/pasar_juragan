@@ -42,7 +42,7 @@ class ProfileCompanyAddressController extends ProfileCompanyController {
             'comp_province' => ['required'],
             'comp_country' => ['required'],
         ]);
-        $user = Auth::user();
+        $user = Auth::guard('user')->user();
         $credentials['status'] = 1;
         $user->company->contact()->create($credentials);
         return back();

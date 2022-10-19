@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Helper\Menu;
-
 return [
 
     /*
@@ -232,8 +230,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Menu' => Menu::class
-
+        'Menu' => App\Http\Helper\Menu::class,
+        'MenuAdmin' => App\Http\Helper\MenuAdmin::class
     ],
 
 ];

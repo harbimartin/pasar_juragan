@@ -40,8 +40,8 @@
         </a>
     @endif
     <form class="container md:rounded-lg shadow my-1 md:my-4 py-2 md:py-4 px-3 md:px-6 bg-white text-xs md:text-base"
-        action="{{ substr(request()->url(), 0, -5) }}" method="POST" enctype="multipart/form-data"
-        autocomplete="new-password">
+        action="{{ $burl == 'none' ? request()->url() : substr(request()->url(), 0, -5) }}" method="POST"
+        enctype="multipart/form-data" autocomplete="new-password">
         @csrf
         @method('PUT')
         <input hidden name="_last_" value="{{ request()->fullUrl() }}">

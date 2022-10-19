@@ -15,7 +15,7 @@ class ProfileUserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $data = Auth::user();
+        $data = Auth::guard('user')->user();
         return view('dashboard.profile_user.index', ['data' => $data]);
     }
 
@@ -66,15 +66,15 @@ class ProfileUserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        switch($request->__type){
+        switch ($request->__type) {
             case 'update':
-                try{
-                    if (Auth::user()->m_company_id != $id)
+                try {
+                    if (Auth::guard('user')->user()->m_company_id != $id)
                         return back()->withErrors([
                             'update' => "Anda tidak punya otoritas untuk melakukan update pada Perusahaan ini."
                         ]);
                     User::find($id)->update($request->toArray());
-                } catch(Throwable $th){
+                } catch (Throwable $th) {
                     return back()->withErrors([
                         'update' => $th->getMessage()
                     ]);

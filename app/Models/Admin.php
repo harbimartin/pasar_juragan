@@ -9,28 +9,21 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class Admin extends Authenticatable implements JWTSubject {
     use HasFactory, Notifiable;
-    protected $table = "admin_tab   ";
+    protected $table = "user_admin_tab";
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'm_company_id',
-        'username',
         'password',
         'username_name',
         'username_name',
         'username_position',
         'username_mail',
         'username_phone',
-        'is_super_admin',
-        'status',
+        'status'
     ];
-
-    public function company() {
-        return $this->hasOne(Company::class, 'id', 'm_company_id');
-    }
 
     /**
      * The attributes that should be hidden for serialization.

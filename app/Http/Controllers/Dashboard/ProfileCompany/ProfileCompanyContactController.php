@@ -45,7 +45,7 @@ class ProfileCompanyContactController extends ProfileCompanyController {
             'comp_contact_position' => ['required'],
             'comp_contact' => ['required']
         ]);
-        $user = Auth::user();
+        $user = Auth::guard('user')->user();
         $credentials['status'] = 1;
         $user->company->contact()->create($credentials);
         return back();
