@@ -15,5 +15,16 @@
         :select="$select" idk="id">
     </x-update>
 
+    <ul class="list-reset flex border-b px-2 md:px-6 mt-3 md:mt-5 text-xs md:text-base">
+        <li class="mr-1">
+            <a class="rounded-md bg-white inline-block py-2 px-4 font-semibold {{ $tab == 'address' ? 'bg-blue-400 text-white' : '' }}"
+                href="{{ route('dashboard.company-profile.address') }}">Address</a>
+        </li>
+        <li class="mr-1">
+            <a class="rounded-md bg-white inline-block py-2 px-4 font-semibold {{ $tab == 'contact' ? 'bg-blue-400 text-white' : '' }}"
+                href="{{ route('dashboard.company-profile.contact') }}">Contact</a>
+        </li>
+    </ul>
+
     @yield('tab-content')
 @endsection

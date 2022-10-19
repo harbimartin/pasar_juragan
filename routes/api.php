@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('v1/auth/login', [AuthController::class, "api_login"]);
+Route::post('v1/auth/login', [AuthApiController::class, "api_login"]);
 Route::group(['middleware' => 'jwt.auth'], function () {
-    Route::get('v1/auth/logout',[AuthController::class, "api_logout"]);
-    Route::get('v1/auth/me',[AuthController::class, "api_me"]);
+    Route::get('v1/auth/logout', [AuthApiController::class, "api_logout"]);
+    Route::get('v1/auth/me', [AuthApiController::class, "api_me"]);
 });

@@ -3,50 +3,20 @@
 namespace App\Http\Controllers\Dashboard\ProfileCompany;
 
 use App\Http\Controllers\Controller;
+use App\Models\CompanyAddress;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class ProfileCompanyAddressController extends Controller
-{
+class ProfileCompanyAddressController extends ProfileCompanyController {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
+    public function index() {
+        [$data, $select] = parent::index();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return view('dashboard.profile_company.address.index', ['data' => $data, 'select' => $select]);
     }
 
     /**
@@ -55,9 +25,27 @@ class ProfileCompanyAddressController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit($id) {
+        return view('dashboard.profile_company.address.edit', ['data' => CompanyAddress::find($id)]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request) {
+        $credentials = $request->validate([
+            'comp_address_detail' => ['required'],
+            'comp_city' => ['required'],
+            'comp_province' => ['required'],
+            'comp_country' => ['required'],
+        ]);
+        $user = Auth::user();
+        $credentials['status'] = 1;
+        $user->company->contact()->create($credentials);
+        return back();
     }
 
     /**
@@ -67,19 +55,14 @@ class ProfileCompanyAddressController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+    public function update(Request $request, $id) {
+        $credentials = $request->validate([
+            'comp_address_detail' => ['required'],
+            'comp_city' => ['required'],
+            'comp_province' => ['required'],
+            'comp_country' => ['required'],
+        ]);
+        CompanyAddress::find($id)->update($credentials);
+        return redirect(route('dashboard.company-profile.contact'));
     }
 }

@@ -7,9 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject {
+class Admin extends Authenticatable implements JWTSubject {
     use HasFactory, Notifiable;
-    protected $table = "user_tab";
+    protected $table = "admin_tab   ";
     /**
      * The attributes that are mass assignable.
      *
