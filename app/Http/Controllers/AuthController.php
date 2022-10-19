@@ -117,15 +117,30 @@ class AuthController extends Controller {
 
             return response()->json([
                 "error_code" => 0,
-                "message" => "success",
+                "message" => "Welcome back " . $user->username_name,
                 "data" => $user
             ]);
         }
 
         return response()->json([
-            "error_code" => 1,
+            "error_code" => 2,
             "message" => "Email dan Username anda tidak cocok."
         ]);
+    }
+
+    public function api_logout(){
+        if(Auth::logout()){
+            return response()->json([
+                "error_code" => 0,
+                "message" => "Sampai berjumpa kembali " . Auth::user()->username_name
+            ]);
+        } else {
+            return response()->json([
+                "error_code" => 1,
+                "message" => "Terjadi kesalahan pada jaringan atau server"
+            ]);
+        }
+
     }
 
     public function activation(Request $request) {
