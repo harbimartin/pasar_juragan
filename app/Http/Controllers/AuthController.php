@@ -93,4 +93,31 @@ class AuthController extends Controller {
     public function destroy($id) {
         //
     }
+
+    public function api_login(Request $request){
+        $credentials = $request->validate([
+            'username_mail' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            if ($user->status == 0)
+                return response()->json([
+                    "error_code" => 1,
+                    "message" => "Silahkan melakukan aktivasi melalui Email yang kami kirim."
+                ]);
+
+            return response()->json([
+                "error_code" => 0,
+                "message" => "success",
+                "data" => $user
+            ]);
+        }
+
+        return response()->json([
+            "error_code" => 1,
+            "message" => "Email dan Username anda tidak cocok."
+        ]);
+    }
 }
