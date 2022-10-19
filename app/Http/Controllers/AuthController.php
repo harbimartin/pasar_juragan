@@ -46,10 +46,12 @@ class AuthController extends Controller {
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
 
-            if ($user->status == 0)
+            if ($user->status == 0) {
+                Auth::logout();
                 return back()->withErrors([
                     'email' => 'Silahkan melakukan aktivasi melalui Email yang kami kirim.<br>Belum mendapatkan Email? <a href="" class="px-2 bg-red-700 hover:bg-red-800 bg-red text-white font-semibold rounded py-0.5 text-sm">Kirim Ulang Email Aktivasi</a>',
                 ]);
+            }
 
             $request->session()->regenerate();
             return redirect()->intended('home');

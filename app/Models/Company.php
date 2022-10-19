@@ -17,6 +17,8 @@ class Company extends Model {
         'comp_code',
         'comp_name',
         'comp_npwp',
+        'comp_logo',
+        'comp_website',
         'm_business_category_id',
         'status'
     ];

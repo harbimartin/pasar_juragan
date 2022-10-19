@@ -1,7 +1,7 @@
 @yield('index')
-@isset($graph)
+{{-- @isset($graph)
     <script src="https://www.gstatic.com/charts/loader.js"></script>
-@endisset
+@endisset --}}
 <script>
     // @isset($graph)
     //     google.charts.load('current', {
@@ -79,7 +79,7 @@
                         @endforeach
                     ],
                 @else
-                    um: []
+                    file: []
                 @endisset
             },
             filec: [{

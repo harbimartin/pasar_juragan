@@ -8,6 +8,7 @@
     <title>Pasar Juragan</title>
     <meta name="description"
         content="Get started with a free landing page built with Tailwind CSS and the Flowbite Blocks system.">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
