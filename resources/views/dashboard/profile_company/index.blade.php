@@ -1,12 +1,6 @@
 @extends('dashboard._index')
 @section('content')
     @php
-        // nama perusahaan
-        // npwp
-        // website perusahaan
-        // logo perusahaan
-        // kategori usaha
-        // bidang usaha
         $column = [
             'comp_name' => ['name' => 'Nama', 'type' => 'String', 'full' => true],
             'comp_npwp' => ['name' => 'NPWP', 'type' => 'String', 'full' => true, 'lock' => true],
@@ -17,7 +11,9 @@
         ];
         $column = json_encode($column);
     @endphp
-    <x-update unique="profile_user" :column="$column" title="Profil Perusahaan" :data="$data" burl="none"
+    <x-update unique="profile_company" :column="$column" title="Profil Perusahaan" :data="$data" burl="none"
         :select="$select" idk="id">
     </x-update>
+
+    @yield('tab-content')
 @endsection

@@ -30,7 +30,7 @@
         action="{{ request()->fullUrl() }}" method="POST" enctype="multipart/form-data">
         <input hidden name="_last_" value="{{ request()->_last_ ? request()->_last_ : request()->fullUrl() }}">
         <h1 class="border-b text-lg md:text-2xl pb-2 border-gray-200 mb-2">
-            {{ $title }}
+            Form {{ $title }}
         </h1>
         @if ($error)
             <div class="col-span-2">
@@ -411,7 +411,8 @@
         </div>
         <input type="button"
             class="flex rounded border mt-5 md:mt-2 px-4 py-2 bg-green-500 hover:bg-green-600 ml-auto md:mr-5 cursor-pointer text-white font-semibold"
-            value="{{ $button ? $button : 'Add ' . $title }}"
+            {{-- value="{{ $button ? $button : 'Tambah ' . $title }}" --}}
+            value="{{ $title }}"
             v-on:click="uploadRefresh('_subad_{{ $unique }}_')">
         <button type="submit" hidden id="_subad_{{ $unique }}_"></button>
         {{ $slot }}

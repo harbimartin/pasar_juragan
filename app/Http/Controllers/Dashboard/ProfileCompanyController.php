@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\BusinessCategory;
 use App\Models\Company;
+use App\Models\CompanyContact;
+use App\Models\ContactType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
@@ -18,9 +20,10 @@ class ProfileCompanyController extends Controller {
     public function index() {
         $data = Auth::user()->company;
         $select = [
-            'business_category' => BusinessCategory::where('status', 1)->get()
+            'business_category' => BusinessCategory::where('status', 1)->get(),
+            'contact_type' => ContactType::where('status', 1)->get()
         ];
-        return view('dashboard.profile_company.index', ['data' => $data, 'select' => $select]);
+        return view('dashboard.profile_company.address', ['data' => $data, 'select' => $select]);
     }
 
     /**
@@ -39,7 +42,16 @@ class ProfileCompanyController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        //
+        $credentials = $request->validate([
+            'm_contact_type_id' => ['required'],
+            'comp_contact_name' => ['required'],
+            'comp_contact_position' => ['required'],
+            'comp_contact' => ['required']
+        ]);
+        $user = Auth::user();
+        $credentials['status'] = 1;
+        $user->company->contact()->create($credentials);
+        return back();
     }
 
     /**
@@ -49,7 +61,6 @@ class ProfileCompanyController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        //
     }
 
     /**
@@ -59,7 +70,6 @@ class ProfileCompanyController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        //
     }
 
     /**
@@ -71,6 +81,9 @@ class ProfileCompanyController extends Controller {
      */
     public function update(Request $request, $id) {
         switch ($request->__type) {
+            case 'toggle-comp_contact':
+                CompanyContact::find($id)->update(['status'=> $request->toggle]);
+                break;
             case 'update':
                 try {
                     if (Auth::user()->m_company_id != $id)
@@ -112,7 +125,7 @@ class ProfileCompanyController extends Controller {
                 }
                 break;
         }
-        return redirect($request->_last_);
+        return back();
     }
 
     /**

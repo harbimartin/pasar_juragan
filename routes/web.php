@@ -6,6 +6,8 @@ use App\Http\Controllers\Dashboard\JuraganAlatBeratController;
 use App\Http\Controllers\Dashboard\JuraganAngkutanController;
 use App\Http\Controllers\Dashboard\JuraganBarangController;
 use App\Http\Controllers\Dashboard\JuraganGudangController;
+use App\Http\Controllers\Dashboard\ProfileCompany\ProfileCompanyAddressController;
+use App\Http\Controllers\Dashboard\ProfileCompany\ProfileCompanyContactController;
 use App\Http\Controllers\Dashboard\ProfileCompanyController;
 use App\Http\Controllers\Dashboard\ProfileUserController;
 use App\Http\Controllers\RegisterController;
@@ -50,5 +52,15 @@ Route::group([
     Route::resource('/angkutan', JuraganAngkutanController::class)->name('index', 'juragan-angkutan');
     Route::resource('/alatberat', JuraganAlatBeratController::class)->name('index', 'juragan-alatberat');
     Route::resource('/profile', ProfileUserController::class)->name('index', 'user-profile');
-    Route::resource('/company-profile', ProfileCompanyController::class)->name('index', 'company-profile');
+
+
+    Route::group([
+        'prefix' => 'company-profile',
+        'as' => 'company-profile.',
+    ], function () {
+        Route::resource('/', ProfileCompanyController::class)->name('index', '');
+        Route::resource('/contact', ProfileCompanyContactController::class)->name('index', 'contact');
+        Route::resource('/address', ProfileCompanyAddressController::class)->name('index', 'address');
+    });
+
 });
