@@ -81,15 +81,14 @@ class ProfileCompanyController extends Controller {
                     if ($request->file_logo && $request->has('file_logo.0')) {
                         try {
                             $bfile = $request->file_logo[0];
-                            $filename = $company->id . '.' . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
-                            if (file_exists(storage_path('file_logo\\') . $filename)) {
-                                unlink(storage_path('file_logo\\') . $filename);
-                            }
-                            $bfile->move(storage_path('file_logo'), $filename);
+                            $filename = $company->id . '.' . date("YmdHms") . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
+                            if ($company->file_logo)
+                                unlink(storage_path('file_logo\\') . $company->file_logo);
+                            $bfile->move(storage_path('file_logo\\'), $filename);
                             $request['comp_logo'] = $filename;
                         } catch (Throwable $th) {
                             back()->withErrors([
-                                'update' => "Ada kegagalan dalam menunggah File Lampiran."
+                                'update' => "Ada kegagalan dalam menunggah File Lampiran. : " . $th->getMessage()
                             ]);
                         }
                     }

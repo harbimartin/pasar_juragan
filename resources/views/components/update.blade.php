@@ -492,6 +492,21 @@
                     </div>
                 @break
 
+                @case('Image')
+                    @if ($datas[$key])
+                        <div>
+                            <img src="{{ route('storage', 'company') }}" alt="Logo">
+                        </div>
+                    @else
+                        <div class="w-42 h-42 bg-gray-400 font-semibold align-middle text-gray-50 p-4 text-center flex text-sm"
+                            style="width:140px; height:140px;">
+                            <div class="m-auto">
+                                Logo belum ada
+                            </div>
+                        </div>
+                    @endif
+                @break
+
                 @default
             @endswitch
             @isset($param->text)
