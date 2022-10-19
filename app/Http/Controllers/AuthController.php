@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller {
     /**
@@ -108,8 +109,8 @@ class AuthController extends Controller {
             'username_mail' => ['required', 'email'],
             'password' => ['required'],
         ]);
-        if ($token = Auth::attempt($credentials)) {
-            $user = Auth::user();
+        if ($token = Auth::guard('api')->attempt($credentials)) {
+            $user = Auth::guard('api')->user();
 
             if ($user->status == 0)
                 return response()->json([
@@ -131,18 +132,44 @@ class AuthController extends Controller {
     }
 
     public function api_logout(){
-        if(Auth::logout()){
-            return response()->json([
-                "error_code" => 0,
-                "message" => "Sampai berjumpa kembali " . Auth::user()->username_name
-            ]);
-        } else {
+        try {
+            if(auth()->guard('api')->check()){
+                auth()->guard('api')->logout();
+                return response()->json([
+                    "error_code" => 0,
+                    "message" => "Sampai berjumpa kembali " . Auth::user()->username_name
+                ]);
+            } else {
+                return response()->json([
+                    "error_code" => 1,
+                    "message" => "Terjadi kesalahan pada jaringan atau server"
+                ]);
+            }
+        } catch (JWTException $e) {
             return response()->json([
                 "error_code" => 1,
-                "message" => "Terjadi kesalahan pada jaringan atau server"
-            ]);
+                "message" => "Failed to logout, please try again."
+            ], 500);
         }
 
+    }
+
+    public function api_me(){
+        try {
+            if(auth()->guard('api')->check()){
+                return response()->json([
+                    "error_code" => 0,
+                    "message" => "berhasil",
+                    "data" => auth()->guard('api')->user()
+                ]);
+            }
+            //code...
+        } catch (JWTException $e) {
+            return response()->json([
+                "error_code" => 1,
+                "message" => "Failed to logout, please try again."
+            ], 500);
+        }
     }
 
     public function activation(Request $request) {
