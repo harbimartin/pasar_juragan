@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Throwable;
 
 class ProfileUserController extends Controller {
     /**
@@ -64,7 +66,22 @@ class ProfileUserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        //
+        switch($request->__type){
+            case 'update':
+                try{
+                    if (Auth::user()->m_company_id != $id)
+                        return back()->withErrors([
+                            'update' => "Anda tidak punya otoritas untuk melakukan update pada Perusahaan ini."
+                        ]);
+                    User::find($id)->update($request->toArray());
+                } catch(Throwable $th){
+                    return back()->withErrors([
+                        'update' => $th->getMessage()
+                    ]);
+                }
+                break;
+        }
+        return redirect($request->_last_);
     }
 
     /**
