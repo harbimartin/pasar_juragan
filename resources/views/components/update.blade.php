@@ -1,7 +1,7 @@
 <div class="md:px-6">
     <?php
     $query = $_GET;
-    $id = request()->{$idk};
+    $id = $datas->{$idk};
     unset($query[$idk]);
     $back_query = (isset($burl) ? url('/') . $burl : request()->url()) . ($query ? '?' . http_build_query($query) : '');
 
@@ -40,7 +40,7 @@
         </a>
     @endif
     <form class="container md:rounded-lg shadow my-1 md:my-4 py-2 md:py-4 px-3 md:px-6 bg-white text-xs md:text-base"
-        action="{{ (isset($url) ? url('/') . $url : request()->url()) . '/' . $id }}" method="POST"
+        action="{{ (isset($url) ? url($url) : request()->url()) . '/' . $id }}" method="POST"
         enctype="multipart/form-data" autocomplete="new-password">
         @csrf
         @method('PUT')
@@ -59,23 +59,7 @@
                 <h1 class="border-b text-lg md:text-2xl pb-2 border-gray-200 mb-2">{{ $title }}</h1>
         @endswitch
         <div class="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-4 md:p-5">
-            @if ($error)
-                <div class="col-span-2">
-                    <div class="rounded-md bg-red-100 text-red-800 flex p-3">
-                        <div>
-                        </div>
-                        <div class="inline-flex mb-auto">
-                            <svg class="my-auto" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
-                                <path
-                                    d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-                            </svg>
-                            <div class="ml-2">Error Message : </div>
-                        </div>
-                        <div class="ml-2">{{ $error['msg'] }}</div>
-                    </div>
-                </div>
-            @endif
+            <x-error-box></x-error-box>
             @foreach ($columns as $key => $param)
                 <div @isset($param->if)if="{{ json_encode($param->if) }}"@endisset
                     class="grid @isset($param->class){{ $param->class }}@endisset {{ isset($param->full) ? 'grid-cols-6 col-span-2' : 'grid-cols-3' }}">
@@ -136,10 +120,8 @@
 
                 @case('String')
                     <div class="col-end-7 col-start-1 md:col-start-2 relative block p-0">
-                        <input
-                            @if ($detail || isset($param->readonly)) readonly @endif
-                            @if (isset($param->lock)) disabled @endif
-                            id="{{ $key }}"
+                        <input @if ($detail || isset($param->readonly)) readonly @endif
+                            @if (isset($param->lock)) disabled @endif id="{{ $key }}"
                             @isset($param->max)
                                         maxlength="{{ $param->max }}"
                                         v-on:input="refMax($event,'{{ $key }}_v_',{{ $param->max }})"
@@ -394,7 +376,7 @@
                         @if (!$readonly)
                             <div class="my-1 mr-1">
                                 <input class="hidden" type="file" id="{{ $key }}" name="{{ $key }}[]"
-                                    accept="application/pdf"
+                                    accept="{{ $param->accept }}"
                                     v-on:change="uploadChange('{{ $param->key }}',$event, {{ isset($param->mono) ? 'false' : 'true' }})"
                                     @isset($param->mono)@else multiple @endisset>
                                 <label
