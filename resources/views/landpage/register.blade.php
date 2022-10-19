@@ -1,4 +1,4 @@
-@extends('index')
+@extends('landpage._index')
 @section('content')
     <section>
         <div class="grid mx-auto max-w-screen-xl lg:gap-8 xl:gap-0 w-1/2">

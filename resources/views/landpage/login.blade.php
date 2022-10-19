@@ -1,4 +1,4 @@
-@extends('index')
+@extends('landpage._index')
 @section('content')
     <section class="bg-white">
         <div class="grid mx-auto max-w-screen-xl lg:gap-8 xl:gap-0 lg:py-4 lg:grid-cols-2 h-screen overflow-hidden">
