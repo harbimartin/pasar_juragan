@@ -108,7 +108,7 @@ class AuthController extends Controller {
             'username_mail' => ['required', 'email'],
             'password' => ['required'],
         ]);
-        if (Auth::attempt($credentials)) {
+        if ($token = Auth::attempt($credentials)) {
             $user = Auth::user();
 
             if ($user->status == 0)
@@ -120,7 +120,7 @@ class AuthController extends Controller {
             return response()->json([
                 "error_code" => 0,
                 "message" => "Welcome back " . $user->username_name,
-                "data" => $user
+                "data" => $token
             ]);
         }
 
