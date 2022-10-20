@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class WarehouseProvider extends Model {
+class Provider extends Model {
     use HasFactory;
-    protected $table = "t_warehouse_provider_tab";
+    protected $table = "t_provider_tab";
+    const WAREHOUSE = 1;
+    const TRANSPORT = 2;
+    const HEAVY_EQUIPMENT = 3;
     /**
      * The attributes that are mass assignable.
      *
@@ -15,11 +18,12 @@ class WarehouseProvider extends Model {
      */
     protected $fillable = [
         'm_company_id',
-        'wh_code',
-        'wh_name',
-        'wh_npwp',
-        'wh_website',
-        'wh_logo',
+        'provider_code',
+        'provider_name',
+        'provider_npwp',
+        'provider_website',
+        'provider_logo',
+        'provider_type_id',
         'm_business_category_id',
         'status'
     ];
@@ -29,6 +33,6 @@ class WarehouseProvider extends Model {
     }
 
     public function log() {
-        return $this->hasMany(WarehouseProviderLog::class, 't_warehouse_provider_id', 'id');
+        return $this->hasMany(ProviderLog::class, 't_provider_id', 'id');
     }
 }

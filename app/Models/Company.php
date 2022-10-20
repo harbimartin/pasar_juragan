@@ -40,6 +40,6 @@ class Company extends Model {
     }
 
     public function warehouse_provider() {
-        return $this->hasMany(WarehouseProvider::class, 'm_company_id', 'id');
+        return $this->hasMany(Provider::class, 'm_company_id', 'id')->where('provider_type_id', Provider::WAREHOUSE);
     }
 }

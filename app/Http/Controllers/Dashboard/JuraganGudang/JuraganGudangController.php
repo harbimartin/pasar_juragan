@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard\JuraganGudang;
 
 use App\Http\Controllers\Controller;
 use App\Models\BusinessCategory;
+use App\Models\Provider;
 use App\Models\WarehouseProvider;
 use Illuminate\Http\Request;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -43,7 +44,7 @@ class JuraganGudangController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        $data = WarehouseProvider::find($id);
+        $data = Provider::find($id);
         $select = [
             'business_category' => BusinessCategory::where('status', 1)->get()
         ];

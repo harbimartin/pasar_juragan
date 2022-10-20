@@ -3,11 +3,11 @@
     @php
         $column = [
             'm_business_category_id' => ['name' => 'Kategori Bisnis', 'type' => 'Select', 'val' => ['business_category'], 'api' => 'business_category', 'full' => true],
-            'wh_name' => ['name' => 'Nama', 'type' => 'String', 'full' => true],
-            'wh_npwp' => ['name' => 'NPWP', 'type' => 'String', 'full' => true],
-            'wh_website' => ['name' => 'Website', 'type' => 'String', 'full' => true],
+            'provider_name' => ['name' => 'Nama', 'type' => 'String', 'full' => true],
+            'provider_npwp' => ['name' => 'NPWP', 'type' => 'String', 'full' => true],
+            'provider_website' => ['name' => 'Website', 'type' => 'String', 'full' => true],
             'file_logo' => ['name' => 'Upload Logo', 'type' => 'Upload', 'accept' => 'image/*', 'key' => 'file', 'folder' => 'comp_logo', 'mono' => true, 'full' => true],
-            'wh_logo' => ['name' => 'Logo', 'type' => 'Image', 'folder' => 'file_logo'],
+            'provider_logo' => ['name' => 'Logo', 'type' => 'Image', 'folder' => 'file_logo'],
         ];
         $column = json_encode($column);
     @endphp
