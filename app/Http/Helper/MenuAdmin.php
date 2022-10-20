@@ -12,7 +12,7 @@ class MenuAdmin {
             return Session::get('menu_admin');
 
         $menu = [
-            ['name' => 'Profile User', 'key' => 'admin.user-profile', 'icon' => 2],
+            ['name' => 'Profile User', 'key' => 'admin.profile-user', 'icon' => 2],
             ['name' => 'Registrasi Juragan Gudang', 'key' => 'admin.gudang.regist', 'icon' => 0],
             ['name' => 'Registrasi Angkutan Barang', 'key' => 'admin.angkutan.regist', 'icon' => 0],
             ['name' => 'Registrasi Juragan Alat Berat', 'key' => 'admin.alat-berat.regist', 'icon' => 0],

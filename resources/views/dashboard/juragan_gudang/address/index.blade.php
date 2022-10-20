@@ -1,4 +1,4 @@
-@extends('dashboard.profile_company.index', ['tab' => 'address'])
+@extends('dashboard.profile-company.index', ['tab' => 'address'])
 @section('tab-content')
     @php
         $column_address = [
@@ -23,7 +23,7 @@
         'comp_country' => ['name' => 'Negara', 'type' => 'String'],
         'status' => ['name' => 'Status', 'type' => 'State'],
         'toggle' => ['by' => 'status', 'name' => 'Aktifkan', 'type' => 'Toggle', 'sort' => false, 'align' => 'center', 'value' => 'toggle-comp_contact'],
-        'act' => ['name' => 'Action', 'type' => 'Edit', 'route' => 'dashboard.company-profile.address.edit', 'align' => 'center', 'sort' => false],
+        'act' => ['name' => 'Action', 'type' => 'Edit', 'route' => 'dashboard.profile-company.address.edit', 'align' => 'center', 'sort' => false],
     ]);
     ?>
     <x-table :lim="false" :column="$table_address" :datas="$data->address">

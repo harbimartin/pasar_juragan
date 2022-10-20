@@ -16,7 +16,7 @@ class ProfileUserController extends Controller {
      */
     public function index() {
         $data = Auth::guard('admin')->user();
-        return view('admin.profile_user.index', ['data' => $data]);
+        return view('admin.profile-user.index', ['data' => $data]);
     }
 
     /**
@@ -35,7 +35,7 @@ class ProfileUserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        return view('admin.profile_user.index');
+        return view('admin.profile-user.index');
     }
 
     /**

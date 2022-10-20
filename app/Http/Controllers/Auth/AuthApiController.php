@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
-class ApiController extends Controller {
+class AuthApiController extends Controller {
     public function api_login(Request $request) {
         $credentials = $request->validate([
             'username_mail' => ['required', 'email'],

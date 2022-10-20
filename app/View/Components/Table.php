@@ -21,12 +21,13 @@ class Table extends Component
     public $filter;
     public $tool;
     public $selfilter;
+    public $route;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($column, $datas, $lim=true, $search=true, $datef = false, $import = false, $export = false, $idk = 'id', $title = null, $sign = null, $sort = true, $prop = null, $tool=true, $filter=false, $selfilter = null, $route = null){
+    public function __construct($column, $datas, $route = null, $lim=true, $search=true, $datef = false, $import = false, $export = false, $idk = 'id', $title = null, $sign = null, $sort = true, $prop = null, $tool=true, $filter=false, $selfilter = null){
         $this->column = $column;
         $this->datas = $datas;
         $this->lim = $lim;
@@ -42,6 +43,7 @@ class Table extends Component
         $this->filter = $filter;
         $this->selfilter = $selfilter;
         $this->tool = $tool;
+        $this->route = $route;
     }
 
     /**

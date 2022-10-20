@@ -1,4 +1,4 @@
-@extends('dashboard.profile_company.index', ['tab' => 'contact'])
+@extends('dashboard.profile-company.index', ['tab' => 'contact'])
 @section('tab-content')
     @php
         $column_contact = [
@@ -12,7 +12,6 @@
     <x-add unique="company_contact" :column="$column_contact" title="Tambah Kontak Perusahaan" :data="$data" :select="$select"
         idk="id">
     </x-add>
-
 
     <?php
     $table_contact = json_encode([
@@ -28,8 +27,8 @@
         ],
         'comp_contact' => ['name' => 'Kontak', 'type' => 'String'],
         'status' => ['name' => 'Status', 'type' => 'State'],
-        'toggle' => ['by' => 'status', 'name' => 'Aktifkan', 'type' => 'Toggle', 'sort' => false, 'align' => 'center', 'value' => 'toggle-comp_contact'],
-        'act' => ['name' => 'Action', 'type' => 'Edit', 'route' => 'dashboard.company-profile.contact.edit', 'align' => 'center', 'sort' => false],
+        'toggle' => ['by' => 'status', 'name' => 'Aktifkan', 'type' => 'Toggle', 'sort' => false, 'align' => 'center'],
+        'act' => ['name' => 'Action', 'type' => 'Edit', 'route' => 'dashboard.profile-company.contact.edit', 'align' => 'center', 'sort' => false],
     ]);
     ?>
     <x-table :lim="false" :column="$table_contact" :datas="$data->contact">

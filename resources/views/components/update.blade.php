@@ -28,7 +28,7 @@
     ?>
     @if ($burl != 'none')
         <a class="text-xs md:text-base inline-flex rounded-full md:rounded border px-3 my-2 md:mt-4 bg-gray-500 hover:bg-gray-600 mr-5 cursor-pointer text-white"
-            type="button" href="{{ $back_query }}">
+            type="button" href="{{ url()->previous() }}">
             <svg class="my-auto mr-2" xmlns="http://www.w3.org/2000/svg" width="16" height="20" fill="currentColor"
                 viewBox="0 0 16 16">
                 <path
@@ -40,8 +40,8 @@
         </a>
     @endif
     <form class="container md:rounded-lg shadow my-1 md:my-4 py-2 md:py-4 px-3 md:px-6 bg-white text-xs md:text-base"
-        action="{{ $burl == 'none' ? request()->url() . '/' . $id : substr(request()->url(), 0, -5) }}" method="POST"
-        enctype="multipart/form-data" autocomplete="new-password">
+        action="{{ route(($route? $route: substr(request()->route()->getName(),0,-5)) . '.update',$id) }}"
+        method="POST" enctype="multipart/form-data" autocomplete="new-password">
         @csrf
         @method('PUT')
         <input hidden name="_last_" value="{{ request()->fullUrl() }}">

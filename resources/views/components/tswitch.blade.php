@@ -186,12 +186,12 @@
         </form>
         @break
     @case('Toggle')
-        <form action="{{Request::url().'/'.$item['id']}}" method="POST">
+        <form action="{{route(request()->route()->getName() . '.update', $item['id'])}}" method="POST">
             @csrf
             @method('PUT')
             <input hidden name="_last_" value="{{request()->fullUrl()}}">
             <input id="{{$key}}" name="{{$key}}" value="{{$item[$param->by]?0:1}}" hidden>
-            <button type="submit" @isset($param->value) name="__type" value="{{$param->value}}" @endisset class="text-indigo-600 hover:text-indigo-900">{{$item[$param->by] ? 'Nonaktifkan' : 'Aktifkan'}}</button>
+            <button type="submit" name="__type" value="toggle" class="text-indigo-600 hover:text-indigo-900">{{$item[$param->by] ? 'Nonaktifkan' : 'Aktifkan'}}</button>
         </form>
         @break
     @case('No')

@@ -12,18 +12,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
 
-abstract class ProfileCompanyController extends Controller {
+class ProfileCompanyController extends Controller {
+    public function base_index() {
+        $data = Auth::guard('user')->user()->company;
+        $select = [
+            'business_category' => BusinessCategory::where('status', 1)->get()
+        ];
+        return [$data, $select];
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $data = Auth::guard('user')->user()->company;
-        $select = [
-            'business_category' => BusinessCategory::where('status', 1)->get()
-        ];
-        return [$data, $select];
+        return redirect(route('dashboard.profile-company.address'));
     }
 
     /**
@@ -63,12 +66,6 @@ abstract class ProfileCompanyController extends Controller {
      */
     public function update(Request $request, $id) {
         switch ($request->__type) {
-            case 'toggle-comp_address':
-                CompanyAddress::find($id)->update(['status' => $request->toggle]);
-                break;
-            case 'toggle-comp_contact':
-                CompanyContact::find($id)->update(['status' => $request->toggle]);
-                break;
             case 'update':
                 try {
                     if (Auth::guard('user')->user()->m_company_id != $id)

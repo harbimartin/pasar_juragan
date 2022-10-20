@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Dashboard\JuraganGudang;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helper\Table;
 use App\Models\BusinessCategory;
 use App\Models\Provider;
 use App\Models\WarehouseProvider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 class JuraganGudangController extends Controller {
@@ -15,7 +17,10 @@ class JuraganGudangController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id) {
+    public function index() {
+        $company = Auth::guard('user')->user()->company;
+        $data = Provider::where(['m_company_id' => $company->id, 'provider_type_id' => Provider::WAREHOUSE])->paginate(10);
+        return view('dashboard.juragan_gudang.list', ['data' => $data, 'prop' => Table::tableProp($data)]);
     }
 
     /**

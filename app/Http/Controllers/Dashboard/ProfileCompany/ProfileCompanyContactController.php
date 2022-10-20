@@ -15,10 +15,10 @@ class ProfileCompanyContactController extends ProfileCompanyController {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        [$data, $select] = parent::index();
+        [$data, $select] = $this->base_index();
         $select['contact_type'] = ContactType::where('status', 1)->get();
 
-        return view('dashboard.profile_company.contact.index', ['data' => $data, 'select' => $select]);
+        return view('dashboard.profile-company.contact.index', ['data' => $data, 'select' => $select]);
     }
 
     /**
@@ -29,7 +29,7 @@ class ProfileCompanyContactController extends ProfileCompanyController {
      */
     public function edit($id) {
         $select['contact_type'] = ContactType::where('status', 1)->get();
-        return view('dashboard.profile_company.contact.edit', ['data' => CompanyContact::find($id), 'select' => $select]);
+        return view('dashboard.profile-company.contact.edit', ['data' => CompanyContact::find($id), 'select' => $select]);
     }
 
     /**
@@ -59,13 +59,21 @@ class ProfileCompanyContactController extends ProfileCompanyController {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        $credentials = $request->validate([
-            'm_contact_type_id' => ['required'],
-            'comp_contact_name' => ['required'],
-            'comp_contact_position' => ['required'],
-            'comp_contact' => ['required']
-        ]);
-        CompanyContact::find($id)->update($credentials);
-        return redirect(route('dashboard.company-profile.contact'));
+        switch ($request->__type) {
+            case 'toggle':
+                CompanyContact::find($id)->update(['status' => $request->toggle]);
+                break;
+            case 'update':
+                $credentials = $request->validate([
+                    'm_contact_type_id' => ['required'],
+                    'comp_contact_name' => ['required'],
+                    'comp_contact_position' => ['required'],
+                    'comp_contact' => ['required']
+                ]);
+                CompanyContact::find($id)->update($credentials);
+                break;
+        }
+        return back();
+        // return redirect(route('dashboard.profile-company.contact'));
     }
 }

@@ -11,18 +11,18 @@
         ];
         $column = json_encode($column);
     @endphp
-    <x-update unique="profile_company" :column="$column" title="Profil Perusahaan" :data="$data" burl="none"
-        :select="$select" idk="id">
+    <x-update unique="profile-company" :column="$column" title="Profil Perusahaan" :data="$data" burl="none"
+        route="dashboard.profile-company" :select="$select" idk="id">
     </x-update>
 
     <ul class="list-reset flex border-b px-2 md:px-6 mt-3 md:mt-5 text-xs md:text-base">
         <li class="mr-1">
             <a class="rounded-md bg-white inline-block py-2 px-4 font-semibold {{ $tab == 'address' ? 'bg-blue-400 text-white' : '' }}"
-                href="{{ route('dashboard.company-profile.address') }}">Address</a>
+                href="{{ route('dashboard.profile-company.address') }}">Address</a>
         </li>
         <li class="mr-1">
             <a class="rounded-md bg-white inline-block py-2 px-4 font-semibold {{ $tab == 'contact' ? 'bg-blue-400 text-white' : '' }}"
-                href="{{ route('dashboard.company-profile.contact') }}">Contact</a>
+                href="{{ route('dashboard.profile-company.contact') }}">Contact</a>
         </li>
     </ul>
 
