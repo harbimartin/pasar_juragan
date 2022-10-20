@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard\JuraganGudang;
+namespace App\Http\Controllers\Dashboard\JuraganAngkutan;
 
 use App\Http\Controllers\Controller;
 use App\Models\BusinessCategory;
@@ -9,20 +9,21 @@ use App\Models\ProviderLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Throwable;
 
-class JuraganGudangRegistController extends Controller {
+class JuraganAngkutanRegistController extends Controller
+{
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $select = [
             'business_category' => BusinessCategory::where('status', 1)->get()
         ];
         $data = Auth::guard('user')->user()->company;
-        return view('dashboard.juragan_gudang.regist', ['data' => $data, 'select' => $select]);
+        return view('dashboard.juragan_angkutan.regist', ['data' => $data, 'select' => $select]);
     }
 
     /**
@@ -30,7 +31,8 @@ class JuraganGudangRegistController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         //
     }
 
@@ -40,8 +42,8 @@ class JuraganGudangRegistController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        // return $request->toArray();
+    public function store(Request $request)
+    {
         $credentials = $request->validate([
             'm_business_category_id' => ['required'],
             'provider_name' => ['required'],
@@ -69,7 +71,7 @@ class JuraganGudangRegistController extends Controller {
                 $credentials['provider_logo'] = $request->comp_logo;
             }
             $credentials['status'] = 'Draft';
-            $credentials['provider_type_id'] = Provider::WAREHOUSE;
+            $credentials['provider_type_id'] = Provider::TRANSPORT;
 
             $wh = $company->warehouse_provider()->create($credentials);
             $wh->log()->create([
@@ -94,7 +96,8 @@ class JuraganGudangRegistController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
+    public function show($id)
+    {
         //
     }
 
@@ -104,7 +107,8 @@ class JuraganGudangRegistController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
+    public function edit($id)
+    {
         //
     }
 
@@ -115,7 +119,8 @@ class JuraganGudangRegistController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         //
     }
 
@@ -125,7 +130,8 @@ class JuraganGudangRegistController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         //
     }
 }
