@@ -1,4 +1,4 @@
 @extends('dashboard._index')
 @section('content')
-    Juragan Gudang
+    Juragan Gudang List
 @endsection

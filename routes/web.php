@@ -15,6 +15,8 @@ use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\JuraganAlatBeratController;
 use App\Http\Controllers\Dashboard\JuraganAngkutanController;
 use App\Http\Controllers\Dashboard\JuraganBarangController;
+use App\Http\Controllers\Dashboard\JuraganGudang\JuraganGudangListController;
+use App\Http\Controllers\Dashboard\JuraganGudang\JuraganGudangRegistController;
 use App\Http\Controllers\Dashboard\JuraganGudangController;
 use App\Http\Controllers\Dashboard\ProfileCompany\ProfileCompanyAddressController;
 use App\Http\Controllers\Dashboard\ProfileCompany\ProfileCompanyContactController;
@@ -56,8 +58,21 @@ Route::group([
         return redirect(route('d-home'));
     });
     Route::resource('/home', HomeController::class)->name('index', 'home');
-    Route::resource('/barang', JuraganBarangController::class)->name('index', 'juragan-barang');
-    Route::resource('/gudang', JuraganGudangController::class)->name('index', 'juragan-gudang');
+    Route::group([
+        'prefix' => 'juragan-barang',
+        'as' => 'juragan-barang.',
+    ], function () {
+        Route::resource('/regist', JuraganBarangController::class)->name('index', 'regist');
+        Route::resource('/list', JuraganBarangController::class)->name('index', 'list');
+    });
+    Route::group([
+        'prefix' => 'juragan-gudang',
+        'as' => 'juragan-gudang.',
+    ], function () {
+        Route::resource('/regist', JuraganGudangRegistController::class)->name('index', 'regist');
+        Route::resource('/list', JuraganGudangListController::class)->name('index', 'list');
+    });
+
     Route::resource('/angkutan', JuraganAngkutanController::class)->name('index', 'juragan-angkutan');
     Route::resource('/alatberat', JuraganAlatBeratController::class)->name('index', 'juragan-alatberat');
     Route::resource('/profile', ProfileUserController::class)->name('index', 'user-profile');

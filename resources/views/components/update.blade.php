@@ -40,7 +40,7 @@
         </a>
     @endif
     <form class="container md:rounded-lg shadow my-1 md:my-4 py-2 md:py-4 px-3 md:px-6 bg-white text-xs md:text-base"
-        action="{{ $burl == 'none' ? request()->url() : substr(request()->url(), 0, -5) }}" method="POST"
+        action="{{ $burl == 'none' ? request()->url() . '/' . $id : substr(request()->url(), 0, -5) }}" method="POST"
         enctype="multipart/form-data" autocomplete="new-password">
         @csrf
         @method('PUT')

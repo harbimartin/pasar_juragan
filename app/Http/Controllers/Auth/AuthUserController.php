@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Session;
 
 class AuthUserController extends Controller {
     /**
@@ -19,8 +20,9 @@ class AuthUserController extends Controller {
     }
 
     public function logout() {
-        Auth::guard('user')->logout();
-        return redirect(route('home'));
+        // Auth::guard('user')->logout();
+        Session::forget('menu');
+        return back(); // redirect(route('home'));
     }
 
     /**
