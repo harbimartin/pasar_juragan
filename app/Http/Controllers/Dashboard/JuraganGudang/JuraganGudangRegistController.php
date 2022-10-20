@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Dashboard\JuraganGudang;
 
 use App\Http\Controllers\Controller;
 use App\Models\BusinessCategory;
+use App\Models\Provider;
+use App\Models\ProviderLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -42,9 +44,9 @@ class JuraganGudangRegistController extends Controller {
         // return $request->toArray();
         $credentials = $request->validate([
             'm_business_category_id' => ['required'],
-            'wh_name' => ['required'],
-            'wh_npwp' => ['required'],
-            'wh_website' => ['required']
+            'provider_name' => ['required'],
+            'provider_npwp' => ['required'],
+            'provider_website' => ['required']
         ]);
         try {
             DB::beginTransaction();
@@ -67,11 +69,12 @@ class JuraganGudangRegistController extends Controller {
                 $credentials['wh_logo'] = $request->comp_logo;
             }
             $credentials['status'] = 'Draft';
+            $credentials['provider_type_id'] = Provider::WAREHOUSE;
 
             $wh = $company->warehouse_provider()->create($credentials);
             $wh->log()->create([
                 'user_id' => $user->id,
-                'user_type' => 0,
+                'user_type' => ProviderLog::PROVIDER,
                 'status' => 'Draft'
             ]);
 

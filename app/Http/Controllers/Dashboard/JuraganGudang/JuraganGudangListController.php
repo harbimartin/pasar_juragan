@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard\JuraganGudang;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helper\Table;
+use App\Models\Provider;
 use App\Models\WarehouseProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,7 @@ class JuraganGudangListController extends Controller {
      */
     public function index() {
         $company = Auth::guard('user')->user()->company;
-        $data = WarehouseProvider::where(['m_company_id' => $company->id])->paginate(10);
+        $data = Provider::where(['m_company_id' => $company->id])->paginate(10);
         return view('dashboard.juragan_gudang.list', ['data' => $data, 'prop' => Table::tableProp($data)]);
     }
 

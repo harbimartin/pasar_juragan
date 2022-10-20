@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class WarehouseProviderLog extends Model {
+class ProviderLog extends Model {
     use HasFactory;
+    const PROVIDER = 0;
+    const ADMIN = 0;
     protected $table = "t_provider_status_tab";
     /**
      * The attributes that are mass assignable.
@@ -22,6 +24,6 @@ class WarehouseProviderLog extends Model {
     ];
 
     public function parent() {
-        return $this->hasOne(WarehouseProvider::class, 'id', 't_provider_id');
+        return $this->hasOne(Provider::class, 'id', 't_provider_id');
     }
 }
