@@ -34,7 +34,12 @@ class Company extends Model {
     public function user() {
         return $this->hasMany(User::class, 'm_company_id', 'id');
     }
+
     public function contact() {
         return $this->hasMany(CompanyContact::class, 'm_company_id', 'id');
+    }
+
+    public function warehouse_provider() {
+        return $this->hasMany(WarehouseProvider::class, 'm_company_id', 'id');
     }
 }

@@ -32,21 +32,7 @@
         <h1 class="border-b text-lg md:text-2xl pb-2 border-gray-200 mb-2">
             Form {{ $title }}
         </h1>
-        @if ($error)
-            <div class="col-span-2">
-                <div class="rounded-md bg-red-100 text-red-800 md:flex p-3">
-                    <div class="inline-flex mb-auto">
-                        <svg class="my-auto h-3 w-3 md:h-4 md:w-4" xmlns="http://www.w3.org/2000/svg"
-                            fill="currentColor" viewBox="0 0 16 16">
-                            <path
-                                d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-                        </svg>
-                        <div class="ml-1 md:ml-2" style="min-width:110px;">Error Message : </div>
-                    </div>
-                    <div class="md:ml-2">{{ $error['msg'] }}</div>
-                </div>
-            </div>
-        @endif
+        <x-error-box></x-error-box>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-4 md:p-5">
             @csrf
             @foreach ($columns as $key => $param)
@@ -336,7 +322,7 @@
                             <div class="col-end-7 col-start-1 md:col-start-2 md:flex">
                                 <div class="my-1">
                                     <input class="hidden" type="file" id="{{ $key }}"
-                                        name="{{ $key }}[]" accept="application/pdf"
+                                        name="{{ $key }}[]" accept="{{ $param->accept }}"
                                         v-on:change="uploadChange('{{ $param->key }}',$event, {{ isset($param->mono) ? 'false' : 'true' }})"
                                         @isset($param->mono)@else multiple @endisset>
                                     <label
@@ -400,21 +386,34 @@
                                 class="rounded border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
                         @break
 
-                        @default
-                    @endswitch
-                    @isset($param->text)
-                        <small
-                            class="col-start-1 md:col-start-2 col-end-6 {{ $param->text[1] }}">{{ $param->text[0] }}</small>
-                    @endisset
-                </div>
+                        @case('Image')
+                            @isset($param->def)
+                                <div>
+                                    <img src="{{ route('storage', 'company') }}" alt="Logo">
+                                    <input name="{{ $key }}" value="{{ $param->def }}" hidden />
+                                </div>
+                            @else
+                                <div class="w-42 h-42 bg-gray-400 font-semibold align-middle text-gray-50 p-4 text-center flex text-sm"
+                                    style="width:140px; height:140px;">
+                                    <div class="m-auto">
+                                        Logo belum ada
+                                    </div>
+                                </div>
+                        @endif
+                    @break
+
+                    @default
+                @endswitch
+                @isset($param->text)
+                    <small class="col-start-1 md:col-start-2 col-end-6 {{ $param->text[1] }}">{{ $param->text[0] }}</small>
+                @endisset
+            </div>
             @endforeach
-        </div>
-        <input type="button"
-            class="flex rounded border mt-5 md:mt-2 px-4 py-2 bg-green-500 hover:bg-green-600 ml-auto md:mr-5 cursor-pointer text-white font-semibold"
-            {{-- value="{{ $button ? $button : 'Tambah ' . $title }}" --}}
-            value="{{ $title }}"
-            v-on:click="uploadRefresh('_subad_{{ $unique }}_')">
-        <button type="submit" hidden id="_subad_{{ $unique }}_"></button>
-        {{ $slot }}
+    </div>
+    <input type="button"
+        class="flex rounded border mt-5 md:mt-2 px-4 py-2 bg-green-500 hover:bg-green-600 ml-auto md:mr-5 cursor-pointer text-white font-semibold"
+        {{-- value="{{ $button ? $button : 'Tambah ' . $title }}" --}} value="{{ $title }}" v-on:click="uploadRefresh('_subad_{{ $unique }}_')">
+    <button type="submit" hidden id="_subad_{{ $unique }}_"></button>
+    {{ $slot }}
     </form>
-</div>
+    </div>

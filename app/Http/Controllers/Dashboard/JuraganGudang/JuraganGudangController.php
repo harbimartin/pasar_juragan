@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Dashboard\JuraganGudang;
 
 use App\Http\Controllers\Controller;
+use App\Models\BusinessCategory;
+use App\Models\WarehouseProvider;
 use Illuminate\Http\Request;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 class JuraganGudangController extends Controller {
     /**
@@ -11,8 +14,7 @@ class JuraganGudangController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        return view('dashboard.juragan_gudang.index');
+    public function index($id) {
     }
 
     /**
@@ -41,7 +43,11 @@ class JuraganGudangController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        //
+        $data = WarehouseProvider::find($id);
+        $select = [
+            'business_category' => BusinessCategory::where('status', 1)->get()
+        ];
+        return view('dashboard.juragan_gudang.index', ['data' => $data, 'select' => $select, 'tab' => 'address']);
     }
 
     /**

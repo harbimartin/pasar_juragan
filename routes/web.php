@@ -8,16 +8,15 @@ use App\Http\Controllers\Admin\Gudang\GudangListController;
 use App\Http\Controllers\Admin\Gudang\GudangRegistController;
 use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\Admin\ProfileUserController as AdminProfileUserController;
-use App\Http\Controllers\Admin\RegisterController as AdminRegisterController;
 use App\Http\Controllers\Auth\AuthAdminController;
 use App\Http\Controllers\Auth\AuthUserController;
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\JuraganAlatBeratController;
 use App\Http\Controllers\Dashboard\JuraganAngkutanController;
 use App\Http\Controllers\Dashboard\JuraganBarangController;
+use App\Http\Controllers\Dashboard\JuraganGudang\JuraganGudangController;
 use App\Http\Controllers\Dashboard\JuraganGudang\JuraganGudangListController;
 use App\Http\Controllers\Dashboard\JuraganGudang\JuraganGudangRegistController;
-use App\Http\Controllers\Dashboard\JuraganGudangController;
 use App\Http\Controllers\Dashboard\ProfileCompany\ProfileCompanyAddressController;
 use App\Http\Controllers\Dashboard\ProfileCompany\ProfileCompanyContactController;
 use App\Http\Controllers\Dashboard\ProfileUserController;
@@ -65,6 +64,7 @@ Route::group([
         Route::resource('/regist', JuraganBarangController::class)->name('index', 'regist');
         Route::resource('/list', JuraganBarangController::class)->name('index', 'list');
     });
+
     Route::group([
         'prefix' => 'juragan-gudang',
         'as' => 'juragan-gudang.',
@@ -72,6 +72,7 @@ Route::group([
         Route::resource('/regist', JuraganGudangRegistController::class)->name('index', 'regist');
         Route::resource('/list', JuraganGudangListController::class)->name('index', 'list');
     });
+    Route::resource('/juragan-gudang', JuraganGudangController::class)->name('index', 'juragan-gudang');
 
     Route::resource('/angkutan', JuraganAngkutanController::class)->name('index', 'juragan-angkutan');
     Route::resource('/alatberat', JuraganAlatBeratController::class)->name('index', 'juragan-alatberat');
