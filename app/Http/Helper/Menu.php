@@ -23,11 +23,11 @@ class Menu {
             ]],
             ['name' => 'Juragan Angkutan', 'key' => 'dashboard.juragan-angkutan', 'icon' => 1, 'children' => [
                 ['name' => 'Registrasi Juragan', 'key' => 'dashboard.juragan-angkutan.regist', 'icon' => 3],
-                ['name' => 'Daftar Angkutan', 'key' => 'dashboard.juragan-angkutan.list', 'icon' => 2]
+                ['name' => 'Daftar Angkutan', 'key' => 'dashboard.juragan-angkutan', 'icon' => 2]
             ]],
             ['name' => 'Juragan Alat Berat', 'key' => 'dashboard.juragan-alatberat', 'icon' => 1, 'children' => [
                 ['name' => 'Registrasi Juragan', 'key' => 'dashboard.juragan-alatberat.regist', 'icon' => 3],
-                ['name' => 'Daftar Alat Berat', 'key' => 'dashboard.juragan-alatberat.list', 'icon' => 2]
+                ['name' => 'Daftar Alat Berat', 'key' => 'dashboard.juragan-alatberat', 'icon' => 2]
             ]],
             // ['name' => 'Juragan Alat Berat', 'key' => 'dashboard.juragan-alatberat', 'icon' => 2]
         ];
