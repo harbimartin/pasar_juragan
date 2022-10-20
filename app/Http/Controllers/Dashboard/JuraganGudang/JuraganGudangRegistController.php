@@ -59,14 +59,14 @@ class JuraganGudangRegistController extends Controller {
                     if ($company->file_logo)
                         unlink(storage_path('file_logo\\') . $company->file_logo);
                     $bfile->move(storage_path('file_logo\\'), $filename);
-                    $credentials['wh_logo'] = $filename;
+                    $credentials['provider_logo'] = $filename;
                 } catch (Throwable $th) {
                     back()->withErrors([
                         'add' => "Ada kegagalan dalam menunggah File Lampiran. : " . $th->getMessage()
                     ]);
                 }
             } else {
-                $credentials['wh_logo'] = $request->comp_logo;
+                $credentials['provider_logo'] = $request->comp_logo;
             }
             $credentials['status'] = 'Draft';
             $credentials['provider_type_id'] = Provider::WAREHOUSE;

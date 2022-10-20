@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Dashboard\JuraganAngkutan;
 
 use App\Http\Controllers\Controller;
-use App\Http\Helper\Table;
+use App\Models\BusinessCategory;
 use App\Models\Provider;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class JuraganAngkutanListController extends Controller
+class JuraganAngkutanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +16,7 @@ class JuraganAngkutanListController extends Controller
      */
     public function index()
     {
-        $company = Auth::guard('user')->user()->company;
-        $data = Provider::where(['m_company_id' => $company->id, "provider_type_id" => Provider::TRANSPORT])->paginate(10);
-        return view('dashboard.juragan_angkutan.list', ['data' => $data, 'prop' => Table::tableProp($data)]);
+        //
     }
 
     /**
@@ -51,7 +48,11 @@ class JuraganAngkutanListController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Provider::find($id);
+        $select = [
+            'business_category' => BusinessCategory::where('status', 1)->get()
+        ];
+        return view('dashboard.juragan_angkutan.index', ['data' => $data, 'select' => $select, 'tab' => 'address']);
     }
 
     /**

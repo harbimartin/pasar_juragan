@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard\JuraganAngkutan;
+namespace App\Http\Controllers\Dashboard\JuraganAlatBerat;
 
 use App\Http\Controllers\Controller;
 use App\Models\BusinessCategory;
@@ -9,8 +9,9 @@ use App\Models\ProviderLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
-class JuraganAngkutanRegistController extends Controller
+class JuraganAlatBeratRegistController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,7 +24,7 @@ class JuraganAngkutanRegistController extends Controller
             'business_category' => BusinessCategory::where('status', 1)->get()
         ];
         $data = Auth::guard('user')->user()->company;
-        return view('dashboard.juragan_angkutan.regist', ['data' => $data, 'select' => $select]);
+        return view('dashboard.juragan_alatberat.regist', ['data' => $data, 'select' => $select]);
     }
 
     /**
@@ -71,7 +72,7 @@ class JuraganAngkutanRegistController extends Controller
                 $credentials['provider_logo'] = $request->comp_logo;
             }
             $credentials['status'] = 'Draft';
-            $credentials['provider_type_id'] = Provider::TRANSPORT;
+            $credentials['provider_type_id'] = Provider::HEAVY_EQUIPMENT;
 
             $wh = $company->warehouse_provider()->create($credentials);
             $wh->log()->create([

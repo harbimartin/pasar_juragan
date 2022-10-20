@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard\JuraganAngkutan;
+namespace App\Http\Controllers\Dashboard\JuraganAlatBerat;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helper\Table;
@@ -8,7 +8,7 @@ use App\Models\Provider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class JuraganAngkutanListController extends Controller
+class JuraganAlatBeratListController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +18,8 @@ class JuraganAngkutanListController extends Controller
     public function index()
     {
         $company = Auth::guard('user')->user()->company;
-        $data = Provider::where(['m_company_id' => $company->id, "provider_type_id" => Provider::TRANSPORT])->paginate(10);
-        return view('dashboard.juragan_angkutan.list', ['data' => $data, 'prop' => Table::tableProp($data)]);
+        $data = Provider::where(['m_company_id' => $company->id, "provider_type_id" => Provider::HEAVY_EQUIPMENT])->paginate(10);
+        return view('dashboard.juragan_alatberat.list', ['data' => $data, 'prop' => Table::tableProp($data)]);
     }
 
     /**
