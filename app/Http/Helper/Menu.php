@@ -21,7 +21,11 @@ class Menu {
                 ['name' => 'Registrasi Juragan', 'key' => 'dashboard.juragan-gudang.regist', 'icon' => 3],
                 ['name' => 'Daftar Gudang', 'key' => 'dashboard.juragan-gudang.list', 'icon' => 2]
             ]],
-            ['name' => 'Juragan Angkutan', 'key' => 'dashboard.juragan-angkutan', 'icon' => 2],
+            ['name' => 'Juragan Angkutan', 'key' => 'dashboard.juragan-angkutan', 'icon' => 1, 'children' => [
+                ['name' => 'Registrasi Juragan Angkutan', 'key' => 'dashboard.juragan-angkutan.regist', 'icon' => 3],
+                ['name' => 'Daftar Angkutan', 'key' => 'dashboard.juragan-angkutan.list', 'icon' => 2]
+            ]],
+            // ['name' => 'Juragan Angkutan', 'key' => 'dashboard.juragan-angkutan', 'icon' => 2],
             ['name' => 'Juragan Alat Berat', 'key' => 'dashboard.juragan-alatberat', 'icon' => 2]
         ];
 

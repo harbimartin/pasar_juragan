@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class WarehouseProvider extends Model {
     use HasFactory;
-    protected $table = "t_warehouse_provider_tab";
+    protected $table = "t_provider_tab";
     /**
      * The attributes that are mass assignable.
      *
@@ -29,6 +29,6 @@ class WarehouseProvider extends Model {
     }
 
     public function log() {
-        return $this->hasMany(WarehouseProviderLog::class, 't_warehouse_provider_id', 'id');
+        return $this->hasMany(WarehouseProviderLog::class, 't_provider_id', 'id');
     }
 }

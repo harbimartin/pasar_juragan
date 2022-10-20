@@ -12,6 +12,8 @@ use App\Http\Controllers\Auth\AuthAdminController;
 use App\Http\Controllers\Auth\AuthUserController;
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\JuraganAlatBeratController;
+use App\Http\Controllers\Dashboard\JuraganAngkutan\JuraganAngkutanListController;
+use App\Http\Controllers\Dashboard\JuraganAngkutan\JuraganAngkutanRegistController;
 use App\Http\Controllers\Dashboard\JuraganAngkutanController;
 use App\Http\Controllers\Dashboard\JuraganBarangController;
 use App\Http\Controllers\Dashboard\JuraganGudang\JuraganGudangController;
@@ -74,7 +76,15 @@ Route::group([
     });
     Route::resource('/juragan-gudang', JuraganGudangController::class)->name('index', 'juragan-gudang');
 
-    Route::resource('/angkutan', JuraganAngkutanController::class)->name('index', 'juragan-angkutan');
+    Route::group([
+        'prefix' => 'juragan-angkutan',
+        'as' => 'juragan-angkutan.',
+    ], function () {
+        Route::resource('/regist', JuraganAngkutanRegistController::class)->name('index', 'regist');
+        Route::resource('/list', JuraganAngkutanListController::class)->name('index', 'list');
+    });
+    Route::resource('/juragan-angkutan', JuraganAngkutanController::class)->name('index', 'juragan-angkutan');
+
     Route::resource('/alatberat', JuraganAlatBeratController::class)->name('index', 'juragan-alatberat');
     Route::resource('/profile', ProfileUserController::class)->name('index', 'user-profile');
 
