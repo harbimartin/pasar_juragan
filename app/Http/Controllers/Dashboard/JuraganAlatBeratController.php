@@ -12,7 +12,7 @@ class JuraganAlatBeratController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view('dashboard.juragan_alatberat.index');
+        return view('dashboard.juragan-alatberat.index');
     }
 
     /**

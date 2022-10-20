@@ -9,6 +9,6 @@
         ];
         $column = json_encode($column);
     @endphp
-    <x-update unique="address" :column="$column" title="Alamat Perusahaan" :data="$data" idk="id">
+    <x-update unique="service" :column="$column" title="Service Gudang" :data="$data" idk="id">
     </x-update>
 @endsection

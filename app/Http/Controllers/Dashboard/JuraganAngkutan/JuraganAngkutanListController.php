@@ -19,7 +19,7 @@ class JuraganAngkutanListController extends Controller
     {
         $company = Auth::guard('user')->user()->company;
         $data = Provider::where(['m_company_id' => $company->id, "provider_type_id" => Provider::TRANSPORT])->paginate(10);
-        return view('dashboard.juragan_angkutan.list', ['data' => $data, 'prop' => Table::tableProp($data)]);
+        return view('dashboard.juragan-angkutan.list', ['data' => $data, 'prop' => Table::tableProp($data)]);
     }
 
     /**

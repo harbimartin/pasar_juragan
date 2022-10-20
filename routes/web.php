@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\Admin\AlatBerat\AlatBeratListController;
 use App\Http\Controllers\Admin\AlatBerat\AlatBeratRegistController;
 use App\Http\Controllers\Admin\Angkutan\AngkutanListController;
@@ -12,12 +11,10 @@ use App\Http\Controllers\Auth\AuthAdminController;
 use App\Http\Controllers\Auth\AuthUserController;
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\JuraganAlatBerat\JuraganAlatBeratController;
-use App\Http\Controllers\Dashboard\JuraganAlatBerat\JuraganAlatBeratListController;
 use App\Http\Controllers\Dashboard\JuraganAlatBerat\JuraganAlatBeratRegistController;
-use App\Http\Controllers\Dashboard\JuraganAngkutan\JuraganAngkutanController;
-use App\Http\Controllers\Dashboard\JuraganAngkutan\JuraganAngkutanListController;
 use App\Http\Controllers\Dashboard\JuraganAngkutan\JuraganAngkutanRegistController;
 use App\Http\Controllers\Dashboard\JuraganBarangController;
+use App\Http\Controllers\Dashboard\JuraganGudang\JuraganGudangContactController;
 use App\Http\Controllers\Dashboard\JuraganGudang\JuraganGudangController;
 use App\Http\Controllers\Dashboard\JuraganGudang\JuraganGudangRegistController;
 use App\Http\Controllers\Dashboard\ProfileCompany\ProfileCompanyAddressController;
@@ -62,54 +59,44 @@ Route::group([
         return redirect(route('d-home'));
     });
     Route::resource('/home', HomeController::class, RouteName::setName('home'));
+    Route::resource('/profile-user', ProfileUserController::class, RouteName::setName('profile-user'));
+
     Route::group([
         'prefix' => 'juragan-barang',
         'as' => 'juragan-barang.',
     ], function () {
-        Route::resource('/regist', JuraganBarangController::class, RouteName::setName('regist'));
-        Route::resource('/list', JuraganBarangController::class, RouteName::setName('list'));
+        Route::resource('/regist', JuraganBarangRegistController::class, RouteName::setName('regist'));
     });
+    Route::resource('/juragan-barang', JuraganBarangController::class, RouteName::setName('juragan-barang'));
 
     Route::group([
         'prefix' => 'juragan-gudang',
         'as' => 'juragan-gudang',
     ], function () {
-        Route::resource('/juragan-gudang', JuraganGudangController::class, RouteName::setName(''));
         Route::resource('/regist', JuraganGudangRegistController::class, RouteName::setName('.regist'));
+        Route::resource('/contact', JuraganGudangContactController::class, RouteName::setName('.contact'));
+        Route::resource('/address', JuraganGudangAddressController::class, RouteName::setName('.address'));
+        Route::resource('/document', JuraganGudangDocumentController::class, RouteName::setName('.document'));
+        Route::resource('/service', JuraganGudangServiceController::class, RouteName::setName('.service'));
     });
+    Route::resource('/juragan-gudang', JuraganGudangController::class, RouteName::setName('juragan-gudang'));
 
     Route::group([
         'prefix' => 'juragan-angkutan',
-        'as' => 'juragan-angkutan.',
+        'as' => 'juragan-angkutan',
     ], function () {
-        Route::resource('/regist', JuraganAngkutanRegistController::class)->name('index', 'regist');
-        Route::resource('/list', JuraganAngkutanListController::class)->name('index', 'list');
+        Route::resource('/regist', JuraganAngkutanRegistController::class, RouteName::setName('.regist'));
     });
-    Route::resource('/juragan-angkutan', JuraganAngkutanController::class)->name('index', 'juragan-angkutan');
-
-     Route::group([
-        'prefix' => 'juragan-alatberat',
-        'as' => 'juragan-alatberat.',
-    ], function () {
-        Route::resource('/regist', JuraganAlatBeratRegistController::class)->name('index', 'regist');
-        Route::resource('/list', JuraganAlatBeratListController::class)->name('index', 'list');
-    });
-    Route::resource('/juragan-alatberat', JuraganAlatBeratController::class)->name('index', 'juragan-alatberat');
-
-
-    Route::resource('/profile', ProfileUserController::class)->name('index', 'user-profile');
+    Route::resource('/juragan-angkutan', JuraganAlatBeratController::class, RouteName::setName('juragan-angkutan'));
 
     Route::group([
         'prefix' => 'juragan-alatberat',
         'as' => 'juragan-alatberat',
     ], function () {
-        Route::resource('/', JuraganAlatBeratController::class, RouteName::setName(''));
-        Route::resource('/regist', JuraganAlatBeratController::class, RouteName::setName('.regist'));
+        Route::resource('/regist', JuraganAlatBeratRegistController::class, RouteName::setName('.regist'));
     });
-    Route::resource('/profile-user', ProfileUserController::class, RouteName::setName('profile-user'));
+    Route::resource('/juragan-alatberat', JuraganAlatBeratController::class, RouteName::setName('juragan-alatberat'));
 
-
-    Route::resource('profile-company', ProfileCompanyController::class, RouteName::setName('profile-company'));
     Route::group([
         'prefix' => 'profile-company',
         'as' => 'profile-company',
@@ -117,13 +104,14 @@ Route::group([
         Route::resource('/contact', ProfileCompanyContactController::class, RouteName::setName('.contact'));
         Route::resource('/address', ProfileCompanyAddressController::class, RouteName::setName('.address'));
     });
+    Route::resource('profile-company', ProfileCompanyController::class, RouteName::setName('profile-company'));
 });
 
 
 //// SECTION JURAGAN TANAH
 
 Route::group([
-    'prefix' => 'juragan_tanah',
+    'prefix' => 'juragan-tanah',
     'as' => 'admin.',
 ], function () {
     Route::resource('login', AuthAdminController::class, RouteName::setName('login'));

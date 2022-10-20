@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Dashboard\JuraganGudang;
 
-use App\Http\Controllers\Controller;
 use App\Models\BusinessCategory;
 use App\Models\Provider;
 use App\Models\ProviderLog;
@@ -11,18 +10,20 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
-class JuraganGudangRegistController extends Controller {
+class JuraganGudangRegistController extends JuraganGudangController {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        $data = Auth::guard('user')->user()->company;
         $select = [
             'business_category' => BusinessCategory::where('status', 1)->get()
         ];
-        $data = Auth::guard('user')->user()->company;
-        return view('dashboard.juragan_gudang.regist', ['data' => $data, 'select' => $select]);
+
+        return view('dashboard.juragan-gudang.regist', ['data' => $data, 'select' => $select]);
     }
 
     /**
@@ -116,7 +117,39 @@ class JuraganGudangRegistController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        //
+        switch ($request->__type) {
+            case 'update':
+                $credentials = $request->validate([
+                    'm_business_category_id' => ['required'],
+                    'provider_name' => ['required'],
+                    'provider_npwp' => ['required'],
+                    'provider_website' => ['required']
+                ]);
+                try {
+                    $company = Provider::find($id);
+                    if ($request->file_logo && $request->has('file_logo.0')) {
+                        try {
+                            $bfile = $request->file_logo[0];
+                            $filename = $company->id . '.' . date("YmdHms") . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
+                            if ($company->file_logo)
+                                unlink(storage_path('file_logo\\') . $company->file_logo);
+                            $bfile->move(storage_path('file_logo\\'), $filename);
+                            $credentials['provider_logo'] = $filename;
+                        } catch (Throwable $th) {
+                            back()->withErrors([
+                                'update' => "Ada kegagalan dalam menunggah File Lampiran. : " . $th->getMessage()
+                            ]);
+                        }
+                    }
+                    $company->update($credentials);
+                } catch (Throwable $th) {
+                    return back()->withErrors([
+                        'update' => $th->getMessage()
+                    ]);
+                }
+                break;
+        }
+        return back();
     }
 
     /**

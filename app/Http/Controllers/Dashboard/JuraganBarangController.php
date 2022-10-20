@@ -12,7 +12,7 @@ class JuraganBarangController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view('dashboard.juragan_barang.index');
+        return view('dashboard.juragan-barang.index');
     }
 
     /**

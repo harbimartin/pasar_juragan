@@ -19,7 +19,7 @@ class JuraganAlatBeratListController extends Controller
     {
         $company = Auth::guard('user')->user()->company;
         $data = Provider::where(['m_company_id' => $company->id, "provider_type_id" => Provider::HEAVY_EQUIPMENT])->paginate(10);
-        return view('dashboard.juragan_alatberat.list', ['data' => $data, 'prop' => Table::tableProp($data)]);
+        return view('dashboard.juragan-alatberat.list', ['data' => $data, 'prop' => Table::tableProp($data)]);
     }
 
     /**

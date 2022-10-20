@@ -52,7 +52,7 @@ class JuraganAlatBeratController extends Controller
         $select = [
             'business_category' => BusinessCategory::where('status', 1)->get()
         ];
-        return view('dashboard.juragan_alatberat.index', ['data' => $data, 'select' => $select, 'tab' => 'address']);
+        return view('dashboard.juragan-alatberat.index', ['data' => $data, 'select' => $select, 'tab' => 'address']);
     }
 
     /**

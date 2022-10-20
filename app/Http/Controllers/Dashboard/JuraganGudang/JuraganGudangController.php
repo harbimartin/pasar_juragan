@@ -6,12 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Helper\Table;
 use App\Models\BusinessCategory;
 use App\Models\Provider;
-use App\Models\WarehouseProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 class JuraganGudangController extends Controller {
+
+    public function base_index() {
+        $data = Auth::guard('user')->user()->company;
+        $select = [
+            'business_category' => BusinessCategory::where('status', 1)->get()
+        ];
+        return [$data, $select];
+    }
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +27,7 @@ class JuraganGudangController extends Controller {
     public function index() {
         $company = Auth::guard('user')->user()->company;
         $data = Provider::where(['m_company_id' => $company->id, 'provider_type_id' => Provider::WAREHOUSE])->paginate(10);
-        return view('dashboard.juragan_gudang.list', ['data' => $data, 'prop' => Table::tableProp($data)]);
+        return view('dashboard.juragan-gudang.list', ['data' => $data, 'prop' => Table::tableProp($data)]);
     }
 
     /**
@@ -53,7 +60,7 @@ class JuraganGudangController extends Controller {
         $select = [
             'business_category' => BusinessCategory::where('status', 1)->get()
         ];
-        return view('dashboard.juragan_gudang.index', ['data' => $data, 'select' => $select, 'tab' => 'address']);
+        return view('dashboard.juragan-gudang.index', ['data' => $data, 'select' => $select, 'tab' => 'address']);
     }
 
     /**

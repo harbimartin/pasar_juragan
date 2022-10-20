@@ -52,7 +52,7 @@ class JuraganAngkutanController extends Controller
         $select = [
             'business_category' => BusinessCategory::where('status', 1)->get()
         ];
-        return view('dashboard.juragan_angkutan.index', ['data' => $data, 'select' => $select, 'tab' => 'address']);
+        return view('dashboard.juragan-angkutan.index', ['data' => $data, 'select' => $select, 'tab' => 'address']);
     }
 
     /**

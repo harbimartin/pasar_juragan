@@ -23,7 +23,7 @@ class JuraganAngkutanRegistController extends Controller
             'business_category' => BusinessCategory::where('status', 1)->get()
         ];
         $data = Auth::guard('user')->user()->company;
-        return view('dashboard.juragan_angkutan.regist', ['data' => $data, 'select' => $select]);
+        return view('dashboard.juragan-angkutan.regist', ['data' => $data, 'select' => $select]);
     }
 
     /**
