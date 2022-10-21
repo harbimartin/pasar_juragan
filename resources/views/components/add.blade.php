@@ -114,7 +114,7 @@
                                     type="text"
                                     @isset($error['data'][$key]) value="{{ $error['data'][$key] }}"
                                     @elseif(isset($param->def)) value="{{ $param->def }}" @endisset
-                                    @elseif(isset($param->disabled)) disabled @endisset
+                                    @isset($param->disabled) disabled @endisset
                                     class="w-full h-full rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
                                 @isset($param->max)
                                     <div id="{{ $key }}_v_" class="pointer-events-none absolute top-1 right-2 h-full">
