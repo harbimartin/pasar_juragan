@@ -405,6 +405,11 @@
                         @endif
                     @break
 
+                    @case('Time')
+                        <input id="{{ $key }}" name="{{ $key }}" type="time"
+                            class="rounded border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
+                    @break
+
                     @default
                 @endswitch
                 @isset($param->text)

@@ -29,6 +29,8 @@ use App\Http\Controllers\Dashboard\ProfileCompany\ProfileCompanyAddressControlle
 use App\Http\Controllers\Dashboard\ProfileCompany\ProfileCompanyContactController;
 use App\Http\Controllers\Dashboard\ProfileCompany\ProfileCompanyController;
 use App\Http\Controllers\Dashboard\ProfileUserController;
+use App\Http\Controllers\Dashboard\Warehouse\WarehouseAddController;
+use App\Http\Controllers\Dashboard\Warehouse\WarehouseListController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ViewController;
 use App\Http\Helper\Routing;
@@ -98,6 +100,14 @@ Route::group([
         Route::resource('/regist', JuraganAngkutanRegistController::class, Routing::setName('.regist'));
     });
     Route::resource('/juragan-angkutan', JuraganAlatBeratController::class, Routing::setName('juragan-angkutan'));
+
+     Route::group([
+        'prefix' => 'warehouse',
+        'as' => 'warehouse',
+    ], function () {
+        Route::resource('/add', WarehouseAddController::class, Routing::setName('.add'));
+    });
+    Route::resource('/warehouse', WarehouseListController::class, Routing::setName('warehouse'));
 
     Route::group([
         'prefix' => 'juragan-alatberat',
