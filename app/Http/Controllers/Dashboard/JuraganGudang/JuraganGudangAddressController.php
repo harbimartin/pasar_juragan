@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard\JuraganGudang;
 
+use App\Http\Controllers\Controller;
 use App\Models\Provider;
 use App\Models\ProviderLog;
 use Illuminate\Http\Request;
@@ -9,17 +10,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
-class JuraganGudangAddressController extends JuraganGudangController {
+class JuraganGudangAddressController extends Controller {
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        [$data, $select] = $this->base_index();
+    public function index($gudang) {
+        [$data, $select] = JuraganGudangController::base_index($gudang);
 
-        return view('dashboard.juragan-gudang.address.index', ['data' => $data, 'select' => $select]);
+        return view('dashboard.provider.address.index', ['data' => $data, 'select' => $select]);
     }
 
     /**

@@ -23,7 +23,7 @@ class JuraganGudangRegistController extends JuraganGudangController {
             'business_category' => BusinessCategory::where('status', 1)->get()
         ];
 
-        return view('dashboard.juragan-gudang.regist', ['data' => $data, 'select' => $select]);
+        return view('dashboard.provider.regist', ['data' => $data, 'select' => $select]);
     }
 
     /**

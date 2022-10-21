@@ -231,7 +231,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Menu' => App\Http\Helper\Menu::class,
-        'MenuAdmin' => App\Http\Helper\MenuAdmin::class
+        'MenuAdmin' => App\Http\Helper\MenuAdmin::class,
+        'Routing' => App\Http\Helper\Routing::class
     ],
 
 ];

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard\JuraganGudang;
+namespace App\Http\Controllers\Dashboard\JuraganAlatBerat;
 
 use App\Http\Controllers\Controller;
-use App\Models\ContactType;
+use App\Models\BusinessCategory;
 use App\Models\Provider;
 use App\Models\ProviderLog;
 use Illuminate\Http\Request;
@@ -11,18 +11,20 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
-class JuraganGudangContactController extends Controller {
-
+class JuraganAlatBeratRegistController extends Controller
+{
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($gudang) {
-        [$data, $select] = JuraganGudangController::base_index($gudang);
-        $select['contact_type'] = ContactType::where('status', 1)->get();
-
-        return view('dashboard.provider.contact.index', ['data' => $data, 'select' => $select]);
+    public function index()
+    {
+        $select = [
+            'business_category' => BusinessCategory::where('status', 1)->get()
+        ];
+        $data = Auth::guard('user')->user()->company;
+        return view('dashboard.juragan-alatberat.regist', ['data' => $data, 'select' => $select]);
     }
 
     /**
@@ -30,7 +32,8 @@ class JuraganGudangContactController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         //
     }
 
@@ -40,8 +43,8 @@ class JuraganGudangContactController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        // return $request->toArray();
+    public function store(Request $request)
+    {
         $credentials = $request->validate([
             'm_business_category_id' => ['required'],
             'provider_name' => ['required'],
@@ -69,7 +72,7 @@ class JuraganGudangContactController extends Controller {
                 $credentials['provider_logo'] = $request->comp_logo;
             }
             $credentials['status'] = 'Draft';
-            $credentials['provider_type_id'] = Provider::WAREHOUSE;
+            $credentials['provider_type_id'] = Provider::HEAVY_EQUIPMENT;
 
             $wh = $company->warehouse_provider()->create($credentials);
             $wh->log()->create([
@@ -94,7 +97,8 @@ class JuraganGudangContactController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
+    public function show($id)
+    {
         //
     }
 
@@ -104,7 +108,8 @@ class JuraganGudangContactController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
+    public function edit($id)
+    {
         //
     }
 
@@ -115,40 +120,9 @@ class JuraganGudangContactController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
-        switch ($request->__type) {
-            case 'update':
-                $credentials = $request->validate([
-                    'm_business_category_id' => ['required'],
-                    'provider_name' => ['required'],
-                    'provider_npwp' => ['required'],
-                    'provider_website' => ['required']
-                ]);
-                try {
-                    $company = Provider::find($id);
-                    if ($request->file_logo && $request->has('file_logo.0')) {
-                        try {
-                            $bfile = $request->file_logo[0];
-                            $filename = $company->id . '.' . date("YmdHms") . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
-                            if ($company->file_logo)
-                                unlink(storage_path('file_logo\\') . $company->file_logo);
-                            $bfile->move(storage_path('file_logo\\'), $filename);
-                            $credentials['provider_logo'] = $filename;
-                        } catch (Throwable $th) {
-                            back()->withErrors([
-                                'update' => "Ada kegagalan dalam menunggah File Lampiran. : " . $th->getMessage()
-                            ]);
-                        }
-                    }
-                    $company->update($credentials);
-                } catch (Throwable $th) {
-                    return back()->withErrors([
-                        'update' => $th->getMessage()
-                    ]);
-                }
-                break;
-        }
-        return back();
+    public function update(Request $request, $id)
+    {
+        //
     }
 
     /**
@@ -157,7 +131,8 @@ class JuraganGudangContactController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         //
     }
 }

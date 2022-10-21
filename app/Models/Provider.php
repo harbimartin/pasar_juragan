@@ -35,4 +35,18 @@ class Provider extends Model {
     public function log() {
         return $this->hasMany(ProviderLog::class, 't_provider_id', 'id');
     }
+
+
+    public function address() {
+        return $this->hasMany(ProviderAddress::class, 't_provider_id', 'id');
+    }
+    public function contact() {
+        return $this->hasMany(ProviderContact::class, 't_provider_id', 'id');
+    }
+    public function document() {
+        return $this->hasMany(ProviderDocument::class, 't_provider_id', 'id');
+    }
+    public function service() {
+        return $this->hasMany(ProviderService::class, 't_provider_id', 'id');
+    }
 }

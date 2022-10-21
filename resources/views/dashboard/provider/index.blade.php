@@ -14,23 +14,22 @@
     <x-update unique="juragan-gudang" :column="$column" title="Registrasi Juragan Gudang" :data="$data" burl="none"
         route="dashboard.juragan-gudang" :select="$select" idk="id">
     </x-update>
-
     <ul class="list-reset flex border-b px-2 md:px-6 mt-3 md:mt-5 text-xs md:text-base">
         <li class="mr-1">
             <a class="rounded-md bg-white inline-block py-2 px-4 font-semibold {{ $tab == 'address' ? 'bg-blue-400 text-white' : '' }}"
-                href="{{ route('dashboard.juragan-gudang.address') }}">Address</a>
+                href="{{ route('dashboard.juragan-gudang.address', $data->id) }}">Address</a>
         </li>
         <li class="mr-1">
             <a class="rounded-md bg-white inline-block py-2 px-4 font-semibold {{ $tab == 'contact' ? 'bg-blue-400 text-white' : '' }}"
-                href="{{ route('dashboard.juragan-gudang.contact') }}">Contact</a>
+                href="{{ route('dashboard.juragan-gudang.contact', $data->id) }}">Contact</a>
         </li>
         <li class="mr-1">
-            <a class="rounded-md bg-white inline-block py-2 px-4 font-semibold {{ $tab == 'contact' ? 'bg-blue-400 text-white' : '' }}"
-                href="{{ route('dashboard.juragan-gudang.contact') }}">Document</a>
+            <a class="rounded-md bg-white inline-block py-2 px-4 font-semibold {{ $tab == 'document' ? 'bg-blue-400 text-white' : '' }}"
+                href="{{ route('dashboard.juragan-gudang.document', $data->id) }}">Document</a>
         </li>
         <li class="mr-1">
-            <a class="rounded-md bg-white inline-block py-2 px-4 font-semibold {{ $tab == 'contact' ? 'bg-blue-400 text-white' : '' }}"
-                href="{{ route('dashboard.juragan-gudang.contact') }}">Service</a>
+            <a class="rounded-md bg-white inline-block py-2 px-4 font-semibold {{ $tab == 'service' ? 'bg-blue-400 text-white' : '' }}"
+                href="{{ route('dashboard.juragan-gudang.service', $data->id) }}">Service</a>
         </li>
     </ul>
 

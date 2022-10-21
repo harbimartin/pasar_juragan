@@ -143,28 +143,16 @@
             @endif
         {{-- </div> --}}
         @break
+    @case('Show')
+        <a href="{{Routing::getShowWithNextID($item[$idk])}}}}" class="text-indigo-600 hover:text-indigo-900">
+            View
+        </a>
+        @break
     @case('Edit')
-        <a href="{{route($param->route, $item[$idk])}}" class="text-indigo-600 hover:text-indigo-900">
+        <a href="{{Routing::getUpdateWithNextID($item[$idk])}}" class="text-indigo-600 hover:text-indigo-900">
+        {{-- <a href="{{request()->url().'/'.$item['id'] . '/edit'}}" class="text-indigo-600 hover:text-indigo-900"> --}}
             Edit
         </a>
-    {{-- <div> --}}
-        {{-- <?php
-            $val = "Edit";
-            if (isset($param->switch))
-                $val = $param->then[($item[$param->switch[0]] != $param->switch[1]) == $param->switch[2]];
-            if (isset($param->txt))
-                $val = $param->txt;
-        ?> --}}
-        {{-- @isset($param->header)
-            <a href="{{$param->header[0].'?'.$param->header[1].'='.$item[$idk].(sizeof($param->header)==3? $param->header[2] : '')}}" class="text-indigo-600 hover:text-indigo-900">
-                {{$val}}
-            </a>
-        @else
-            <a href="{{Request::url().'/'.$item[$idk]}}" class="text-indigo-600 hover:text-indigo-900">
-                {{$val}}
-            </a> --}}
-    {{-- </div>
-        @endisset --}}
         @break
     @case('Delete')
         <form action="{{Request::url().'/'.$item[(isset($param->id) ? $param->id : 'id')]}}" method="POST">
@@ -186,7 +174,7 @@
         </form>
         @break
     @case('Toggle')
-        <form action="{{route(request()->route()->getName() . '.update', $item['id'])}}" method="POST">
+        <form action="{{request()->url().'/'.$item['id']}}" method="POST">
             @csrf
             @method('PUT')
             <input hidden name="_last_" value="{{request()->fullUrl()}}">
