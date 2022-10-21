@@ -11,7 +11,7 @@
         ];
         $column = json_encode($column);
     @endphp
-    <x-update unique="profile_company" :column="$column" title="Profil Perusahaan" :data="$data" burl="none"
+    <x-update unique="profile_company" :column="$column" title="Profil Perusahaan" :data="$data" burl="none" route="dashboard.juragan-alatberat"
         :select="$select" idk="id">
     </x-update>
 

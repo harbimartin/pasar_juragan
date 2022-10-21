@@ -1,32 +1,50 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard\JuraganAngkutan;
+namespace App\Http\Controllers\Dashboard\Warehouse;
 
 use App\Http\Controllers\Controller;
-use App\Http\Helper\Table;
-use App\Models\BusinessCategory;
-use App\Models\Provider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
-class JuraganAngkutanController extends Controller
+class WarehouseAddController extends Controller
 {
-    public function base_index() {
-        $data = Auth::guard('user')->user()->company;
-        $select = [
-            'business_category' => BusinessCategory::where('status', 1)->get()
-        ];
-        return [$data, $select];
-    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        $company = Auth::guard('user')->user()->company;
-        $data = Provider::where(['m_company_id' => $company->id, 'provider_type_id' => Provider::TRANSPORT])->paginate(10);
-        return view('dashboard.juragan-angkutan.list', ['data' => $data, 'prop' => Table::tableProp($data)]);
+    public function index()
+    {
+        $call_province = Http::get("https://dev.farizdotid.com/api/daerahindonesia/provinsi");
+        $call_city = Http::get("https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=36");
+        $days = [
+            [ 'nama' => 'Senin','id' => 1 ],
+            [ 'nama' => 'Selasa','id' => 2 ],
+            [ 'nama' => 'Rabu' ,'id' => 3],
+            [ 'nama' => 'Kamis' ,'id' => 4],
+            [ 'nama' => 'Jumat' ,'id' => 5],
+            [ 'nama' => 'Sabtu' ,'id' => 6],
+            [ 'nama' => 'Minggu','id' => 7 ],
+        ];
+        $warehouse_type = [
+            ['nama' => 'Terbuka','id' => 1],
+            ['nama' => 'Tertutup','id' => 2],
+        ];
+        $warehouse_func = [
+            ['nama' => 'TPS','id' => 1],
+            ['nama' => 'PLB','id' => 2],
+            ['nama' => 'tulisan tidak terbaca','id' => 3],
+        ];
+        $select = [
+            'province' => $call_province->json()["provinsi"],
+            'city' => $call_city->json()["kota_kabupaten"],
+            'days' => $days,
+            'warehouse_type' => $warehouse_type,
+            'warehouse_func' => $warehouse_func
+        ];
+        // return $select;
+        return view('dashboard.warehouse.add', ['select' => $select]);
     }
 
     /**
@@ -58,11 +76,7 @@ class JuraganAngkutanController extends Controller
      */
     public function show($id)
     {
-        $data = Provider::find($id);
-        $select = [
-            'business_category' => BusinessCategory::where('status', 1)->get()
-        ];
-        return view('dashboard.juragan-angkutan.index', ['data' => $data, 'select' => $select, 'tab' => 'address']);
+        //
     }
 
     /**

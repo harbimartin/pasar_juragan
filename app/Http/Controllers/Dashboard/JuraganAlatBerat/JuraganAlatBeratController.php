@@ -3,20 +3,30 @@
 namespace App\Http\Controllers\Dashboard\JuraganAlatBerat;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helper\Table;
 use App\Models\BusinessCategory;
 use App\Models\Provider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class JuraganAlatBeratController extends Controller
 {
+    public function base_index() {
+        $data = Auth::guard('user')->user()->company;
+        $select = [
+            'business_category' => BusinessCategory::where('status', 1)->get()
+        ];
+        return [$data, $select];
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+        $company = Auth::guard('user')->user()->company;
+        $data = Provider::where(['m_company_id' => $company->id, 'provider_type_id' => Provider::HEAVY_EQUIPMENT])->paginate(10);
+        return view('dashboard.juragan-alatberat.list', ['data' => $data, 'prop' => Table::tableProp($data)]);
     }
 
     /**
