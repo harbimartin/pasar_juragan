@@ -12,7 +12,12 @@ use App\Http\Controllers\Auth\AuthUserController;
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\JuraganAlatBerat\JuraganAlatBeratController;
 use App\Http\Controllers\Dashboard\JuraganAlatBerat\JuraganAlatBeratRegistController;
+use App\Http\Controllers\Dashboard\JuraganAngkutan\JuraganAngkutanAddressController;
+use App\Http\Controllers\Dashboard\JuraganAngkutan\JuraganAngkutanContactController;
+use App\Http\Controllers\Dashboard\JuraganAngkutan\JuraganAngkutanController;
+use App\Http\Controllers\Dashboard\JuraganAngkutan\JuraganAngkutanDocumentController;
 use App\Http\Controllers\Dashboard\JuraganAngkutan\JuraganAngkutanRegistController;
+use App\Http\Controllers\Dashboard\JuraganAngkutan\JuraganAngkutanServiceController;
 use App\Http\Controllers\Dashboard\JuraganBarangController;
 use App\Http\Controllers\Dashboard\JuraganGudang\JuraganGudangContactController;
 use App\Http\Controllers\Dashboard\JuraganGudang\JuraganGudangController;
@@ -86,8 +91,12 @@ Route::group([
         'as' => 'juragan-angkutan',
     ], function () {
         Route::resource('/regist', JuraganAngkutanRegistController::class, RouteName::setName('.regist'));
+        Route::resource('/contact', JuraganAngkutanContactController::class, RouteName::setName('.contact'));
+        Route::resource('/address', JuraganAngkutanAddressController::class, RouteName::setName('.address'));
+        Route::resource('/document', JuraganAngkutanDocumentController::class, RouteName::setName('.document'));
+        Route::resource('/service', JuraganAngkutanServiceController::class, RouteName::setName('.service'));
     });
-    Route::resource('/juragan-angkutan', JuraganAlatBeratController::class, RouteName::setName('juragan-angkutan'));
+    Route::resource('/juragan-angkutan', JuraganAngkutanController::class, RouteName::setName('juragan-angkutan'));
 
     Route::group([
         'prefix' => 'juragan-alatberat',
