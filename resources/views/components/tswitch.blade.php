@@ -149,7 +149,7 @@
         </a>
         @break
     @case('Edit')
-        <a href="{{Routing::getUpdateWithNextID($item[$idk])}}" class="text-indigo-600 hover:text-indigo-900">
+        <a href="{{Routing::getEditWithNextID($item[$idk])}}" class="text-indigo-600 hover:text-indigo-900">
         {{-- <a href="{{request()->url().'/'.$item['id'] . '/edit'}}" class="text-indigo-600 hover:text-indigo-900"> --}}
             Edit
         </a>

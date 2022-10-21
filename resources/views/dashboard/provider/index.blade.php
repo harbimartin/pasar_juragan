@@ -6,7 +6,7 @@
             'provider_name' => ['name' => 'Nama', 'type' => 'String', 'full' => true],
             'provider_npwp' => ['name' => 'NPWP', 'type' => 'String', 'full' => true],
             'provider_website' => ['name' => 'Website', 'type' => 'String', 'full' => true],
-            'file_logo' => ['name' => 'Upload Logo', 'type' => 'Upload', 'accept' => 'image/*', 'key' => 'file', 'folder' => 'comp_logo', 'mono' => true, 'full' => true],
+            'file_logo' => ['name' => 'Upload Logo', 'type' => 'Upload', 'accept' => 'image/*', 'key' => 'file', 'folder' => 'comp_logo', 'anonymous'=>true, 'mono' => true, 'full' => true],
             'provider_logo' => ['name' => 'Logo', 'type' => 'Image', 'folder' => 'file_logo'],
         ];
         $column = json_encode($column);

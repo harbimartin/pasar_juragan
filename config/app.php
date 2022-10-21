@@ -232,7 +232,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Menu' => App\Http\Helper\Menu::class,
         'MenuAdmin' => App\Http\Helper\MenuAdmin::class,
-        'Routing' => App\Http\Helper\Routing::class
+        'Routing' => App\Http\Helper\Routing::class,
+        'VueControl' => App\Http\Helper\VueControl::class
     ],
 
 ];

@@ -105,7 +105,10 @@
 
                         @case('String')
                             <div class="col-end-7 col-start-1 md:col-start-2 relative block p-0">
-                                <input id="{{ $key }}"
+                                <input
+                                    id="{{ $key }}"
+                                    @isset ($param->disabled) disabled @endisset
+                                    @isset ($param->placeholder) placeholder="{{$param->placeholder}}" @endisset
                                     @isset($param->max)
                                         maxlength="{{ $param->max }}"
                                         v-on:input="refMax($event,'{{ $key }}_v_',{{ $param->max }})"
@@ -114,7 +117,8 @@
                                     type="text"
                                     @isset($error['data'][$key]) value="{{ $error['data'][$key] }}"
                                     @elseif(isset($param->def)) value="{{ $param->def }}" @endisset
-                                    @isset($param->disabled) disabled @endisset
+                                    @isset ($param->disabled) disabled @endisset
+                                    @isset ($param->placeholder) placehilder="{{$param->placeholder}}" @endisset
                                     class="w-full h-full rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
                                 @isset($param->max)
                                     <div id="{{ $key }}_v_" class="pointer-events-none absolute top-1 right-2 h-full">
@@ -322,19 +326,22 @@
                         @break
 
                         @case('Upload')
+                            @php
+                                VueControl::Mono()->prepareFile($key);
+                            @endphp
                             <div class="col-end-7 col-start-1 md:col-start-2 md:flex">
                                 <div class="my-1">
                                     <input class="hidden" type="file" id="{{ $key }}"
                                         name="{{ $key }}[]" accept="{{ $param->accept }}"
-                                        v-on:change="uploadChange('{{ $param->key }}',$event, {{ isset($param->mono) ? 'false' : 'true' }})"
+                                        v-on:change="uploadChange('{{ $key }}',$event, {{ isset($param->mono) ? 'false' : 'true' }})"
                                         @isset($param->mono)@else multiple @endisset>
                                     <label
                                         class="bg-blue-400 hover:bg-blue-600 text-white cursor-pointer rounded border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition"
                                         for="{{ $key }}">Upload</label>
                                 </div>
-                                <div v-if="files['{{ $param->key }}'] && files['{{ $param->key }}'].length>0"
+                                <div v-if="files['{{ $key }}'] && files['{{ $key }}'].length>0"
                                     class="md:ml-2 w-full">
-                                    <div v-for="(file, index) in files['{{ $param->key }}']" class="flex w-full py-0.5">
+                                    <div v-for="(file, index) in files['{{ $key }}']" class="flex w-full py-0.5">
                                         <svg xmlns="http://www.w3.org/2000/svg" v-bind:class="file.delete ? 'text-red-800':''"
                                             width="25" height="25" fill="currentColor" class="my-auto mr-0.5"
                                             viewBox="0 0 16 16">
@@ -347,7 +354,7 @@
                                             v-bind:class="file.delete ? 'line-through text-red-800 bg-red-50':''"
                                             class="w-full py-0.5 mr-2 rounded border col-end-7 col-start-1 md:col-start-2 px-2 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition"
                                             type="text" class="border" v-model="file.name">
-                                        <label v-if="file.delete" v-on:click="deleteFile('{{ $param->key }}',index)"
+                                        <label v-if="file.delete" v-on:click="deleteFile('{{ $key }}',index)"
                                             class="w-24 inline-flex bg-yellow-500 hover:bg-yellow-600 text-white cursor-pointer rounded border px-2 focus:shadow-inner focus:ring-1 focus:ring-red-300 transition">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-auto my-auto mr-1"
                                                 width="14" height="14" fill="#fff" viewBox="0 0 16 16">
@@ -358,7 +365,7 @@
                                             </svg>
                                             <span class="text-sm my-auto mr-auto font-semibold">Undo</span>
                                         </label>
-                                        <label v-else v-on:click="deleteFile('{{ $param->key }}',index)"
+                                        <label v-else v-on:click="deleteFile('{{ $key }}',index)"
                                             class="w-24 inline-flex bg-red-500 hover:bg-red-600 text-white cursor-pointer rounded border px-2 focus:shadow-inner focus:ring-1 focus:ring-red-300 transition">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-auto my-auto mr-1"
                                                 width="14" height="14" fill="#fff" viewBox="0 0 16 16">

@@ -40,7 +40,7 @@
         </a>
     @endif
     <form class="container md:rounded-lg shadow my-1 md:my-4 py-2 md:py-4 px-3 md:px-6 bg-white text-xs md:text-base"
-        action="{{ route(($route? $route: substr(request()->route()->getName(),0,-5)) . '.update',$id) }}"
+        action="{{Routing::getUpdateWithID($id)}}"
         method="POST" enctype="multipart/form-data" autocomplete="new-password">
         @csrf
         @method('PUT')
@@ -120,13 +120,17 @@
 
                 @case('String')
                     <div class="col-end-7 col-start-1 md:col-start-2 relative block p-0">
-                        <input @if ($detail || isset($param->readonly)) readonly @endif
-                            @if (isset($param->lock)) disabled @endif id="{{ $key }}"
+                        <input
+                            id="{{ $key }}"
+                            @if ($detail || isset($param->readonly)) readonly @endif
+                            @isset ($param->disabled) disabled @endisset
+                            @isset ($param->placeholder) placeholder="{{$param->placeholder}}" @endisset
                             @isset($param->max)
                                         maxlength="{{ $param->max }}"
                                         v-on:input="refMax($event,'{{ $key }}_v_',{{ $param->max }})"
                                     @endisset
-                            name="{{ $key }}" value="{{ $datas[$param->by] }}" type="text"
+                            name="{{ $key }}" value="{{ $datas[$param->by] }}"
+                            type="text"
                             class="w-full h-full rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->iclass){{ $param->iclass }}@endisset" />
                         @isset($param->max)
                             <div id="{{ $key }}_v_" class="pointer-events-none absolute top-1 right-2 h-full">
@@ -366,18 +370,19 @@
                 @break
 
                 @case('Upload')
-                    <?php
-                    $readonly = $detail || isset($param->off);
-                    if (isset($param->force)) {
-                        $readonly = !$param->force;
-                    }
-                    ?>
+                    @php
+                        $readonly = $detail || isset($param->off);
+                        if (isset($param->force)) {
+                            $readonly = !$param->force;
+                        }
+                        VueControl::Mono()->prepareFile($key, isset($param->anonymous) ? [] : VueControl::FileMonoByName($datas[$key]));
+                    @endphp
                     <div class="col-end-7 col-start-1 md:col-start-2 flex">
                         @if (!$readonly)
                             <div class="my-1 mr-1">
                                 <input class="hidden" type="file" id="{{ $key }}" name="{{ $key }}[]"
                                     accept="{{ $param->accept }}"
-                                    v-on:change="uploadChange('{{ $param->key }}',$event, {{ isset($param->mono) ? 'false' : 'true' }})"
+                                    v-on:change="uploadChange('{{ $key }}',$event, {{ isset($param->mono) ? 'false' : 'true' }})"
                                     @isset($param->mono)@else multiple @endisset>
                                 <label
                                     class="bg-blue-400 hover:bg-blue-600 text-white cursor-pointer rounded border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition"
@@ -385,9 +390,9 @@
                             </div>
                         @endif
                         <div class="loader w-full m-auto" v-bind:hidden="true"></div>
-                        <div v-if="files['{{ $param->key }}'] && files['{{ $param->key }}'].length>0" class="w-full"
+                        <div v-if="files['{{ $key }}'] && files['{{ $key }}'].length>0" class="w-full"
                             v-bind:class="{block:true}" hidden>
-                            <div v-for="(file, index) in files['{{ $param->key }}']" class="flex w-full py-0.5">
+                            <div v-for="(file, index) in files['{{ $key }}']" class="flex w-full py-0.5">
                                 <svg xmlns="http://www.w3.org/2000/svg" v-bind:class="file.delete ? 'text-red-800':''"
                                     width="25" height="25" fill="currentColor" class="my-auto mr-0.5"
                                     viewBox="0 0 16 16">
@@ -416,7 +421,7 @@
                                     </svg>
                                     <span class="text-sm my-auto mr-auto font-semibold hidden md:block ml-1">Download</span>
                                 </label>
-                                <div v-if="file.delete" v-on:click="deleteFile('{{ $param->key }}',index)"
+                                <div v-if="file.delete" v-on:click="deleteFile('{{ $key }}',index)"
                                     class="w-24 inline-flex bg-yellow-500 hover:bg-yellow-600 text-white cursor-pointer rounded border px-2 focus:shadow-inner focus:ring-1 focus:ring-red-300 transition">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="ml-auto my-auto mr-1" width="14"
                                         height="14" fill="#fff" viewBox="0 0 16 16">
@@ -430,7 +435,7 @@
                                 </div>
 
                                 @if (!$readonly)
-                                    <label v-else v-on:click="deleteFile('{{ $param->key }}',index)"
+                                    <label v-else v-on:click="deleteFile('{{ $key }}',index)"
                                         class="w-24 inline-flex bg-red-500 hover:bg-red-600 text-white cursor-pointer rounded border px-2 focus:shadow-inner focus:ring-1 focus:ring-red-300 transition">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="ml-auto my-auto mr-1" width="14"
                                             height="14" fill="#fff" viewBox="0 0 16 16">

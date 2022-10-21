@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class JuraganGudangAddressController extends Controller {
+    const baseRoute = 'dashboard.provider.address';
+    public function getMySelect(){
+        return [];
+    }
 
     /**
      * Display a listing of the resource.
@@ -21,7 +25,10 @@ class JuraganGudangAddressController extends Controller {
     public function index($gudang) {
         [$data, $select] = JuraganGudangController::base_index($gudang);
 
-        return view('dashboard.provider.address.index', ['data' => $data, 'select' => $select]);
+        return view(self::baseRoute . '.index', [
+            'data' => $data,
+            'select' => array_merge($select, $this->getMySelect())
+        ]);
     }
 
     /**
@@ -68,8 +75,8 @@ class JuraganGudangAddressController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
-        //
+    public function edit($provider, $id) {
+        return view(self::baseRoute . '.edit', ['data' => ProviderAddress::find($id), 'select'=>$this->getMySelect()]);
     }
 
     /**
@@ -79,7 +86,7 @@ class JuraganGudangAddressController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $juragan, $id) {
         switch ($request->__type) {
             case 'toggle':
                 ProviderAddress::find($id)->update(['status' => $request->toggle]);

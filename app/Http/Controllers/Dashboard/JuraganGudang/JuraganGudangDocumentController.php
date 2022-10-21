@@ -3,14 +3,19 @@
 namespace App\Http\Controllers\Dashboard\JuraganGudang;
 
 use App\Http\Controllers\Controller;
+use App\Models\Document;
 use App\Models\Provider;
-use App\Models\ProviderLog;
+use App\Models\ProviderDocument;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class JuraganGudangDocumentController extends Controller {
+    const baseRoute = 'dashboard.provider.document';
+    public function getMySelect(){
+        return [
+            'document' => Document::where('status', 1)->get()
+        ];
+    }
 
     /**
      * Display a listing of the resource.
@@ -20,7 +25,10 @@ class JuraganGudangDocumentController extends Controller {
     public function index($gudang) {
         [$data, $select] = JuraganGudangController::base_index($gudang);
 
-        return view('dashboard.provider.document.index', ['data' => $data, 'select' => $select]);
+        return view(self::baseRoute . '.index', [
+            'data' => $data,
+            'select' => array_merge($select, $this->getMySelect())
+        ]);
     }
 
     /**
@@ -38,51 +46,41 @@ class JuraganGudangDocumentController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        // return $request->toArray();
+    public function store(Request $request, $provider) {
         $credentials = $request->validate([
-            'm_business_category_id' => ['required'],
-            'provider_name' => ['required'],
-            'provider_npwp' => ['required'],
-            'provider_website' => ['required']
+            'm_doc_id' => ['required'],
+            'doc_no' => ['required'],
+            'doc_date' => ['required'],
+            'doc_expired' => ['required']
         ]);
-        try {
-            DB::beginTransaction();
-            $user = Auth::guard('user')->user();
-            $company = $user->company;
-            if ($request->file_logo && $request->has('file_logo.0')) {
-                try {
-                    $bfile = $request->file_logo[0];
-                    $filename = $company->id . '.' . date("YmdHms") . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
-                    if ($company->file_logo)
-                        unlink(storage_path('file_logo\\') . $company->file_logo);
-                    $bfile->move(storage_path('file_logo\\'), $filename);
-                    $credentials['provider_logo'] = $filename;
-                } catch (Throwable $th) {
-                    back()->withErrors([
-                        'add' => "Ada kegagalan dalam menunggah File Lampiran. : " . $th->getMessage()
-                    ]);
-                }
-            } else {
-                $credentials['provider_logo'] = $request->comp_logo;
+        $provider = Provider::find($provider);
+        if ($request->doc_attachment && $request->has('doc_attachment.0')) {
+            try {
+                $bfile = $request->doc_attachment[0];
+                $filename = 'DOC_'. $provider->id . '_' . date("YmdHms"). '.' . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
+                $bfile->move(storage_path('file_provider\\'), $filename);
+                $credentials['doc_attachment'] = $filename;
+            } catch (Throwable $th) {
+                back()->withErrors([
+                    'update' => "Ada kegagalan dalam menunggah Lampiran Dokumen. : " . $th->getMessage()
+                ]);
             }
-            $credentials['status'] = 'Draft';
-            $credentials['provider_type_id'] = Provider::WAREHOUSE;
-
-            $wh = $company->warehouse_provider()->create($credentials);
-            $wh->log()->create([
-                'user_id' => $user->id,
-                'user_type' => ProviderLog::PROVIDER,
-                'status' => 'Draft'
-            ]);
-
-            DB::commit();
-        } catch (Throwable $th) {
-            DB::rollBack();
-            back()->withErrors([
-                'add' => $th->getMessage()
-            ]);
         }
+        // return $request->toArray();
+        // if ($request->_delfile_) {
+        //     $company->update(['lampiran_company' => null]);
+        // }
+        // if ($request->fname) {
+        //     back()->withErrors([
+        //         'update' => "Mohon maaf, sistem saat ini belum dapat mengubah nama File."
+        //     ]);
+        // }
+        // if ($request->__type == 'update')
+        //     $company->update($request->toArray());
+        // else
+        //     $company->update(['comp_logo' => $filename]);
+        $credentials['status'] = 1;
+        $provider->document()->create($credentials);
         return back();
     }
 
@@ -102,8 +100,8 @@ class JuraganGudangDocumentController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
-        //
+    public function edit($provider, $id) {
+        return view(self::baseRoute . '.edit', ['data' => ProviderDocument::find($id), 'select'=>$this->getMySelect()]);
     }
 
     /**
@@ -113,37 +111,20 @@ class JuraganGudangDocumentController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $juragan, $id) {
         switch ($request->__type) {
+            case 'toggle':
+                ProviderDocument::find($id)->update(['status' => $request->toggle]);
+                break;
             case 'update':
                 $credentials = $request->validate([
-                    'm_business_category_id' => ['required'],
-                    'provider_name' => ['required'],
-                    'provider_npwp' => ['required'],
-                    'provider_website' => ['required']
+                    'm_doc_id' => ['required'],
+                    'doc_no' => ['required'],
+                    'doc_date' => ['required'],
+                    'doc_expired' => ['required'],
+                    'doc_attachment' => ['required']
                 ]);
-                try {
-                    $company = Provider::find($id);
-                    if ($request->file_logo && $request->has('file_logo.0')) {
-                        try {
-                            $bfile = $request->file_logo[0];
-                            $filename = $company->id . '.' . date("YmdHms") . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
-                            if ($company->file_logo)
-                                unlink(storage_path('file_logo\\') . $company->file_logo);
-                            $bfile->move(storage_path('file_logo\\'), $filename);
-                            $credentials['provider_logo'] = $filename;
-                        } catch (Throwable $th) {
-                            back()->withErrors([
-                                'update' => "Ada kegagalan dalam menunggah File Lampiran. : " . $th->getMessage()
-                            ]);
-                        }
-                    }
-                    $company->update($credentials);
-                } catch (Throwable $th) {
-                    return back()->withErrors([
-                        'update' => $th->getMessage()
-                    ]);
-                }
+                ProviderDocument::find($id)->update($credentials);
                 break;
         }
         return back();

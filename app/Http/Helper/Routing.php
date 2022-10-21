@@ -31,14 +31,19 @@ class Routing {
         ];
     }
 
-    public static function getUpdateWithNextID($next_id) {
+    public static function getEditWithNextID($next_id) {
         $param = self::getCurrentParameters();
         $param[] = $next_id;
-        return route(self::getCurrentRouteName() . '.update', $param);
+        return route(self::getCurrentRouteName() . '.edit', $param);
     }
     public static function getShowWithNextID($next_id) {
         $param = self::getCurrentParameters();
         $param[] = $next_id;
         return route(self::getCurrentRouteName() . '.show', $param);
+    }
+    public static function getUpdateWithID($next_id) {
+        $param = self::getCurrentParameters();
+        $param[] = $next_id;
+        return route(str_replace('.edit','.update', self::getCurrentRouteName()), $param);
     }
 }

@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\Dashboard\JuraganGudang;
 
 use App\Http\Controllers\Controller;
+use App\Models\ContactType;
 use App\Models\Provider;
-use App\Models\ProviderLog;
+use App\Models\ProviderService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class JuraganGudangServiceController extends Controller {
+    const baseRoute = 'dashboard.provider.service';
+    public function getMySelect(){
+        return [
+        ];
+    }
 
     /**
      * Display a listing of the resource.
@@ -20,7 +24,10 @@ class JuraganGudangServiceController extends Controller {
     public function index($gudang) {
         [$data, $select] = JuraganGudangController::base_index($gudang);
 
-        return view('dashboard.provider.address.index', ['data' => $data, 'select' => $select]);
+        return view(self::baseRoute . '.index', [
+            'data' => $data,
+            'select' => array_merge($select, $this->getMySelect())
+        ]);
     }
 
     /**
@@ -38,51 +45,15 @@ class JuraganGudangServiceController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        // return $request->toArray();
+    public function store(Request $request, $provider) {
         $credentials = $request->validate([
-            'm_business_category_id' => ['required'],
-            'provider_name' => ['required'],
-            'provider_npwp' => ['required'],
-            'provider_website' => ['required']
+            'service_title' => ['required'],
+            'service_desc' => ['required'],
+            'service_reference' => ['required']
         ]);
-        try {
-            DB::beginTransaction();
-            $user = Auth::guard('user')->user();
-            $company = $user->company;
-            if ($request->file_logo && $request->has('file_logo.0')) {
-                try {
-                    $bfile = $request->file_logo[0];
-                    $filename = $company->id . '.' . date("YmdHms") . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
-                    if ($company->file_logo)
-                        unlink(storage_path('file_logo\\') . $company->file_logo);
-                    $bfile->move(storage_path('file_logo\\'), $filename);
-                    $credentials['provider_logo'] = $filename;
-                } catch (Throwable $th) {
-                    back()->withErrors([
-                        'add' => "Ada kegagalan dalam menunggah File Lampiran. : " . $th->getMessage()
-                    ]);
-                }
-            } else {
-                $credentials['provider_logo'] = $request->comp_logo;
-            }
-            $credentials['status'] = 'Draft';
-            $credentials['provider_type_id'] = Provider::WAREHOUSE;
-
-            $wh = $company->warehouse_provider()->create($credentials);
-            $wh->log()->create([
-                'user_id' => $user->id,
-                'user_type' => ProviderLog::PROVIDER,
-                'status' => 'Draft'
-            ]);
-
-            DB::commit();
-        } catch (Throwable $th) {
-            DB::rollBack();
-            back()->withErrors([
-                'add' => $th->getMessage()
-            ]);
-        }
+        $provider = Provider::find($provider);
+        $credentials['status'] = 1;
+        $provider->service()->create($credentials);
         return back();
     }
 
@@ -102,8 +73,8 @@ class JuraganGudangServiceController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
-        //
+    public function edit($provider, $id) {
+        return view(self::baseRoute . '.edit', ['data' => ProviderService::find($id), 'select'=>$this->getMySelect()]);
     }
 
     /**
@@ -113,37 +84,18 @@ class JuraganGudangServiceController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $juragan, $id) {
         switch ($request->__type) {
+            case 'toggle':
+                ProviderService::find($id)->update(['status' => $request->toggle]);
+                break;
             case 'update':
                 $credentials = $request->validate([
-                    'm_business_category_id' => ['required'],
-                    'provider_name' => ['required'],
-                    'provider_npwp' => ['required'],
-                    'provider_website' => ['required']
+                    'service_title' => ['required'],
+                    'service_desc' => ['required'],
+                    'service_reference' => ['required']
                 ]);
-                try {
-                    $company = Provider::find($id);
-                    if ($request->file_logo && $request->has('file_logo.0')) {
-                        try {
-                            $bfile = $request->file_logo[0];
-                            $filename = $company->id . '.' . date("YmdHms") . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
-                            if ($company->file_logo)
-                                unlink(storage_path('file_logo\\') . $company->file_logo);
-                            $bfile->move(storage_path('file_logo\\'), $filename);
-                            $credentials['provider_logo'] = $filename;
-                        } catch (Throwable $th) {
-                            back()->withErrors([
-                                'update' => "Ada kegagalan dalam menunggah File Lampiran. : " . $th->getMessage()
-                            ]);
-                        }
-                    }
-                    $company->update($credentials);
-                } catch (Throwable $th) {
-                    return back()->withErrors([
-                        'update' => $th->getMessage()
-                    ]);
-                }
+                ProviderService::find($id)->update($credentials);
                 break;
         }
         return back();

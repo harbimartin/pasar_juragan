@@ -17,7 +17,7 @@ class ProviderService extends Model {
         't_provider_id',
         'service_title',
         'service_desc',
-        'services_reference',
+        'service_reference',
         'status',
     ];
 

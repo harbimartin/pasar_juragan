@@ -65,9 +65,9 @@
             form: {},
             select: undefined,
             files: {
-                @isset($hasFile)
-                    file: [
-                        @foreach ($hasFile as $file)
+                @foreach (VueControl::Mono()->pool as $key => $files)
+                    {{$key}} : [
+                        @foreach ($files as $file)
                             {
                                 id: "{{ $file->id }}",
                                 name: "{{ $file->file_desc }}",
@@ -78,15 +78,8 @@
                             },
                         @endforeach
                     ],
-                @else
-                    file: []
-                @endisset
-            },
-            filec: [{
-                    el: 'file',
-                    key: 'file'
-                }
-            ]
+                @endforeach
+            }
         },
         created() {
             <?php
@@ -377,21 +370,24 @@
 
             // Upload Feature
             deleteFile(key, index) {
+                console.log("deleteFile", key, index);
                 const file = this.files[key][index];
                 if (file.id > 0) {
                     file.delete = !file.delete;
                 } else {
                     this.files[key].splice(index, 1);
                 }
+                this.$forceUpdate();
                 console.log(index);
             },
             uploadRefresh(id) {
                 let fileSize = 0;
-                this.filec.forEach(y => {
-                    const file = document.getElementById(y.el);
+                Object.entries(this.files).forEach(y => {
+                    const [key, value] = y;
+                    const file = document.getElementById(key);
                     if (file) {
                         const dt = new DataTransfer();
-                        this.files[y.key].forEach(x => {
+                        value.forEach(x => {
                             console.log(x);
                             if (x.file) {
                                 fileSize += x.file.size;
@@ -433,6 +429,7 @@
                                 file: element
                             }];
                     }
+                    this.$forceUpdate();
                 }
             },
             onlyDate($event) {
