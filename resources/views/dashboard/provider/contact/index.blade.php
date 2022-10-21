@@ -28,7 +28,7 @@
         ],
         'provider_contact' => ['name' => 'Kontak', 'type' => 'String'],
         'status' => ['name' => 'Status', 'type' => 'State'],
-        'toggle' => ['by' => 'status', 'name' => 'Aktifkan', 'type' => 'Toggle', 'sort' => false, 'align' => 'center', 'value' => 'toggle-comp_contact'],
+        'toggle' => ['by' => 'status', 'name' => 'Aktifkan', 'type' => 'Toggle', 'sort' => false, 'align' => 'center'],
         'act' => ['name' => 'Action', 'type' => 'Edit', 'route' => 'dashboard.profile-company.contact.edit', 'align' => 'center', 'sort' => false],
     ]);
     ?>
