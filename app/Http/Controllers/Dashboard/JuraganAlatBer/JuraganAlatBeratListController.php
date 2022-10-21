@@ -1,34 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard\JuraganGudang;
+namespace App\Http\Controllers\Dashboard\JuraganAlatBerat;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helper\Table;
-use App\Models\BusinessCategory;
 use App\Models\Provider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
-class JuraganGudangController extends Controller {
-
-    public static function base_index($gudang) {
-        $data = Provider::find($gudang);
-        $select = [
-            'business_category' => BusinessCategory::where('status', 1)->get()
-        ];
-        return [$data, $select];
-    }
+class JuraganAlatBeratListController extends Controller
+{
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $company = Auth::guard('user')->user()->company;
-        $data = Provider::where(['m_company_id' => $company->id, 'provider_type_id' => Provider::WAREHOUSE])->paginate(10);
-
-        return view('dashboard.provider.list', ['data' => $data, 'prop' => Table::tableProp($data)]);
+        $data = Provider::where(['m_company_id' => $company->id, "provider_type_id" => Provider::HEAVY_EQUIPMENT])->paginate(10);
+        return view('dashboard.juragan-alatberat.list', ['data' => $data, 'prop' => Table::tableProp($data)]);
     }
 
     /**
@@ -36,7 +27,8 @@ class JuraganGudangController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         //
     }
 
@@ -46,7 +38,8 @@ class JuraganGudangController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         //
     }
 
@@ -56,13 +49,9 @@ class JuraganGudangController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
-        return redirect(route('dashboard.juragan-gudang.address', [$id]));
-        $data = Provider::find($id);
-        $select = [
-            'business_category' => BusinessCategory::where('status', 1)->get()
-        ];
-        return view('dashboard.juragan-gudang.index', ['data' => $data, 'select' => $select, 'tab' => 'address']);
+    public function show($id)
+    {
+        //
     }
 
     /**
@@ -71,7 +60,8 @@ class JuraganGudangController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
+    public function edit($id)
+    {
         //
     }
 
@@ -82,7 +72,8 @@ class JuraganGudangController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         //
     }
 
@@ -92,7 +83,8 @@ class JuraganGudangController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         //
     }
 }
