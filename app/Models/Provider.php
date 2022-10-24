@@ -55,4 +55,16 @@ class Provider extends Model {
     public function service() {
         return $this->hasMany(ProviderService::class, 't_provider_id', 'id');
     }
+
+    public static function status_attr() {
+        return [
+            'name' => 'Status', 'type' => 'SState',
+            'color' => [
+                'Proposed' => 'blue',
+                'Pending' => 'yellow',
+                'Approved' => 'green'
+            ],
+            'align' => 'center'
+        ];
+    }
 }

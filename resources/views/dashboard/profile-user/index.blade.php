@@ -9,6 +9,6 @@
         ];
         $column = json_encode($column);
     @endphp
-    <x-update unique="profile-user" :column="$column" title="Profil User" :data="$data" burl="none" route="current">
+    <x-update unique="profile-user" :column="$column" title="Profil User" :data="$data" burl="none">
     </x-update>
 @endsection

@@ -49,7 +49,8 @@ class Routing {
     public static function getUpdateWithID($next_id, $route = null) {
         if ($route) {
             $param = self::getCurrentParameters();
-            return route($route, array_values($param));
+            $param[] = $next_id;
+            return route($route . '.update', array_values($param));
         } else {
             $param = self::getCurrentParameters();
             $param[] = $next_id;

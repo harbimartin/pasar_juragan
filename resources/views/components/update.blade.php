@@ -494,11 +494,11 @@
                     </div>
                 @break
 
-                @case('Status')
+                @case('SState')
                     @php
                         $status = $datas[$key];
-                        $cols = (array) $param->col;
-                        $col = isset($cols[$status]) ? $cols[$status] : 'gray';
+                        $cols = $param->color;
+                        $col = isset($cols->{$status}) ? $cols->{$status} : 'gray';
                     @endphp
                     <div
                         class="rounded-full bg-{{ $col }}-100 text-{{ $col }}-700 font-semibold mr-auto px-5 pt-0.5 shadow select-none">
@@ -509,7 +509,7 @@
                 @case('Image')
                     @if ($datas[$key])
                         <div>
-                            <img src="{{ route('storage', 'company') }}" alt="Logo">
+                            <img src="{{ route('storage', [$param->module, $datas[$key], $id]) }}" alt="Logo">
                         </div>
                     @else
                         <div class="w-42 h-42 bg-gray-400 font-semibold align-middle text-gray-50 p-4 text-center flex text-sm"

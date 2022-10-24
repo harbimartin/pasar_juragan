@@ -7,7 +7,7 @@
             'provider_npwp' => ['name' => 'NPWP', 'type' => 'String', 'full' => true, 'def' => $data->comp_npwp],
             'provider_website' => ['name' => 'Website', 'type' => 'String', 'full' => true, 'def' => $data->comp_website],
             'file_logo' => ['name' => 'Upload Logo', 'type' => 'Upload', 'accept' => 'image/*', 'key' => 'file', 'folder' => 'comp_logo', 'mono' => true, 'full' => true],
-            'comp_logo' => ['name' => 'Logo', 'type' => 'Image', 'folder' => 'file_logo', 'def' => $data->comp_logo],
+            'comp_logo' => ['name' => 'Logo', 'type' => 'Image', 'module' => 'company', 'def' => $data->comp_logo],
         ];
         $column = json_encode($column);
     @endphp

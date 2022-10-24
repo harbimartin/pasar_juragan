@@ -7,15 +7,15 @@
     $hasVFile = [];
     $sort = false;
     ?>
-    <form action="{{ Routing::getUpdateWithID($data->id, 'admin.gudang.regist.update') }}" method="POST" class="md:px-3 text-sm md:text-base"
-        enctype="multipart/form-data">
+    <form action="{{ Routing::getUpdateWithID($data->id, 'admin.gudang.regist.update') }}" method="POST"
+        class="md:px-3 text-sm md:text-base" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="absolute m-2 md:m-4">
             <a class="inline-flex rounded-3xl border px-3 bg-gray-500 hover:bg-blue-400 transition mr-5 cursor-pointer text-white md:text-base"
                 type="button" href="{{ url()->previous() }}">
-                <svg class="my-auto mr-2" xmlns="http://www.w3.org/2000/svg" width="16" height="20"
-                    fill="currentColor" viewBox="0 0 16 16">
+                <svg class="my-auto mr-2" xmlns="http://www.w3.org/2000/svg" width="16" height="20" fill="currentColor"
+                    viewBox="0 0 16 16">
                     <path
                         d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z" />
                     <path
@@ -36,13 +36,13 @@
                 <div class="mt-2 text-gray-700">
                     @php
                         $attr = [
-                            'category' => ["name"=>"Jenis Bisnis", "type"=>"SString", "child"=>"business_category"],
-                            'provider_code' => ["name"=>"Kode Juragan", "type"=>"Date"],
-                            'provider_name' => ["name"=>"Alasan"],
-                            'provider_npwp' => ["name"=>"NPWP"],
-                            'provider_website' => ["name"=>"Website"],
-                            'provider_logo' => ["name"=>"Logo"],
-                        ]
+                            'category' => ['name' => 'Jenis Bisnis', 'type' => 'SString', 'child' => 'business_category'],
+                            'provider_code' => ['name' => 'Kode Juragan'],
+                            'provider_name' => ['name' => 'Alasan'],
+                            'provider_npwp' => ['name' => 'NPWP'],
+                            'provider_website' => ['name' => 'Website'],
+                            'provider_logo' => ['name' => 'Logo'],
+                        ];
                     @endphp
                     <table>
                         @foreach ($attr as $ak => $at)
@@ -82,49 +82,44 @@
             </div>
             {{-- Lampiran User, History Verifikasi & History Pending : BEGIN --}}
             <?php
-                $column_address = [
-                    'index' => ['name' => 'No.', 'type' => 'Index'],
-                    'provider_address_detail' => ['name' => 'Alamat', 'type' => 'TextArea'],
-                    'provider_city' => ['name' => 'Kota', 'type' => 'String'],
-                    'provider_province' => ['name' => 'Provinsi', 'type' => 'String'],
-                    'provider_country' => ['name' => 'Negara', 'type' => 'String'],
-                    'status' => ['name' => 'Status', 'type' => 'State'],
-                ];
-                $column_contact = [
-                    'index' => ['name' => 'No.', 'type' => 'Index'],
-                    'type' => ['name' => 'Tipe Kontak', 'type' => 'SString', 'child' => ['contact_type']],
-                    'tgl_um' => [
-                        'name' => 'Nama/Posisi',
-                        'type' => 'Multi',
-                        'children' => [
-                            'provider_contact_name' => ['type' => 'String', 'iclass' => 'font-semibold text-gray-600'],
-                            'provider_contact_position' => ['name' => 'Nama Kontak', 'type' => 'String'],
-                        ],
+            $column_address = [
+                'index' => ['name' => 'No.', 'type' => 'Index'],
+                'provider_address_detail' => ['name' => 'Alamat', 'type' => 'TextArea'],
+                'provider_city' => ['name' => 'Kota', 'type' => 'String'],
+                'provider_province' => ['name' => 'Provinsi', 'type' => 'String'],
+                'provider_country' => ['name' => 'Negara', 'type' => 'String'],
+                'status' => ['name' => 'Status', 'type' => 'State'],
+            ];
+            $column_contact = [
+                'index' => ['name' => 'No.', 'type' => 'Index'],
+                'type' => ['name' => 'Tipe Kontak', 'type' => 'SString', 'child' => ['contact_type']],
+                'tgl_um' => [
+                    'name' => 'Nama/Posisi',
+                    'type' => 'Multi',
+                    'children' => [
+                        'provider_contact_name' => ['type' => 'String', 'iclass' => 'font-semibold text-gray-600'],
+                        'provider_contact_position' => ['name' => 'Nama Kontak', 'type' => 'String'],
                     ],
-                    'provider_contact' => ['name' => 'Kontak', 'type' => 'String'],
-                    'status' => ['name' => 'Status', 'type' => 'State'],
-                ];
-                $column_document = [
-                    'index' => ['name' => 'No.', 'type' => 'Index'],
-                    'doc_no' => ['name' => 'No. Dokumen', 'type' => 'String', 'full' => true],
-                    'doc_date' => ['name' => 'Tgl. Dokumen', 'type' => 'String', 'full' => true],
-                    'doc_expired' => ['name' => 'Tgl. Kadaluarsa', 'type' => 'String', 'full' => true],
-                    'doc_attachment' => ['name' => 'Lampiran', 'type' => 'String', 'full' => true],
-                    'status' => ['name' => 'Status', 'type' => 'State'],
-                ];
-                $column_service = [
-                    'index' => ['name' => 'No.', 'type' => 'Index'],
-                    'service_title' => ['name' => 'Judul', 'type' => 'String'],
-                    'service_desc' => ['name' => 'Deskripsi', 'type' => 'String'],
-                    'service_reference' => ['name' => 'Referensi', 'type' => 'String'],
-                    'status' => ['name' => 'Status', 'type' => 'State'],
-                ];
-                $tables = [
-                    ['title' => 'Address', 'data' => $data->address, 'column' => $column_address],
-                    ['title' => 'Contact', 'data' => $data->contact, 'column' => $column_contact],
-                    ['title' => 'Document', 'data' => $data->document, 'column' => $column_document],
-                    ['title' => 'Service', 'data' => $data->service, 'column' => $column_service],
-                ];
+                ],
+                'provider_contact' => ['name' => 'Kontak', 'type' => 'String'],
+                'status' => ['name' => 'Status', 'type' => 'State'],
+            ];
+            $column_document = [
+                'index' => ['name' => 'No.', 'type' => 'Index'],
+                'doc_no' => ['name' => 'No. Dokumen', 'type' => 'String', 'full' => true],
+                'doc_date' => ['name' => 'Tgl. Dokumen', 'type' => 'String', 'full' => true],
+                'doc_expired' => ['name' => 'Tgl. Kadaluarsa', 'type' => 'String', 'full' => true],
+                'doc_attachment' => ['name' => 'Lampiran', 'type' => 'String', 'full' => true],
+                'status' => ['name' => 'Status', 'type' => 'State'],
+            ];
+            $column_service = [
+                'index' => ['name' => 'No.', 'type' => 'Index'],
+                'service_title' => ['name' => 'Judul', 'type' => 'String'],
+                'service_desc' => ['name' => 'Deskripsi', 'type' => 'String'],
+                'service_reference' => ['name' => 'Referensi', 'type' => 'String'],
+                'status' => ['name' => 'Status', 'type' => 'State'],
+            ];
+            $tables = [['title' => 'Address', 'data' => $data->address, 'column' => $column_address], ['title' => 'Contact', 'data' => $data->contact, 'column' => $column_contact], ['title' => 'Document', 'data' => $data->document, 'column' => $column_document], ['title' => 'Service', 'data' => $data->service, 'column' => $column_service]];
             ?>
             @if (sizeof($tables) > 0)
                 @foreach ($tables as $table)
@@ -164,26 +159,31 @@
                                                 </tr>
                                             @endif
                                             @foreach ($table['data'] as $iind => $item)
-                                            <tr class="text-gray-900 text-xs md:text-sm">
-                                                @foreach ($table['column'] as $key => $param)
-                                                    <td class="@if($sort) pr-3 @endisset py-4 px-2 whitespace-nowrap {{isset($param['align']) ? 'text-'.$param['align'] : ($param['type']=='State' || $param['type']=='Boolean' ||  $param['type']=='Edit' ? 'text-center':'') }} @isset($param->if){{($item[$param->if[0]] == $param->if[1]) == $param->if[2] ? '':'hidden'}}@endisset @isset($param->shrink) @if($param->shrink) shrink @endif @endisset">
-                                                        @switch($param['type'])
-                                                            @case('Multi')
-                                                            @foreach($param['children'] as $ckey => $cparam)
-                                                                <x-tswitch :key="$ckey" :param="(object)$cparam" :item="$item" :iind="$iind"></x-tswitch>
-                                                                @endforeach
+                                                <tr class="text-gray-900 text-xs md:text-sm">
+                                                    @foreach ($table['column'] as $key => $param)
+                                                        <td
+                                                            class="@if ($sort) pr-3 @endisset py-4 px-2 whitespace-nowrap {{ isset($param['align']) ? 'text-' . $param['align'] : ($param['type'] == 'State' || $param['type'] == 'Boolean' || $param['type'] == 'Edit' ? 'text-center' : '') }} @isset($param->if){{ ($item[$param->if[0]] == $param->if[1]) == $param->if[2] ? '' : 'hidden' }}@endisset @isset($param->shrink) @if ($param->shrink) shrink @endif @endisset">
+                                                            @switch($param['type'])
+                                                                @case('Multi')
+                                                                    @foreach ($param['children'] as $ckey => $cparam)
+                                                                        <x-tswitch :key="$ckey" :param="(object) $cparam"
+                                                                            :item="$item" :iind="$iind"></x-tswitch>
+                                                                    @endforeach
                                                                 @break
-                                                            @case('Index')
-                                                                <div class="mr-3">
-                                                                    {{$iind+1}}
-                                                                </div>
+
+                                                                @case('Index')
+                                                                    <div class="mr-3">
+                                                                        {{ $iind + 1 }}
+                                                                    </div>
                                                                 @break
-                                                            @default
-                                                                <x-tswitch :key="$key" :param="(object)$param" :item="$item" :iind="$iind"></x-tswitch>
+
+                                                                @default
+                                                                    <x-tswitch :key="$key" :param="(object) $param" :item="$item"
+                                                                        :iind="$iind"></x-tswitch>
                                                                 @break
-                                                        @endswitch
-                                                    </td>
-                                                @endforeach
+                                                            @endswitch
+                                                        </td>
+                                                    @endforeach
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -198,19 +198,31 @@
             <div class="flex mt-10">
                 <div class="md:inline-flex mx-auto">
                     <div class="flex mt-2 md:mt-0 gap-2">
-                        <x-popup-button-mid key="approve" color="green" name="Setujui" :show="$data->status == 'Proposed'"></x-popup-button-mid>
+                        <x-popup-button-mid key="pending" color="yellow" name="Pending" :show="$data->status == 'Proposed'">
+                        </x-popup-button-mid>
+                        <x-popup-button-mid key="approve" color="green" name="Setujui" :show="$data->status == 'Proposed'">
+                        </x-popup-button-mid>
                     </div>
                 </div>
             </div>
             <x-popup-header>
                 <x-slot name="content">
+                    <x-popup-content name="Pending" key="pending" color="yellow">
+                        Apa anda yakin ingin melakukan pending pada Juragan {{ $data->provider_code }} ?
+                        <div class="my-2 text-sm text-gray-500 font-semibold">Alasan Pending : </div>
+                        <textarea id="reason" name="reason" class="border rounded shadow w-full text-sm px-2 py-1"
+                            placeholder="Tulis alasan anda menunda Pengajuan ini"></textarea>
+                    </x-popup-content>
                     <x-popup-content name="Setujui" key="approve" color="green">
                         Apa anda yakin ingin menyetujui Juragan {{ $data->provider_code }} ?
                     </x-popup-content>
                 </x-slot>
                 <x-slot name="submit">
-                    <x-popup-submit name="Setujui" key="approve" color="green" route="dashboard.juragan-gudang"></x-popup-submit>
+                    <x-popup-submit name="Pending" key="pending" color="yellow" route="dashboard.juragan-gudang">
+                    </x-popup-submit>
+                    <x-popup-submit name="Setujui" key="approve" color="green" route="dashboard.juragan-gudang">
+                    </x-popup-submit>
                 </x-slot>
             </x-popup-header>
         @endsection
-        </form>
+</form>

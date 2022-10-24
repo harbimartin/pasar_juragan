@@ -50,7 +50,7 @@ Route::any('/home', function () {
     return view('landpage.home');
 })->name('home');
 
-Route::get('/get-storage/{module}', [ViewController::class, 'get_file'])->name('storage');
+Route::get('/get-storage/{module}/{filename}/{id}', [ViewController::class, 'get_file'])->name('storage');
 
 Route::group([
     'middleware' => ['auth:user'],

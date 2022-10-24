@@ -3,7 +3,7 @@
     <?php
     $table = json_encode([
         'index' => ['name' => 'No.', 'type' => 'Index'],
-        'status' => ['name' => 'Status', 'type' => 'SState', 'color' => ['Proposed' => 'blue', 'Approved' => 'green']],
+        'status' => Provider::status_attr(),
         'provider_code' => ['name' => 'Kode', 'type' => 'String'],
         'provider_name' => ['name' => 'Nama', 'type' => 'String'],
         'provider_npwp' => ['name' => 'NPWP', 'type' => 'String'],

@@ -2,18 +2,18 @@
 @section('content')
     @php
         $column = [
-            'status' => ['name' => 'Status', 'type' => 'Status', 'col' => ['Proposed' => 'blue', 'Approved' => 'green'], 'full' => true],
+            'status' => Provider::status_attr(),
             'm_business_category_id' => ['name' => 'Kategori Bisnis', 'type' => 'Select', 'val' => ['business_category'], 'api' => 'business_category', 'full' => true],
             'provider_name' => ['name' => 'Nama', 'type' => 'String', 'full' => true],
             'provider_npwp' => ['name' => 'NPWP', 'type' => 'String', 'full' => true],
             'provider_website' => ['name' => 'Website', 'type' => 'String', 'full' => true],
-            'file_logo' => ['name' => 'Upload Logo', 'type' => 'Upload', 'accept' => 'image/*', 'key' => 'file', 'folder' => 'comp_logo', 'anonymous' => true, 'mono' => true, 'full' => true],
-            'provider_logo' => ['name' => 'Logo', 'type' => 'Image', 'folder' => 'file_logo'],
+            'file_logo' => ['name' => 'Upload Logo', 'type' => 'Upload', 'accept' => 'image/*', 'key' => 'file', 'folder' => 'file_provider', 'anonymous' => true, 'mono' => true, 'full' => true],
+            'provider_logo' => ['name' => 'Logo', 'type' => 'Image', 'module' => 'provider'],
         ];
         $column = json_encode($column);
     @endphp
     <x-update unique="juragan-gudang" :column="$column" title="Registrasi Juragan Gudang ({{ $data->provider_code }})"
-        :data="$data" burl="none" route="dashboard.juragan-gudang.update" :select="$select" idk="id">
+        :data="$data" burl="none" route="dashboard.juragan-gudang" :select="$select" idk="id">
         <x-popup-button key="propose" color="blue" name="Propose" show="{{ $data->status == 'Draft' }}"></x-popup-button>
         <x-popup-header>
             <x-slot name="content">

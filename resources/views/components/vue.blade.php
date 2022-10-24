@@ -400,7 +400,7 @@
                             console.log(x);
                             if (x.file) {
                                 fileSize += x.file.size;
-                                dt.items.add(new File([x.file], x.name + '.pdf', {
+                                dt.items.add(new File([x.file], x.name + x.ext, {
                                     type: x.file.type
                                 }));
                             }
@@ -420,12 +420,14 @@
                     for (let index = 0; index < $event.target.files.length; index++) {
                         const element = $event.target.files[index];
                         const name = element.name.replace(/\.[^/.]+$/, "");
+                        const ext = element.name.match(/\.[^/.]+$/)[0];
                         console.log(multiple);
                         if (multiple)
                             this.files[key].push({
                                 id: 0,
                                 name: name,
                                 oname: name,
+                                ext : ext,
                                 delete: false,
                                 file: element
                             })
@@ -434,6 +436,7 @@
                                 id: 0,
                                 name: name,
                                 oname: name,
+                                ext : ext,
                                 delete: false,
                                 file: element
                             }];

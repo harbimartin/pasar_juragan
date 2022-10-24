@@ -3,7 +3,8 @@
     <?php
     $table_gudang = json_encode([
         'index' => ['name' => 'No.', 'type' => 'Index'],
-        'provider_code' => ['name' => 'Kode', 'type' => 'String'],
+        'provider_code' => ['name' => 'S', 'type' => 'String'],
+        'status' => Provider::status_attr(),
         'provider_name' => ['name' => 'Nama', 'type' => 'String'],
         'provider_npwp' => ['name' => 'NPWP', 'type' => 'String'],
         'provider_website' => ['name' => 'Website', 'type' => 'String'],

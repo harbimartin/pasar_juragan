@@ -396,7 +396,7 @@
                         @case('Image')
                             @isset($param->def)
                                 <div>
-                                    <img src="{{ route('storage', 'company') }}" alt="Logo">
+                                    <img src="{{ route('storage', [$param->module, $param->def, 0]) }}" alt="Logo">
                                     <input name="{{ $key }}" value="{{ $param->def }}" hidden />
                                 </div>
                             @else
