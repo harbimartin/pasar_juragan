@@ -22,8 +22,7 @@ use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyAddressCont
 use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyContactController;
 use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyController;
 use App\Http\Controllers\User\Dashboard\ProfileUserController;
-use App\Http\Controllers\User\Dashboard\Warehouse\WarehouseAddController;
-use App\Http\Controllers\User\Dashboard\Warehouse\WarehouseListController;
+use App\Http\Controllers\User\Dashboard\Warehouse\WarehouseController;
 use App\Http\Controllers\User\RegisterController;
 use App\Http\Controllers\User\ViewController;
 use App\Http\Helper\Routing;

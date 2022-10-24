@@ -72,8 +72,8 @@ class ProviderController extends Controller {
                     $bfile = $request->file_logo[0];
                     $filename = $company->id . '.' . date("YmdHms") . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
                     if ($company->file_logo)
-                        unlink(storage_path('file_logo\\') . $company->file_logo);
-                    $bfile->move(storage_path('file_logo\\'), $filename);
+                        unlink(storage_path('file_logo/') . $company->file_logo);
+                    $bfile->move(storage_path('file_logo/'), $filename);
                     $credentials['provider_logo'] = $filename;
                 } catch (Throwable $th) {
                     back()->withErrors([
@@ -158,8 +158,8 @@ class ProviderController extends Controller {
                             $bfile = $request->file_logo[0];
                             $filename = $company->id . '.' . date("YmdHms") . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
                             if ($company->file_logo)
-                                unlink(storage_path('file_logo\\') . $company->file_logo);
-                            $bfile->move(storage_path('file_logo\\'), $filename);
+                                unlink(storage_path('file_logo/') . $company->file_logo);
+                            $bfile->move(storage_path('file_logo/'), $filename);
                             $credentials['provider_logo'] = $filename;
                         } catch (Throwable $th) {
                             back()->withErrors([

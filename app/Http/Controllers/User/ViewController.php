@@ -14,7 +14,7 @@ class ViewController extends Controller {
         switch ($module) {
             case 'company':
                 $filename = Auth::guard('user')->user()->company->comp_logo;
-                return response()->download(storage_path('file_logo\\') . $filename, $filename);
+                return response()->download(storage_path('file_logo/') . $filename, $filename);
                 break;
         }
     }

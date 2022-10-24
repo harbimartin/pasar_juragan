@@ -58,7 +58,7 @@ class ProviderDocumentController extends Controller {
             try {
                 $bfile = $request->doc_attachment[0];
                 $filename = 'DOC_' . $provider->id . '_' . date("YmdHms") . '.' . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
-                $bfile->move(storage_path('file_provider\\'), $filename);
+                $bfile->move(storage_path('file_provider/'), $filename);
                 $credentials['doc_attachment'] = $filename;
             } catch (Throwable $th) {
                 back()->withErrors([
