@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Admin\AlatBerat;
+namespace App\Http\Controllers\User\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Helper\Routing;
-use App\Http\Helper\Table;
-use App\Models\Provider;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Throwable;
 
-class AlatBeratRegistController extends Controller {
+class ProfileUserController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $data = Provider::where(['status' => 'Proposed', 'provider_type_id'=>Provider::HEAVY_EQUIPMENT])->paginate();
-        return view('admin.provider.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data)]);
+        $data = Auth::guard('user')->user();
+        return view('dashboard.profile-user.index', ['data' => $data]);
     }
 
     /**
@@ -35,7 +35,7 @@ class AlatBeratRegistController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        //
+        return view('dashboard.profile-user.index');
     }
 
     /**
@@ -45,10 +45,7 @@ class AlatBeratRegistController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        $provider = Provider::find($id);
-        if ($provider && $provider->status == "Proposed")
-            return view('admin.provider.show', ['data'=>$provider]);
-        return back();
+        //
     }
 
     /**
@@ -69,10 +66,19 @@ class AlatBeratRegistController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        Provider::find($id)->update([
-            'status' => 'Approved'
-        ]);
-        return redirect(route(str_replace('.update', '', Routing::getCurrentRouteName())));
+        switch ($request->__type) {
+            case 'update':
+                try {
+                    $user = Auth::guard('user')->user();
+                    User::find($user->id)->update($request->toArray());
+                } catch (Throwable $th) {
+                    return back()->withErrors([
+                        'update' => $th->getMessage()
+                    ]);
+                }
+                break;
+        }
+        return redirect($request->_last_);
     }
 
     /**

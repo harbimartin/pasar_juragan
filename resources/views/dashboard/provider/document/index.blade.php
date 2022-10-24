@@ -21,7 +21,7 @@
         'doc_no' => ['name' => 'No. Dokumen', 'type' => 'String', 'full' => true],
         'doc_date' => ['name' => 'Tgl. Dokumen', 'type' => 'String', 'full' => true],
         'doc_expired' => ['name' => 'Tgl. Kadaluarsa', 'type' => 'String', 'full' => true],
-        'doc_attachment' => ['name' => 'Negara', 'type' => 'String', 'full' => true],
+        'doc_attachment' => ['name' => 'Lampiran', 'type' => 'String', 'full' => true],
         'status' => ['name' => 'Status', 'type' => 'State'],
         'toggle' => ['by' => 'status', 'name' => 'Aktifkan', 'type' => 'Toggle', 'sort' => false, 'align' => 'center'],
         'act' => ['name' => 'Action', 'type' => 'Edit', 'route' => 'dashboard.profile-company.document.edit', 'align' => 'center', 'sort' => false],

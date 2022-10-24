@@ -2,10 +2,9 @@
 @section('content')
     @php
         $column = [
-            'provider_address_detail' => ['name' => 'Alamat', 'type' => 'TextArea', 'rows' => 4, 'full' => true],
-            'provider_city' => ['name' => 'Kota', 'type' => 'String', 'full' => true],
-            'provider_province' => ['name' => 'Provinsi', 'type' => 'String', 'full' => true],
-            'provider_country' => ['name' => 'Negara', 'type' => 'String', 'full' => true],
+            'service_title' => ['name' => 'Judul Service', 'type' => 'String', 'rows' => 4, 'full' => true],
+            'service_desc' => ['name' => 'Deskripsi Service', 'type' => 'TextArea', 'full' => true],
+            'service_reference' => ['name' => 'Referensi Service', 'type' => 'String', 'full' => true, 'placeholder'=>"Contoh : Domain Website, Akun Sosial Media dan lain-lain."],
         ];
         $column = json_encode($column);
     @endphp

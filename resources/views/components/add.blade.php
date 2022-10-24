@@ -27,7 +27,7 @@
     }
     ?>
     <form class="container md:rounded-lg shadow my-3 md:my-8 py-2 md:py-4 px-3 md:px-6 bg-white text-xs md:text-base"
-        action="{{ request()->fullUrl() }}" method="POST" enctype="multipart/form-data">
+        action="{{ Routing::getAdd() }}" method="POST" enctype="multipart/form-data">
         <input hidden name="_last_" value="{{ request()->_last_ ? request()->_last_ : request()->fullUrl() }}">
         <h1 class="border-b text-lg md:text-2xl pb-2 border-gray-200 mb-2">
             Form {{ $title }}
@@ -105,20 +105,17 @@
 
                         @case('String')
                             <div class="col-end-7 col-start-1 md:col-start-2 relative block p-0">
-                                <input
-                                    id="{{ $key }}"
-                                    @isset ($param->disabled) disabled @endisset
-                                    @isset ($param->placeholder) placeholder="{{$param->placeholder}}" @endisset
+                                <input id="{{ $key }}" @isset($param->disabled) disabled @endisset
+                                    @isset($param->placeholder) placeholder="{{ $param->placeholder }}" @endisset
                                     @isset($param->max)
                                         maxlength="{{ $param->max }}"
                                         v-on:input="refMax($event,'{{ $key }}_v_',{{ $param->max }})"
                                     @endisset
-                                    name="{{ $key }}"
-                                    type="text"
+                                    name="{{ $key }}" type="text"
                                     @isset($error['data'][$key]) value="{{ $error['data'][$key] }}"
                                     @elseif(isset($param->def)) value="{{ $param->def }}" @endisset
-                                    @isset ($param->disabled) disabled @endisset
-                                    @isset ($param->placeholder) placehilder="{{$param->placeholder}}" @endisset
+                                    @isset($param->disabled) disabled @endisset
+                                    @isset($param->placeholder) placehilder="{{ $param->placeholder }}" @endisset
                                     class="w-full h-full rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
                                 @isset($param->max)
                                     <div id="{{ $key }}_v_" class="pointer-events-none absolute top-1 right-2 h-full">

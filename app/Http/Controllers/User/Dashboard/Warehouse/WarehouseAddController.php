@@ -1,21 +1,48 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Gudang;
+namespace App\Http\Controllers\User\Dashboard\Warehouse;
 
 use App\Http\Controllers\Controller;
-use App\Http\Helper\Table;
-use App\Models\Provider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
-class GudangListController extends Controller {
+class WarehouseAddController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $data = Provider::where(['provider_type_id'=>Provider::WAREHOUSE])->paginate();
-        return view('admin.provider.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data)]);
+        $call_province = Http::get("https://dev.farizdotid.com/api/daerahindonesia/provinsi");
+        $call_city = Http::get("https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=36");
+        $days = [
+            ['nama' => 'Senin', 'id' => 1],
+            ['nama' => 'Selasa', 'id' => 2],
+            ['nama' => 'Rabu', 'id' => 3],
+            ['nama' => 'Kamis', 'id' => 4],
+            ['nama' => 'Jumat', 'id' => 5],
+            ['nama' => 'Sabtu', 'id' => 6],
+            ['nama' => 'Minggu', 'id' => 7],
+        ];
+        $warehouse_type = [
+            ['nama' => 'Terbuka', 'id' => 1],
+            ['nama' => 'Tertutup', 'id' => 2],
+        ];
+        $warehouse_func = [
+            ['nama' => 'TPS', 'id' => 1],
+            ['nama' => 'PLB', 'id' => 2],
+            ['nama' => 'tulisan tidak terbaca', 'id' => 3],
+        ];
+        $select = [
+            'province' => $call_province->json()["provinsi"],
+            'city' => $call_city->json()["kota_kabupaten"],
+            'days' => $days,
+            'warehouse_type' => $warehouse_type,
+            'warehouse_func' => $warehouse_func
+        ];
+        // return $select;
+        return view('dashboard.warehouse.add', ['select' => $select]);
     }
 
     /**
@@ -44,10 +71,7 @@ class GudangListController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        $provider = Provider::find($id);
-        if ($provider)
-            return view('admin.provider.show', ['data'=>$provider]);
-        return back();
+        //
     }
 
     /**

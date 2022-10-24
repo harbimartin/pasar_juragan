@@ -40,8 +40,8 @@
         </a>
     @endif
     <form class="container md:rounded-lg shadow my-1 md:my-4 py-2 md:py-4 px-3 md:px-6 bg-white text-xs md:text-base"
-        action="{{Routing::getUpdateWithID($id)}}"
-        method="POST" enctype="multipart/form-data" autocomplete="new-password">
+        action="{{ Routing::getUpdateWithID($id, $route ?? null) }}" method="POST" enctype="multipart/form-data"
+        autocomplete="new-password">
         @csrf
         @method('PUT')
         <input hidden name="_last_" value="{{ request()->fullUrl() }}">
@@ -120,17 +120,14 @@
 
                 @case('String')
                     <div class="col-end-7 col-start-1 md:col-start-2 relative block p-0">
-                        <input
-                            id="{{ $key }}"
-                            @if ($detail || isset($param->readonly)) readonly @endif
-                            @isset ($param->disabled) disabled @endisset
-                            @isset ($param->placeholder) placeholder="{{$param->placeholder}}" @endisset
+                        <input id="{{ $key }}" @if ($detail || isset($param->readonly)) readonly @endif
+                            @isset($param->disabled) disabled @endisset
+                            @isset($param->placeholder) placeholder="{{ $param->placeholder }}" @endisset
                             @isset($param->max)
                                         maxlength="{{ $param->max }}"
                                         v-on:input="refMax($event,'{{ $key }}_v_',{{ $param->max }})"
                                     @endisset
-                            name="{{ $key }}" value="{{ $datas[$param->by] }}"
-                            type="text"
+                            name="{{ $key }}" value="{{ $datas[$param->by] }}" type="text"
                             class="w-full h-full rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->iclass){{ $param->iclass }}@endisset" />
                         @isset($param->max)
                             <div id="{{ $key }}_v_" class="pointer-events-none absolute top-1 right-2 h-full">
@@ -389,7 +386,7 @@
                                     for="{{ $key }}">Upload</label>
                             </div>
                         @endif
-                        <div class="loader w-full m-auto" v-bind:hidden="true"></div>
+                        <div class="loader m-auto" v-bind:hidden="true"></div>
                         <div v-if="files['{{ $key }}'] && files['{{ $key }}'].length>0" class="w-full"
                             v-bind:class="{block:true}" hidden>
                             <div v-for="(file, index) in files['{{ $key }}']" class="flex w-full py-0.5">
@@ -494,6 +491,18 @@
                         <label title="Sangat Baik" class="p-1 px-2 md:p-2 pb-2 bg-gray-200 rounded-r-md cursor-pointer flex"
                             for="es_best">😊 <span class="hidden text-xs my-auto font-semibold text-center">Sangat
                                 Baik</span></label>
+                    </div>
+                @break
+
+                @case('Status')
+                    @php
+                        $status = $datas[$key];
+                        $cols = (array) $param->col;
+                        $col = isset($cols[$status]) ? $cols[$status] : 'gray';
+                    @endphp
+                    <div
+                        class="rounded-full bg-{{ $col }}-100 text-{{ $col }}-700 font-semibold mr-auto px-5 pt-0.5 shadow select-none">
+                        {{ $status }}
                     </div>
                 @break
 

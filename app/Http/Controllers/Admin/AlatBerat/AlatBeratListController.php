@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin\AlatBerat;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helper\Table;
+use App\Models\Provider;
 use Illuminate\Http\Request;
 
 class AlatBeratListController extends Controller {
@@ -12,7 +14,8 @@ class AlatBeratListController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view('admin.alat-berat.list');
+        $data = Provider::where(['provider_type_id'=>Provider::HEAVY_EQUIPMENT])->paginate();
+        return view('admin.provider.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data)]);
     }
 
     /**
@@ -41,7 +44,10 @@ class AlatBeratListController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        //
+        $provider = Provider::find($id);
+        if ($provider)
+            return view('admin.provider.show', ['data'=>$provider]);
+        return back();
     }
 
     /**

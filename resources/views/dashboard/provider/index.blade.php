@@ -2,17 +2,29 @@
 @section('content')
     @php
         $column = [
+            'status' => ['name' => 'Status', 'type' => 'Status', 'col' => ['Proposed' => 'blue', 'Approved' => 'green'], 'full' => true],
             'm_business_category_id' => ['name' => 'Kategori Bisnis', 'type' => 'Select', 'val' => ['business_category'], 'api' => 'business_category', 'full' => true],
             'provider_name' => ['name' => 'Nama', 'type' => 'String', 'full' => true],
             'provider_npwp' => ['name' => 'NPWP', 'type' => 'String', 'full' => true],
             'provider_website' => ['name' => 'Website', 'type' => 'String', 'full' => true],
-            'file_logo' => ['name' => 'Upload Logo', 'type' => 'Upload', 'accept' => 'image/*', 'key' => 'file', 'folder' => 'comp_logo', 'anonymous'=>true, 'mono' => true, 'full' => true],
+            'file_logo' => ['name' => 'Upload Logo', 'type' => 'Upload', 'accept' => 'image/*', 'key' => 'file', 'folder' => 'comp_logo', 'anonymous' => true, 'mono' => true, 'full' => true],
             'provider_logo' => ['name' => 'Logo', 'type' => 'Image', 'folder' => 'file_logo'],
         ];
         $column = json_encode($column);
     @endphp
-    <x-update unique="juragan-gudang" :column="$column" title="Registrasi Juragan Gudang" :data="$data" burl="none"
-        route="dashboard.juragan-gudang" :select="$select" idk="id">
+    <x-update unique="juragan-gudang" :column="$column" title="Registrasi Juragan Gudang ({{ $data->provider_code }})"
+        :data="$data" burl="none" route="dashboard.juragan-gudang.update" :select="$select" idk="id">
+        <x-popup-button key="propose" color="blue" name="Propose" show="{{ $data->status == 'Draft' }}"></x-popup-button>
+        <x-popup-header>
+            <x-slot name="content">
+                <x-popup-content name="Propose" key="propose" color="blue">
+                    Apa anda yakin ingin melakukan propose {{ $data->provider_code }} ?
+                </x-popup-content>
+            </x-slot>
+            <x-slot name="submit">
+                <x-popup-submit name="Propose" key="propose" color="blue" route="dashboard.juragan-gudang"></x-popup-submit>
+            </x-slot>
+        </x-popup-header>
     </x-update>
     <ul class="list-reset flex border-b px-2 md:px-6 mt-3 md:mt-5 text-xs md:text-base">
         <li class="mr-1">

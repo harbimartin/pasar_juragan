@@ -44,26 +44,60 @@
     //         @endisset
     //     }
     // @endisset
+    Vue.config.productionTip = false
+
+    var vueMenu = new Vue({
+        el: "#vue-menu",
+        created() {
+            @php
+                echo 'this.tmenu = undefined;';
+                $current_route = Routing::getCurrentRouteName();
+                foreach ($menus as $ind => $menu) {
+                    if (consoling($menu, 'this.tmenu', $ind, $current_route)) {
+                        "this.tmenu = '" . $menu['key'] . "';";
+                    }
+                }
+                function consoling($menu, $curr, $ind, $sel_tab)
+                {
+                    if (isset($menu['children'])) {
+                        echo $curr . '_' . $ind . ' = undefined;';
+                        foreach ($menu['children'] as $i => $mm) {
+                            if (consoling($mm, $curr . '_' . $ind, $i, $sel_tab)) {
+                                echo $curr . " = '" . $menu['key'] . "';";
+                                return true;
+                            }
+                        }
+                        return false;
+                    } else {
+                        return str_starts_with($sel_tab, $menu['key']);
+                    }
+                }
+            @endphp
+        },
+        methods : {
+            showTab(id, menu) {
+                const el = document.getElementById(menu);
+                if (this[id]) {
+                    if (this[id] == menu) {
+                        this[id] = undefined;
+                        el.classList.remove('block');
+                        return;
+                    }
+                    const elb = document.getElementById(this[id]);
+                    elb.classList.remove('block');
+                }
+                this[id] = menu;
+                el.classList.add('block');
+                console.log(id, this);
+            },
+        }
+    });
+
 
     var vue = new Vue({
         el: "#vue-app",
         data: {
-            show: false,
-            header: "E-Budget",
-            content: 0,
-            test: false,
-            onReject: false,
-            onPending: false,
-            onImport: false,
-            onEdit: false,
-            onReturn: false,
-            onAgree: false,
-            onPayment: false,
-            onProcess: false,
-            onPurpose: '',
-            onPopup: false,
-            form: {},
-            select: undefined,
+            onPopup: undefined,
             files: {
                 @foreach (VueControl::Mono()->pool as $key => $files)
                     {{$key}} : [
@@ -82,31 +116,6 @@
             }
         },
         created() {
-            <?php
-            // echo "console.log('this.tmenu_0 = undefined;');";
-            echo 'this.tmenu = undefined;';
-            foreach ($menus as $ind => $menu) {
-                if (consoling($menu, 'this.tmenu', $ind, $sel_tab)) {
-                    "this.tmenu = '" . $menu['key'] . "';";
-                }
-            }
-            function consoling($menu, $curr, $ind, $sel_tab)
-            {
-                if (isset($menu['children'])) {
-                    echo $curr . '_' . $ind . ' = undefined;';
-                    foreach ($menu['children'] as $i => $mm) {
-                        if (consoling($mm, $curr . '_' . $ind, $i, $sel_tab)) {
-                            echo $curr . " = '" . $menu['key'] . "';";
-                            return true;
-                        }
-                    }
-                    return false;
-                } else {
-                    // echo 'console.log("'.$menu['key'].'", "sel_tab '.$sel_tab.'.");';
-                    return $menu['key'] == $sel_tab;
-                }
-            }
-            ?>
         },
         methods: {
             updateParamArray(array, remove = undefined) {
@@ -469,21 +478,6 @@
                     else
                         el.classList.add('text-red-500');
                 }
-            },
-            showTab(id, menu) {
-                const el = document.getElementById(menu);
-                if (this[id]) {
-                    if (this[id] == menu) {
-                        this[id] = undefined;
-                        el.classList.remove('block');
-                        return;
-                    }
-                    const elb = document.getElementById(this[id]);
-                    elb.classList.remove('block');
-                }
-                this[id] = menu;
-                el.classList.add('block');
-                console.log(id, this);
             },
             @isset($chatAble)
                 toChat($id) {

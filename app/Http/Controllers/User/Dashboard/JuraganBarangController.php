@@ -1,22 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Admin\AlatBerat;
+namespace App\Http\Controllers\User\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Helper\Routing;
-use App\Http\Helper\Table;
-use App\Models\Provider;
 use Illuminate\Http\Request;
 
-class AlatBeratRegistController extends Controller {
+class JuraganBarangController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $data = Provider::where(['status' => 'Proposed', 'provider_type_id'=>Provider::HEAVY_EQUIPMENT])->paginate();
-        return view('admin.provider.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data)]);
+        return view('dashboard.juragan-barang.index');
     }
 
     /**
@@ -45,10 +41,7 @@ class AlatBeratRegistController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        $provider = Provider::find($id);
-        if ($provider && $provider->status == "Proposed")
-            return view('admin.provider.show', ['data'=>$provider]);
-        return back();
+        //
     }
 
     /**
@@ -69,10 +62,7 @@ class AlatBeratRegistController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        Provider::find($id)->update([
-            'status' => 'Approved'
-        ]);
-        return redirect(route(str_replace('.update', '', Routing::getCurrentRouteName())));
+        //
     }
 
     /**

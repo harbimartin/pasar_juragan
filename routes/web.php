@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\Admin\AlatBerat\AlatBeratListController;
 use App\Http\Controllers\Admin\AlatBerat\AlatBeratRegistController;
 use App\Http\Controllers\Admin\Angkutan\AngkutanListController;
@@ -9,30 +10,22 @@ use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\Admin\ProfileUserController as AdminProfileUserController;
 use App\Http\Controllers\Auth\AuthAdminController;
 use App\Http\Controllers\Auth\AuthUserController;
-use App\Http\Controllers\Dashboard\HomeController;
-use App\Http\Controllers\Dashboard\JuraganAlatBerat\JuraganAlatBeratController;
-use App\Http\Controllers\Dashboard\JuraganAlatBerat\JuraganAlatBeratRegistController;
-use App\Http\Controllers\Dashboard\JuraganAngkutan\JuraganAngkutanAddressController;
-use App\Http\Controllers\Dashboard\JuraganAngkutan\JuraganAngkutanContactController;
-use App\Http\Controllers\Dashboard\JuraganAngkutan\JuraganAngkutanController;
-use App\Http\Controllers\Dashboard\JuraganAngkutan\JuraganAngkutanDocumentController;
-use App\Http\Controllers\Dashboard\JuraganAngkutan\JuraganAngkutanRegistController;
-use App\Http\Controllers\Dashboard\JuraganAngkutan\JuraganAngkutanServiceController;
-use App\Http\Controllers\Dashboard\JuraganBarangController;
-use App\Http\Controllers\Dashboard\JuraganGudang\JuraganGudangAddressController;
-use App\Http\Controllers\Dashboard\JuraganGudang\JuraganGudangContactController;
-use App\Http\Controllers\Dashboard\JuraganGudang\JuraganGudangController;
-use App\Http\Controllers\Dashboard\JuraganGudang\JuraganGudangDocumentController;
-use App\Http\Controllers\Dashboard\JuraganGudang\JuraganGudangRegistController;
-use App\Http\Controllers\Dashboard\JuraganGudang\JuraganGudangServiceController;
-use App\Http\Controllers\Dashboard\ProfileCompany\ProfileCompanyAddressController;
-use App\Http\Controllers\Dashboard\ProfileCompany\ProfileCompanyContactController;
-use App\Http\Controllers\Dashboard\ProfileCompany\ProfileCompanyController;
-use App\Http\Controllers\Dashboard\ProfileUserController;
-use App\Http\Controllers\Dashboard\Warehouse\WarehouseAddController;
-use App\Http\Controllers\Dashboard\Warehouse\WarehouseListController;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\ViewController;
+use App\Http\Controllers\User\Dashboard\HomeController;
+use App\Http\Controllers\User\Dashboard\Juragan\Provider\ProviderAddressController;
+use App\Http\Controllers\User\Dashboard\Juragan\Provider\ProviderContactController;
+use App\Http\Controllers\User\Dashboard\Juragan\Provider\ProviderDocumentController;
+use App\Http\Controllers\User\Dashboard\Juragan\Provider\ProviderServiceController;
+use App\Http\Controllers\User\Dashboard\Juragan\JuraganAlatBeratController;
+use App\Http\Controllers\User\Dashboard\Juragan\JuraganAngkutanController;
+use App\Http\Controllers\User\Dashboard\Juragan\JuraganGudangController;
+use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyAddressController;
+use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyContactController;
+use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyController;
+use App\Http\Controllers\User\Dashboard\ProfileUserController;
+use App\Http\Controllers\User\Dashboard\Warehouse\WarehouseAddController;
+use App\Http\Controllers\User\Dashboard\Warehouse\WarehouseListController;
+use App\Http\Controllers\User\RegisterController;
+use App\Http\Controllers\User\ViewController;
 use App\Http\Helper\Routing;
 use Illuminate\Support\Facades\Route;
 
@@ -68,63 +61,40 @@ Route::group([
     Route::any('/', function () {
         return redirect(route('d-home'));
     });
-    Route::resource('/home', HomeController::class, Routing::setName('home'));
-    Route::resource('/profile-user', ProfileUserController::class, Routing::setName('profile-user'));
+    Route::resource('/home', HomeController::class, Routing::setName('home'))->only('index');
+    Route::resource('/profile-user', ProfileUserController::class, Routing::setName('profile-user'))->only('index', 'store', 'update');
 
-    Route::group([
-        'prefix' => 'juragan-barang',
-        'as' => 'juragan-barang',
-    ], function () {
-        Route::resource('/regist', JuraganGudangRegistController::class, Routing::setName('.regist'));
-        Route::resource('/address', JuraganBarangAddressController::class, Routing::setName('.address'));
-    });
-    Route::resource('/juragan-barang', JuraganBarangController::class, Routing::setName('juragan-barang'));
+    foreach (['barang', 'gudang', 'angkutan', 'alatberat'] as $provider) {
+        Route::group([
+            'prefix' => 'juragan-' . $provider . '/{provider}',
+            'as' => 'juragan-' . $provider . '.',
+        ], function () {
+            Route::resource('/contact', ProviderContactController::class, Routing::setName('contact'))->except('create', 'show', 'destroy');
+            Route::resource('/address', ProviderAddressController::class, Routing::setName('address'))->except('create', 'show', 'destroy');
+            Route::resource('/document', ProviderDocumentController::class, Routing::setName('document'))->except('create', 'show', 'destroy');
+            Route::resource('/service', ProviderServiceController::class, Routing::setName('service'))->except('create', 'show', 'destroy');
+        });
+    }
+    Route::resource('/juragan-gudang', JuraganGudangController::class, Routing::setName('juragan-gudang'))->except('edit', 'destroy');
+    Route::resource('/juragan-angkutan', JuraganAngkutanController::class, Routing::setName('juragan-angkutan'))->except('edit', 'destroy');
+    Route::resource('/juragan-alatberat', JuraganAlatBeratController::class, Routing::setName('juragan-alatberat'))->except('edit', 'destroy');
 
-    Route::group([
-        'prefix' => 'juragan-gudang/{gudang}',
-        'as' => 'juragan-gudang',
-    ], function () {
-        // Route::resource('/regist', JuraganGudangRegistController::class, Routing::setName('.regist'));
-        Route::resource('/contact', JuraganGudangContactController::class, Routing::setName('.contact'));
-        Route::resource('/address', JuraganGudangAddressController::class, Routing::setName('.address'));
-        Route::resource('/document', JuraganGudangDocumentController::class, Routing::setName('.document'));
-        Route::resource('/service', JuraganGudangServiceController::class, Routing::setName('.service'));
-    });
-    Route::resource('/juragan-gudang/regist', JuraganGudangRegistController::class, Routing::setName('juragan-gudang.regist'));
-    Route::resource('/juragan-gudang', JuraganGudangController::class, Routing::setName('juragan-gudang'));
-
-    Route::group([
-        'prefix' => 'juragan-angkutan',
-        'as' => 'juragan-angkutan',
-    ], function () {
-        Route::resource('/regist', JuraganAngkutanRegistController::class, Routing::setName('.regist'));
-    });
-    Route::resource('/juragan-angkutan', JuraganAlatBeratController::class, Routing::setName('juragan-angkutan'));
-
-     Route::group([
-        'prefix' => 'warehouse',
-        'as' => 'warehouse',
-    ], function () {
-        Route::resource('/add', WarehouseAddController::class, Routing::setName('.add'));
-    });
-    Route::resource('/warehouse', WarehouseListController::class, Routing::setName('warehouse'));
-
-    Route::group([
-        'prefix' => 'juragan-alatberat',
-        'as' => 'juragan-alatberat',
-    ], function () {
-        Route::resource('/regist', JuraganAlatBeratRegistController::class, Routing::setName('.regist'));
-    });
-    Route::resource('/juragan-alatberat', JuraganAlatBeratController::class, Routing::setName('juragan-alatberat'));
+    // Route::group([
+    //     'prefix' => 'warehouse',
+    //     'as' => 'warehouse.',
+    // ], function () {
+    //     Route::resource('/add', WarehouseAddController::class, Routing::setName('add'));
+    // });
+    Route::resource('/warehouse', WarehouseController::class, Routing::setName('warehouse'));
 
     Route::group([
         'prefix' => 'profile-company',
-        'as' => 'profile-company',
+        'as' => 'profile-company.',
     ], function () {
-        Route::resource('/contact', ProfileCompanyContactController::class, Routing::setName('.contact'));
-        Route::resource('/address', ProfileCompanyAddressController::class, Routing::setName('.address'));
+        Route::resource('/contact', ProfileCompanyContactController::class, Routing::setName('contact'))->except('show', 'create', 'destroy');
+        Route::resource('/address', ProfileCompanyAddressController::class, Routing::setName('address'))->except('show', 'create', 'destroy');
     });
-    Route::resource('profile-company', ProfileCompanyController::class, Routing::setName('profile-company'));
+    Route::resource('profile-company', ProfileCompanyController::class, Routing::setName('profile-company'))->only('index', 'update');
 });
 
 
@@ -147,41 +117,22 @@ Route::group([
             'prefix' => 'gudang',
             'as' => 'gudang.',
         ], function () {
-            Route::resource('', GudangListController::class, Routing::setName(''));
+            Route::resource('list', GudangListController::class, Routing::setName('list'));
             Route::resource('regist', GudangRegistController::class, Routing::setName('regist'));
         });
         Route::group([
             'prefix' => 'angkutan',
             'as' => 'angkutan.',
         ], function () {
-            Route::resource('', AngkutanListController::class, Routing::setName(''));
+            Route::resource('list', AngkutanListController::class, Routing::setName('list'));
             Route::resource('regist', AngkutanRegistController::class, Routing::setName('regist'));
         });
         Route::group([
             'prefix' => 'alat-berat',
-            'as' => 'alat-berat',
+            'as' => 'alat-berat.',
         ], function () {
-            Route::resource('/', AlatBeratListController::class, Routing::setName(''));
+            Route::resource('list', AlatBeratListController::class, Routing::setName('list'));
             Route::resource('regist', AlatBeratRegistController::class, Routing::setName('regist'));
         });
-        // Route::any('/', function () {
-        //     return redirect(route('d-home'));
-        // });
-        // Route::resource('/home', HomeController::class, Routing::setName('home'));
-        // Route::resource('/barang', JuraganBarangController::class, Routing::setName('juragan-barang'));
-        // Route::resource('/gudang', JuraganGudangController::class, Routing::setName('juragan-gudang'));
-        // Route::resource('/angkutan', JuraganAngkutanController::class, Routing::setName('juragan-angkutan'));
-        // Route::resource('/alatberat', JuraganAlatBeratController::class, Routing::setName('juragan-alatberat'));
-        // Route::resource('/profile', ProfileUserController::class, Routing::setName('profile-user'));
-
-
-        // Route::group([
-        //     'prefix' => 'profile-company',
-        //     'as' => 'profile-company.',
-        // ], function () {
-        //     Route::resource('/', ProfileCompanyContactController::class, Routing::setName(''));
-        //     Route::resource('/contact', ProfileCompanyContactController::class, Routing::setName('contact'));
-        //     Route::resource('/address', ProfileCompanyAddressController::class, Routing::setName('address'));
-        // });
     });
 });
