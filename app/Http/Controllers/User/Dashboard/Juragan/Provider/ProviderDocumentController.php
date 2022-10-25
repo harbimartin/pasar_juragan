@@ -11,9 +11,12 @@ use Throwable;
 
 class ProviderDocumentController extends Controller {
     const baseRoute = 'dashboard.provider.document';
-    public function getMySelect() {
+    public function getMySelect($provider) {
+        $provider_id = $provider->provider_type_id;
         return [
-            'document' => Document::where('status', 1)->get()
+            'document' => Document::where('status', 1)->where(function ($q) use ($provider_id) {
+                $q->where('m_provider_type_id', 0)->orWhere('m_provider_type_id', $provider_id);
+            })->get()
         ];
     }
 
@@ -24,10 +27,14 @@ class ProviderDocumentController extends Controller {
      */
     public function index($provider) {
         [$data, $select] = ProviderController::base_index($provider);
-
+        $provider_id = $data->id;
+        $require = Document::whereDoesntHave('provider', function ($qq) use ($provider_id) {
+            $qq->where('t_provider_id', $provider_id)->where('status', '=', 1);
+        })->where(['m_provider_type_id' => $data->provider_type_id, 'status' => 1])->get();
         return view(self::baseRoute . '.index', [
             'data' => $data,
-            'select' => array_merge($select, $this->getMySelect())
+            'select' => array_merge($select, $this->getMySelect($data)),
+            'require' => $require
         ]);
     }
 
@@ -101,7 +108,8 @@ class ProviderDocumentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($provider, $id) {
-        return view(self::baseRoute . '.edit', ['data' => ProviderDocument::find($id), 'select' => $this->getMySelect()]);
+        $data = ProviderDocument::find($id);
+        return view(self::baseRoute . '.edit', ['data' => $data, 'select' => $this->getMySelect($data)]);
     }
 
     /**

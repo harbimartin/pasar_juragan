@@ -19,4 +19,8 @@ class Document extends Model {
         'm_provider_type_id',
         'status'
     ];
+
+    public function provider() {
+        return $this->hasMany(ProviderDocument::class, 'm_doc_id', 'id');
+    }
 }

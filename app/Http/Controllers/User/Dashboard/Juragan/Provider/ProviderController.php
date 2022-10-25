@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User\Dashboard\Juragan\Provider;
 use App\Http\Controllers\Controller;
 use App\Http\Helper\Table;
 use App\Models\BusinessCategory;
+use App\Models\Document;
 use App\Models\Provider;
 use App\Models\ProviderLog;
 use Illuminate\Http\Request;
@@ -134,6 +135,16 @@ class ProviderController extends Controller {
         switch ($request->__type) {
             case 'propose':
                 $provider = Provider::find($id);
+                $provider_id = $provider->id;
+                $require = Document::whereDoesntHave('provider', function ($qq) use ($provider_id) {
+                    $qq->where('t_provider_id', $provider_id)->where('status', '=', 1);
+                })->where(['m_provider_type_id' => $provider->provider_type_id, 'status' => 1])->get();
+                if (sizeof($require) > 0) {
+                    return back()->withErrors([
+                        'update' => 'Gagal melakukan propose! Pastikan anda telah mengisi semua persayaratan dokumen yang harus diunggah. (Pilih Tab Dokumen untuk informasi lebih rinci).'
+                    ]);
+                }
+                return $require;
                 $provider->update([
                     'status' => 'Proposed'
                 ]);

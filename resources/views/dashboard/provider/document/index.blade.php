@@ -1,5 +1,16 @@
 @extends('dashboard.provider.index', ['tab' => 'document'])
 @section('tab-content')
+    @if (sizeof($require) > 0)
+        <div class="rounded-lg border border-yellow-500 bg-yellow-50 text-yellow-700 py-4 px-6 mt-5 mx-6">
+            Perhatian : Untuk dapat melakukan Propose pada Pendaftaran Juragan, pastikan anda telah mengunggah/mengaktifkan
+            Dokumen
+            <span class="font-semibold">
+                @foreach ($require as $req)
+                    {{ $req->doc_desc . '(' . $req->doc_name . ')' . (($loop->first ? ($loop->last ? '.' : '') : $loop->last) ? '.' : ',') }}
+                @endforeach
+            </span>
+        </div>
+    @endif
     @php
         $column_document = [
             'm_doc_id' => ['name' => 'Tipe Dokumen', 'type' => 'Select', 'val' => ['doc_name'], 'api' => 'document', 'full' => true],
