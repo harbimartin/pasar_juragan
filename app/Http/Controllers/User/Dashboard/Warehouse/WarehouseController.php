@@ -138,6 +138,7 @@ class WarehouseController extends Controller {
     public function edit($id) {
         $provider = Warehouse::find($id);
         if ($provider)
+            // return $provider->open_hour;
             return view('dashboard.warehouse.show', ['data' => $provider, 'select' => $this->getMySelect()]);
         return back();
     }
@@ -155,6 +156,7 @@ class WarehouseController extends Controller {
                 Warehouse::find($id)->update(['status' => $request->toggle]);
                 break;
             case 'update':
+                return $request->toArray();
                 $credentials = $request->validate([
                     'm_provider_id' => ['required', 'exists:t_provider_tab,id'],
                     'wh_name' => ['required'],
