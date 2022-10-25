@@ -71,7 +71,7 @@ class ProviderController extends Controller {
             if ($request->file_logo && $request->has('file_logo.0')) {
                 try {
                     $bfile = $request->file_logo[0];
-                    $filename = $company->id . '.' . date("YmdHms") . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
+                    $filename = $company->id . date("YmdHms") . '.' . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
                     if ($company->file_logo)
                         unlink(storage_path('file_logo/') . $company->file_logo);
                     $bfile->move(storage_path('file_logo/'), $filename);
@@ -144,7 +144,6 @@ class ProviderController extends Controller {
                         'update' => 'Gagal melakukan propose! Pastikan anda telah mengisi semua persayaratan dokumen yang harus diunggah. (Pilih Tab Dokumen untuk informasi lebih rinci).'
                     ]);
                 }
-                return $require;
                 $provider->update([
                     'status' => 'Proposed'
                 ]);

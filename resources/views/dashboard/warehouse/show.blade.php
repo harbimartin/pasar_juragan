@@ -27,6 +27,7 @@
         $column = json_encode($column);
     @endphp
 
-    <x-add unique="gudang_add" :column="$column" title="Buat Gudang" :select="$select" idk="id">
-    </x-add>
+    <x-update unique="gudang_update" :data="$data" :column="$column" title="Update Gudang" :select="$select" idk="id"
+        burl="none">
+    </x-update>
 @endsection
