@@ -2,7 +2,7 @@
 @section('content')
     @php
         $column = [
-            'm_provider_id' => ['name' => 'Juragan', 'type' => 'Select', 'val' => ['provider_name'], 'api' => 'provider', 'full' => true],
+            'm_provider_id' => ['name' => 'Juragan Gudang', 'type' => 'Select', 'val' => ['provider_name'], 'api' => 'provider', 'full' => true],
             'wh_name' => ['name' => 'Nama Gudang', 'type' => 'String', 'full' => true],
             'm_province_id' => ['name' => 'Provinsi', 'type' => 'TextSel', 'val' => ['province_code', 'province_name'], 'desc' => [], 'api' => 'province', 'full' => false],
             'm_city_id' => ['name' => 'Kota', 'type' => 'TextSel', 'val' => ['city_name'], 'desc' => [], 'api' => 'city', 'full' => false],
@@ -27,7 +27,6 @@
         $column = json_encode($column);
     @endphp
 
-    <x-update unique="gudang_update" :data="$data" :column="$column" title="Update Gudang" :select="$select" idk="id"
-        burl="none">
+    <x-update unique="gudang_update" :data="$data" :column="$column" title="Update Gudang" :select="$select" idk="id" :>
     </x-update>
 @endsection
