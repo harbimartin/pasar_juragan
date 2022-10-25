@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User\Dashboard\Warehouse;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helper\Table;
 use App\Models\GeoCity;
 use App\Models\GeoProvince;
 use App\Models\Provider;
@@ -44,8 +45,11 @@ class WarehouseController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $data = Warehouse::paginate(10);
-        return view('dashboard.warehouse.list', ['data' => $data]);
+        $company_id = Auth::guard('user')->user()->company->id;
+        $data = Warehouse::whereHas('provider', function($q)use($company_id)    {
+            $q->where('m_company_id', $company_id);
+        })->paginate(10);
+        return view('dashboard.warehouse.list', ['data' => $data->getCollection(), 'prop'=>Table::tableProp($data)]);
     }
 
     /**
@@ -145,7 +149,7 @@ class WarehouseController extends Controller {
                 break;
             case 'update':
                 $credentials = $request->validate([
-                    'm_provider_id' => ['required', 'exists:t_provider_tab'],
+                    'm_provider_id' => ['required', 'exists:t_provider_tab,id'],
                     'wh_name' => ['required'],
                     'm_province_id' => ['required'],
                     'm_city_id' => ['required'],
