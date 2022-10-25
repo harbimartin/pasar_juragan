@@ -4,6 +4,7 @@ namespace App\Models\Warehouse;
 
 use App\Models\GeoCity;
 use App\Models\GeoProvince;
+use App\Models\Provider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,6 +17,7 @@ class   Warehouse extends Model {
      * @var array<int, string>
      */
     protected $fillable = [
+        'm_provider_id',
         'wh_name',
         'm_city_id',
         'm_province_id',
@@ -36,6 +38,9 @@ class   Warehouse extends Model {
         'status'
     ];
 
+    public function provider() {
+        return $this->hasOne(Provider::class, 'id', 'm_provider_id');
+    }
     public function province() {
         return $this->hasOne(GeoProvince::class, 'id', 'm_province_id');
     }
@@ -50,5 +55,8 @@ class   Warehouse extends Model {
     }
     public function storage_method() {
         return $this->hasOne(WarehouseStorageMethod::class, 'id', 'm_wh_storage_methode');
+    }
+    public function open_hour() {
+        return $this->hasMany(WarehouseOpenHour::class, 'm_warehouse_id', 'id');
     }
 }

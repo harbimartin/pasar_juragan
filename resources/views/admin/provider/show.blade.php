@@ -7,7 +7,7 @@
     $hasVFile = [];
     $sort = false;
     ?>
-    <form action="{{ Routing::getUpdateWithID($data->id, 'admin.gudang.regist.update') }}" method="POST"
+    <form action="{{ Routing::getUpdateWithID($data->id, 'admin.gudang.regist') }}" method="POST"
         class="md:px-3 text-sm md:text-base" enctype="multipart/form-data">
         @csrf
         @method('PUT')
