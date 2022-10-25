@@ -120,7 +120,18 @@
         },
         methods: {
             checkboxCheck(id,index, event){
-                console.log(id, index,"check box", event);
+                var box_input_time_open = document.getElementById('inputan-time-open-' + index);
+                var box_input_time_close = document.getElementById('inputan-time-close-' + index);
+                var box_input_day = document.getElementById('inputan-day-' + index);
+                if(event.target.checked){
+                    box_input_time_open.disabled = false;
+                    box_input_time_close.disabled = false;
+                    box_input_day.disabled = false;
+                } else {
+                    box_input_time_open.disabled = true;
+                    box_input_time_close.disabled = true;
+                    box_input_day.disabled = true;
+                }
             },
             updateParamArray(array, remove = undefined) {
                 var url = new URL(window.location.href);

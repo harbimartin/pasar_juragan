@@ -20,13 +20,13 @@ class WarehouseController extends Controller {
     public function getMySelect() {
         $company = Auth::guard('user')->user()->company;
         $days = [
-            ['nama' => 'Senin', 'id' => 1],
-            ['nama' => 'Selasa', 'id' => 2],
-            ['nama' => 'Rabu', 'id' => 3],
-            ['nama' => 'Kamis', 'id' => 4],
-            ['nama' => 'Jumat', 'id' => 5],
-            ['nama' => 'Sabtu', 'id' => 6],
-            ['nama' => 'Minggu', 'id' => 7],
+            ['name' => 'Senin', 'id' => 1],
+            ['name' => 'Selasa', 'id' => 2],
+            ['name' => 'Rabu', 'id' => 3],
+            ['name' => 'Kamis', 'id' => 4],
+            ['name' => 'Jumat', 'id' => 5],
+            ['name' => 'Sabtu', 'id' => 6],
+            ['name' => 'Minggu', 'id' => 7],
         ];
         return [
             'provider' => Provider::where(['provider_type_id' => Provider::WAREHOUSE, 'm_company_id' => $company->id, 'status' => 'Approved'])->get(),
@@ -64,6 +64,7 @@ class WarehouseController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+        // return $request->toArray();
         $credentials = $request->validate([
             'm_provider_id' => ['required', 'exists:t_provider_tab'],
             'wh_name' => ['required'],
@@ -81,7 +82,8 @@ class WarehouseController extends Controller {
             'tdg_expired_date' => ['required'],
             'm_wh_category_id' => ['required'],
             'm_wh_function_id' => ['required'],
-            'm_wh_storage_methode' => ['required']
+            'm_wh_storage_methode' => ['required'],
+            'day_open' => ['required']
         ]);
         $credentials['status'] = 1;
         if ($request->tdg_attachment && $request->hasFile('tdg_attachment.0')) {
@@ -103,6 +105,7 @@ class WarehouseController extends Controller {
             ]);
         }
         $wh = Warehouse::create($credentials);
+        // $wh = 
         return redirect(route($this->baseRoute . '.show', $wh->id));
     }
 
