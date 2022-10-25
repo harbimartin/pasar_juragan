@@ -109,7 +109,7 @@ class WarehouseController extends Controller {
             ]);
         }
         $wh = Warehouse::create($credentials);
-        // $wh = 
+        $wh->open_hour()->createMany($request->day_open);
         return redirect(route($this->baseRoute . '.show', $wh->id));
     }
 
