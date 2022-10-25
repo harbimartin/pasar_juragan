@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\utils\UtilsApiController;
 use App\Http\Controllers\API\auth\AuthApiController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,3 +20,6 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('v1/auth/logout', [AuthApiController::class, "api_logout"]);
     Route::get('v1/auth/me', [AuthApiController::class, "api_me"]);
 });
+
+Route::post('v1/util/province',[UtilsApiController::class,'store_province']);
+Route::post('v1/util/city',[UtilsApiController::class,'store_city']);
