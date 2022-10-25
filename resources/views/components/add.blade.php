@@ -415,6 +415,25 @@
                     @break
 
                     @case('OpenHour')
+                        <div class="w-full">
+                            @foreach ($select[$param->api] as $i => $value )
+                                <div class="flex">
+                                    <div class='px-4 whitespace-nowrap my-auto'>
+                                        <input type="checkbox" id="{{ $key }}"
+                                            name="{{ $key }}" value="{{ $value['id'] }}" v-on:change="checkboxCheck({{$value['id']}},{{$i}}, $event)" >
+                                        <label for="{{ $key }}"
+                                            class="pr-3">{{ $value['name'] }}</label>
+                                    </div>
+                                    <div class="ml-auto" v-if="">
+                                        <div>
+                                            <input id="{{ $key }}" name="{{ $key }}" type="time"
+                                                class="rounded border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
+                                            <label for="{{ $key }}"  class="pr-3">{{ $value['name'] }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
                     @break
 
                     @default

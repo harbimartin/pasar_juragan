@@ -98,6 +98,7 @@
         el: "#vue-app",
         data: {
             onPopup: undefined,
+            checkbox_state: false,
             files: {
                 @foreach (VueControl::Mono()->pool as $key => $files)
                     {{$key}} : [
@@ -118,6 +119,9 @@
         created() {
         },
         methods: {
+            checkboxCheck(id,index, event){
+                console.log(id, index,"check box", event);
+            },
             updateParamArray(array, remove = undefined) {
                 var url = new URL(window.location.href);
                 var search_params = url.searchParams;

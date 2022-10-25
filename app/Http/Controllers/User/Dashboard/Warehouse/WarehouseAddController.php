@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\User\Dashboard\Warehouse;
 
 use App\Http\Controllers\Controller;
+use App\Models\GeoCity;
+use App\Models\GeoProvince;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -14,8 +16,8 @@ class WarehouseAddController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $call_province = Http::get("https://dev.farizdotid.com/api/daerahindonesia/provinsi");
-        $call_city = Http::get("https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=36");
+        $call_province = GeoProvince::all();
+        $call_city = GeoCity::all();
         $days = [
             ['nama' => 'Senin', 'id' => 1],
             ['nama' => 'Selasa', 'id' => 2],

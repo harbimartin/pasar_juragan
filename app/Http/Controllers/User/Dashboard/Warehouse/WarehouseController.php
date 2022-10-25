@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\User\Dashboard\Warehouse;
 
 use App\Http\Controllers\Controller;
+use App\Models\GeoCity;
+use App\Models\GeoProvince;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -27,16 +29,16 @@ class WarehouseController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $call_province = Http::get("https://dev.farizdotid.com/api/daerahindonesia/provinsi");
-        $call_city = Http::get("https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=36");
+        $call_province = GeoProvince::all();
+        $call_city = GeoCity::all();
         $days = [
-            ['nama' => 'Senin', 'id' => 1],
-            ['nama' => 'Selasa', 'id' => 2],
-            ['nama' => 'Rabu', 'id' => 3],
-            ['nama' => 'Kamis', 'id' => 4],
-            ['nama' => 'Jumat', 'id' => 5],
-            ['nama' => 'Sabtu', 'id' => 6],
-            ['nama' => 'Minggu', 'id' => 7],
+            ['name' => 'Senin', 'id' => 1],
+            ['name' => 'Selasa', 'id' => 2],
+            ['name' => 'Rabu', 'id' => 3],
+            ['name' => 'Kamis', 'id' => 4],
+            ['name' => 'Jumat', 'id' => 5],
+            ['name' => 'Sabtu', 'id' => 6],
+            ['name' => 'Minggu', 'id' => 7],
         ];
         $warehouse_type = [
             ['nama' => 'Terbuka', 'id' => 1],
@@ -48,8 +50,8 @@ class WarehouseController extends Controller {
             ['nama' => 'tulisan tidak terbaca', 'id' => 3],
         ];
         $select = [
-            'province' => $call_province->json()["provinsi"],
-            'city' => $call_city->json()["kota_kabupaten"],
+            'province' => $call_province,
+            'city' => $call_city,
             'days' => $days,
             'warehouse_type' => $warehouse_type,
             'warehouse_func' => $warehouse_func
