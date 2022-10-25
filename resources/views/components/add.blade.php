@@ -419,8 +419,8 @@
                             @foreach ($select[$param->api] as $i => $value )
                                 <div class="flex">
                                     <div class='px-4 whitespace-nowrap my-auto'>
-                                        <input type="checkbox" id="{{ $key }}" v-on:change="checkboxCheck({{$value['id']}},{{$i}},$event)" >
-                                        <label for="{{ $key }}"
+                                        <input type="checkbox" id="{{ $key }}{{$i}}" v-on:change="checkboxCheck({{$value['id']}},{{$i}},$event)" >
+                                        <label for="{{ $key }}{{$i}}"
                                             class="pr-3">{{ $value['name'] }}</label>
                                     </div>
                                     <div class="ml-auto pb-5 pt-3 border-b-2 "/>
