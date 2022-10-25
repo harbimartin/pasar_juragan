@@ -2,10 +2,14 @@
 
 namespace App\Http\Helper;
 
+use App\Models\Provider;
 use Illuminate\Support\Facades\Session;
 
 class MenuAdmin {
     public static function getMenu() {
+        Session::put('notif_admin.gudang.regist', Provider::where(['status' => 'Proposed', 'provider_type_id' => Provider::WAREHOUSE])->count());
+        Session::put('notif_admin.angkutan.regist', Provider::where(['status' => 'Proposed', 'provider_type_id' => Provider::TRANSPORT])->count());
+        Session::put('notif_admin.alat-berat.regist', Provider::where(['status' => 'Proposed', 'provider_type_id' => Provider::HEAVY_EQUIPMENT])->count());
         $menu = Session::get('menu_admin');
 
         if ($menu)

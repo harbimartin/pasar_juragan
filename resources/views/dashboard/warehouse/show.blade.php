@@ -22,11 +22,12 @@
             'm_wh_function_id' => ['name' => 'Tipe Fungsi', 'type' => 'TextSel', 'val' => ['wh_function'], 'desc' => ['wh_function_desc'], 'api' => 'function', 'full' => true],
             'm_wh_storage_methode' => ['name' => 'Metode Penyimpanan', 'type' => 'TextSel', 'val' => ['wh_storage_methode'], 'desc' => ['wh_storage_methode_desc'], 'api' => 'storage_methode', 'full' => true],
 
-            'day_open' => ['name' => 'Open Days & Hour', 'type' => 'OpenHour', 'val' => ['name'], 'api' => 'days', 'full' => true],
+            'day_open' => ['name' => 'Hari Buka', 'type' => 'Select', 'val' => ['nama'], 'api' => 'days', 'full' => false],
         ];
         $column = json_encode($column);
     @endphp
 
-    <x-add unique="gudang_add" :column="$column" title="Buat Gudang" :select="$select" idk="id">
-    </x-add>
+    <x-update unique="gudang_update" :data="$data" :column="$column" title="Update Gudang" :select="$select" idk="id"
+        burl="none">
+    </x-update>
 @endsection

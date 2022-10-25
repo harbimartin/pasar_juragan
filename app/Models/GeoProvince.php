@@ -16,6 +16,7 @@ class GeoProvince extends Model {
     protected $fillable = [
         'province_code',
         'province_name',
+        // 'iso2',
         'status'
     ];
 

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class WarehouseFunction extends Model {
     use HasFactory;
-    protected $table = "m_wh_storage_methode_tab";
+    protected $table = "m_wh_function_tab";
     /**
      * The attributes that are mass assignable.
      *
