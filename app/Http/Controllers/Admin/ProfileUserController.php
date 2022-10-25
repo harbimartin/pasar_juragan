@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -69,11 +70,8 @@ class ProfileUserController extends Controller {
         switch ($request->__type) {
             case 'update':
                 try {
-                    if (Auth::guard('user')->user()->m_company_id != $id)
-                        return back()->withErrors([
-                            'update' => "Anda tidak punya otoritas untuk melakukan update pada Perusahaan ini."
-                        ]);
-                    User::find($id)->update($request->toArray());
+                    $user = Auth::guard('admin')->user();
+                    Admin::find($user->id)->update($request->toArray());
                 } catch (Throwable $th) {
                     return back()->withErrors([
                         'update' => $th->getMessage()

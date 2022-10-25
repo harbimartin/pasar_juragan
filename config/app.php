@@ -233,7 +233,8 @@ return [
         'Menu' => App\Http\Helper\Menu::class,
         'MenuAdmin' => App\Http\Helper\MenuAdmin::class,
         'Routing' => App\Http\Helper\Routing::class,
-        'VueControl' => App\Http\Helper\VueControl::class
+        'VueControl' => App\Http\Helper\VueControl::class,
+        'Provider' => App\Models\Provider::class
     ],
 
 ];

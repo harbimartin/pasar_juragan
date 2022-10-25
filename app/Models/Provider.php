@@ -32,21 +32,39 @@ class Provider extends Model {
         return $this->hasOne(Company::class, 'id', 'm_company_id');
     }
 
+    public function category() {
+        return $this->hasOne(BusinessCategory::class, 'id', 'm_business_category_id');
+    }
+
     public function log() {
         return $this->hasMany(ProviderLog::class, 't_provider_id', 'id');
     }
 
-
     public function address() {
         return $this->hasMany(ProviderAddress::class, 't_provider_id', 'id');
     }
+
     public function contact() {
         return $this->hasMany(ProviderContact::class, 't_provider_id', 'id');
     }
+
     public function document() {
         return $this->hasMany(ProviderDocument::class, 't_provider_id', 'id');
     }
+
     public function service() {
         return $this->hasMany(ProviderService::class, 't_provider_id', 'id');
+    }
+
+    public static function status_attr() {
+        return [
+            'name' => 'Status', 'type' => 'SState',
+            'color' => [
+                'Proposed' => 'blue',
+                'Pending' => 'yellow',
+                'Approved' => 'green'
+            ],
+            'align' => 'center'
+        ];
     }
 }

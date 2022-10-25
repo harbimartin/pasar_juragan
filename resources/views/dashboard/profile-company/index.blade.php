@@ -6,8 +6,8 @@
             'comp_npwp' => ['name' => 'NPWP', 'type' => 'String', 'full' => true, 'lock' => true],
             'comp_website' => ['name' => 'Website', 'type' => 'String', 'full' => true],
             'm_business_category_id' => ['name' => 'Kategori Bisnis', 'type' => 'Select', 'val' => ['business_category'], 'api' => 'business_category', 'full' => true],
-            'comp_logo' => ['name' => 'Logo', 'type' => 'Image', 'folder' => 'file_logo'],
-            'file_logo' => ['name' => 'Upload Logo', 'type' => 'Upload', 'accept' => 'image/*', 'key' => 'file', 'folder' => 'comp_logo', 'mono' => true, 'full' => true],
+            'comp_logo' => ['name' => 'Logo', 'type' => 'Image', 'module' => 'company'],
+            'file_logo' => ['name' => 'Upload Logo', 'type' => 'Upload', 'accept' => 'image/*', 'key' => 'file', 'folder' => 'comp_logo', 'anonymous' => true, 'mono' => true, 'full' => true],
         ];
         $column = json_encode($column);
     @endphp

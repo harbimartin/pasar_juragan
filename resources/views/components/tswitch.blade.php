@@ -119,15 +119,12 @@
         @break
     @case('SState')
         <?php
-            $val = 0;
-            foreach($param->switch as $i=>$sw){
-                if ($sw == $item[$key]){
-                    $val = $i;
-                }
-            }
+            $data = $item[$key];
+            $col = isset($param->color->{$data}) ? $param->color->{$data} : 'gray';
+            $title = isset($param->title->{$data}) ? $param->title->{$data} : $data;
         ?>
-            <small class="px-2 inline-flex mx-auto leading-5 font-semibold rounded-full bg-{{$param->col[$val]}}-100 text-{{$param->col[$val]}}-800">
-                {{$param->val[$val]}}
+            <small class="px-2 inline-flex mx-auto leading-5 font-semibold rounded-full bg-{{$col}}-100 text-{{$col}}-800">
+                {{$title}}
             </small>
         @break
     @case('State')

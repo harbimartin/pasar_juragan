@@ -8,7 +8,8 @@
     <title>Juragan Tanah</title>
     <meta name="description"
         content="Get started with a free landing page built with Tailwind CSS and the Flowbite Blocks system.">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    {{-- <script src="https://unpkg.com/vue/dist/vue.min.js"></script> --}}
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -41,11 +42,10 @@
             </a>
 
             @php
-                $sel_tab = isset($on) ? $on : '';
                 $menus = MenuAdmin::getMenu();
             @endphp
             @foreach ($menus as $imenu => $menu)
-                <x-sub-menu :menu="$menu" :on="$sel_tab" :level="'tmenu'" :index="$imenu">
+                <x-sub-menu :menu="$menu" :level="'tmenu'" :index="$imenu">
                 </x-sub-menu>
             @endforeach
             <a href="{{ route('admin.logout') }}">
