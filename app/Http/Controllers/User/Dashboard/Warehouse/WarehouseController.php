@@ -138,7 +138,6 @@ class WarehouseController extends Controller {
     public function edit($id) {
         $provider = Warehouse::find($id);
         if ($provider)
-            // return $provider->open_hour;
             return view('dashboard.warehouse.show', ['data' => $provider, 'select' => $this->getMySelect()]);
         return back();
     }

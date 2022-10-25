@@ -529,20 +529,14 @@
                 @case('OpenHour')
                     <div class="w-full">
                         @foreach ($select[$param->api] as $i => $value )
-                            @if (isset($datas->open_hour[$i]))
-                                @if ($datas->open_hour[$i]['open_day']== $value['id'])
-                                    {{$datas->open_hour[$i]['open_day']}} , {{$value['id']}}
-                                    
-                                @endif
-                            @endif
                             <div class="flex">
                                 <div class='px-4 whitespace-nowrap my-auto'>
                                     <input type="checkbox" id="{{ $key }}{{$i}}"
-                                    @if ( isset($datas->open_hour[$i]))
-                                        @if ($datas->open_hour[$i]['open_day'] == $value['id'])
+                                    {{-- @if ( isset($datas->open_hour[$i])) --}}
+                                        @if (isset($datas->open_hour[$i]['open_day']) && $datas->open_hour[$i]['open_day'] == $value['id'])
                                             checked
                                         @endif
-                                    @endif
+                                    {{-- @endif --}}
                                     v-on:change="checkboxCheck({{$value['id']}},{{$i}},$event)" >
                                     <label for="{{ $key }}{{$i}}"
                                         class="pr-3">{{ $value['name'] }}</label>
@@ -552,7 +546,6 @@
                                         <input 
                                             @if (isset($datas->open_hour[$i]['open_day']))
                                                 value="{{$datas->open_hour[$i]['open_day']}}"
-                                                {{-- disabled --}}
                                             @else
                                                 value="{{$value['id']}}"
                                                 disabled
