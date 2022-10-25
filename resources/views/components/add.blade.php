@@ -428,10 +428,10 @@
                                             <input hidden disabled type="text" name="{{$key}}[{{$value['id']}}][open_day]" value="{{$value['id']}}" id="inputan-day-{{$i}}"/>
                                             <input disabled name="{{ $key }}[{{$value['id']}}][open_hour]" type="time" id="inputan-time-open-{{$i}}"
                                                 class="disabled:bg-gray-300 rounded ml-auto border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
-                                            <label for="{{ $key }}"  class="pr-3">Open Hour</label>
+                                            <label for="inputan-time-open-{{$i}}"  class="pr-3">Open Hour</label>
                                             <input disabled name="{{ $key }}[{{$value['id']}}][close_hour]" type="time" id="inputan-time-close-{{$i}}"
                                                 class="disabled:bg-gray-300 rounded ml-auto border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
-                                            <label for="{{ $key }}"  class="pr-3">Close Hour</label>
+                                            <label for="inputan-time-open-{{$i}}"  class="pr-3">Close Hour</label>
                                         </div>
                                         <div class=""></div>
                                     </div>
