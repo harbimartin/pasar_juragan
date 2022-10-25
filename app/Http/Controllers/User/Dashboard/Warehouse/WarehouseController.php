@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User\Dashboard\Warehouse;
 
 use App\Http\Controllers\Controller;
+use App\Models\Warehouse\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -13,11 +14,7 @@ class WarehouseController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        // $company = Auth::guard('user')->user()->company;
-        $data = [
-            "id" => "1"
-        ];
-        // $data = $data->paginate(10);
+        $data = Warehouse::paginate(10);
         return view('dashboard.warehouse.list', ['data' => $data]);
     }
 
