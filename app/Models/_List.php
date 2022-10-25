@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @var Array $sortable column key with null as self attribute, and array to define relation sort
  */
 
-class _List extends Model {
+abstract class _List extends Model {
     public $timestamps = false;
     protected $searchable = [];
     protected $sortable = [];
@@ -84,9 +84,9 @@ class _List extends Model {
                 }
             }
         }
-        foreach ($this->filterable as $f) {
-            if ($request->{$f})
-                $query->where($f, $request->{$f});
+        foreach ($this->filterable as $k => $f) {
+            if ($request->{$k})
+                $query->where($f, $request->{$k});
         }
         return $query;
     }

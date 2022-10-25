@@ -2,13 +2,14 @@
 
 namespace App\Models\Warehouse;
 
+use App\Models\_List;
 use App\Models\GeoCity;
 use App\Models\GeoProvince;
 use App\Models\Provider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class   Warehouse extends Model {
+class   Warehouse extends _List {
     use HasFactory;
     protected $table = "m_warehouse_tab";
     /**
@@ -36,6 +37,17 @@ class   Warehouse extends Model {
         'm_wh_category_id',
         'm_wh_storage_methode',
         'status'
+    ];
+    protected $sortable = [
+        'wh_name',
+        'status'
+    ];
+    protected $filterable = [
+        'city' => 'm_city_id',
+        'province' => 'm_province_id',
+        'function' => 'm_wh_function_id',
+        'category' => 'm_wh_category_id',
+        'storage' => 'm_wh_storage_methode'
     ];
 
     public function provider() {

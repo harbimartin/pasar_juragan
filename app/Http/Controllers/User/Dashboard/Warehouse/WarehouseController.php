@@ -44,7 +44,7 @@ class WarehouseController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index(Request $request) {
         $sel_filter = [
             'province' => ['name'=>'Provinsi', 'key'=>'province_name', 'option' => GeoProvince::get()],
             'city' => ['name'=>'Kota', 'key'=>'city_name', 'option' => GeoCity::get()],
@@ -53,7 +53,7 @@ class WarehouseController extends Controller {
             'storage_methode' => ['name'=>'Metode Penyimpanan', 'key'=>'wh_storage_methode', 'option' => WarehouseStorageMethod::get()],
         ];
         $company_id = Auth::guard('user')->user()->company->id;
-        $data = Warehouse::whereHas('provider', function($q)use($company_id)    {
+        $data = Warehouse::filter($request)->whereHas('provider', function($q)use($company_id)    {
             $q->where('m_company_id', $company_id);
         })->paginate(10);
         return view('dashboard.warehouse.list', ['data' => $data->getCollection(), 'prop'=>Table::tableProp($data), 'sel_filter'=>$sel_filter]);
