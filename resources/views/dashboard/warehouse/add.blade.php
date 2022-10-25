@@ -22,7 +22,7 @@
             'm_wh_function_id' => ['name' => 'Tipe Fungsi', 'type' => 'TextSel', 'val' => ['wh_function'], 'desc' => ['wh_function_desc'], 'api' => 'function', 'full' => true],
             'm_wh_storage_methode' => ['name' => 'Metode Penyimpanan', 'type' => 'TextSel', 'val' => ['wh_storage_methode'], 'desc' => ['wh_storage_methode_desc'], 'api' => 'storage_methode', 'full' => true],
 
-            'day_open' => ['name' => 'Open Days & Hour', 'type' => 'OpenHour', 'val' => ['name'], 'api' => 'days', 'full' => true],
+            'day_open' => ['name' => 'Hari & Jam Buka', 'type' => 'OpenHour', 'val' => ['name'], 'api' => 'days', 'full' => true]
         ];
         $column = json_encode($column);
     @endphp

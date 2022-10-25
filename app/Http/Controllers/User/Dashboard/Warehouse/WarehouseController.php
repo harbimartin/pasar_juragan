@@ -45,11 +45,18 @@ class WarehouseController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        $sel_filter = [
+            'province' => ['name'=>'Provinsi', 'key'=>'province_name', 'option' => GeoProvince::get()],
+            'city' => ['name'=>'Kota', 'key'=>'city_name', 'option' => GeoCity::get()],
+            'function' => ['name'=>'Fungsi', 'key'=>'wh_function', 'option' => WarehouseFunction::get()],
+            'category' => ['name'=>'Kategori', 'key'=>'wh_category', 'option' => WarehouseCategory::get()],
+            'storage_methode' => ['name'=>'Metode Penyimpanan', 'key'=>'wh_storage_methode', 'option' => WarehouseStorageMethod::get()],
+        ];
         $company_id = Auth::guard('user')->user()->company->id;
         $data = Warehouse::whereHas('provider', function($q)use($company_id)    {
             $q->where('m_company_id', $company_id);
         })->paginate(10);
-        return view('dashboard.warehouse.list', ['data' => $data->getCollection(), 'prop'=>Table::tableProp($data)]);
+        return view('dashboard.warehouse.list', ['data' => $data->getCollection(), 'prop'=>Table::tableProp($data), 'sel_filter'=>$sel_filter]);
     }
 
     /**
@@ -70,7 +77,7 @@ class WarehouseController extends Controller {
     public function store(Request $request) {
         // return $request->toArray();
         $credentials = $request->validate([
-            'm_provider_id' => ['required', 'exists:t_provider_tab'],
+            'm_provider_id' => ['required', 'exists:t_provider_tab,id'],
             'wh_name' => ['required'],
             'm_province_id' => ['required'],
             'm_city_id' => ['required'],
@@ -110,7 +117,7 @@ class WarehouseController extends Controller {
         }
         $wh = Warehouse::create($credentials);
         $wh->open_hour()->createMany($request->day_open);
-        return redirect(route($this->baseRoute . '.show', $wh->id));
+        return redirect(route($this->baseRoute . '.edit', $wh->id));
     }
 
     /**

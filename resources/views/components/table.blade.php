@@ -83,7 +83,7 @@
                         </div>
                         @endif
                         @if($search)
-                        <div class="w-full md:w-auto flex md:ml-auto mt-1">
+                        <div class="w-full md:w-auto flex md:ml-auto mt-1 border-b-2 pb-1 @if(request()->sc) border-blue-300 @endif">
                             <input
                                 type="search"
                                 id="{{$sign?$sign.'_':''}}searchs"
@@ -96,21 +96,21 @@
                         @endif
                 @endif
                 @if($selfilter)
-                <div class="md:mx-2 flex flex-col md:flex-row gap-y-2 gap-2 mt-1 md:my-0">
+                <div class="md:mx-2 flex flex-col md:flex-row flex-wrap gap-y-2 gap-2 mt-1 md:my-0">
                     <div class="my-auto mr-1 text-gray-400 hidden md:block">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
                             <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
                         </svg>
                     </div>
                     @foreach($selfilter as $fkey => $flt)
-                    <div class="flex gap-x-2 md:gap-x-0">
+                    <?php $selected = request()->{$fkey}; ?>
+                    <div class="flex gap-x-2 md:gap-x-0 border-b-2 pb-1 @if($selected)border-blue-300 @endif">
                         <div class="my-auto">{{$flt['name']}}</div>
                         <select
                             v-on:change="updateParam('{{$fkey}}', $event.target.value);"
                             class="md:ml-1 mr-1 rounded border border-gray-300 col-start-2 col-end-7 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition"
                         >
                             <option value="all">All</option>
-                            <?php $selected = request()->{$fkey}; ?>
                             @foreach($flt['option'] as $opt)
                                 <option value="{{$opt['id']}}" @if($selected == $opt['id']) selected @endif>{{ $opt[$flt['key']] }}</option>
                             @endforeach

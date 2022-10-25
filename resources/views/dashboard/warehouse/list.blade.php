@@ -42,6 +42,6 @@
         'act' => ['name' => 'Action', 'type' => 'Edit', 'route' => 'dashboard.warehouse.list', 'align' => 'center', 'sort' => false],
     ]);
     ?>
-    <x-table :column="$table_warehouse" :datas="$data" :prop="$prop">
+    <x-table :column="$table_warehouse" :datas="$data" :prop="$prop" :selfilter="$sel_filter">
     </x-table>
 @endsection
