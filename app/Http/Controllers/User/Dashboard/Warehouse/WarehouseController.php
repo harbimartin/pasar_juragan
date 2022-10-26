@@ -10,9 +10,11 @@ use App\Models\Provider;
 use App\Models\Warehouse\Warehouse;
 use App\Models\Warehouse\WarehouseCategory;
 use App\Models\Warehouse\WarehouseFunction;
+use App\Models\Warehouse\WarehouseOpenHour;
 use App\Models\Warehouse\WarehouseStorageMethod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Throwable;
 
@@ -155,7 +157,6 @@ class WarehouseController extends Controller {
                 Warehouse::find($id)->update(['status' => $request->toggle]);
                 break;
             case 'update':
-                return $request->toArray();
                 $credentials = $request->validate([
                     'm_provider_id' => ['required', 'exists:t_provider_tab,id'],
                     'wh_name' => ['required'],
@@ -176,6 +177,7 @@ class WarehouseController extends Controller {
                     'm_wh_storage_methode' => ['required']
                 ]);
                 try {
+                    DB::beginTransaction();
                     $wh = Warehouse::find($id);
                     if ($request->file_logo && $request->has('file_logo.0')) {
                         try {
@@ -192,7 +194,23 @@ class WarehouseController extends Controller {
                         }
                     }
                     $wh->update($credentials);
+                    $day_open_add = array();
+                    foreach($request->day_open as $day_open){
+                        if ($day_open['id']){
+                            if (isset($day_open['open_day']))
+                                WarehouseOpenHour::find($day_open['id'])->update($day_open);
+                            else
+                                WarehouseOpenHour::find($day_open['id'])->delete();
+                        }else{
+                            if (isset($day_open['open_day']))
+                                $day_open_add[] = $day_open;
+                        }
+                    }
+                    if (sizeof($day_open_add) > 0)
+                        $wh->open_hour()->createMany($day_open_add);
+                    DB::commit();
                 } catch (Throwable $th) {
+                    DB::rollback();
                     return back()->withErrors([
                         'update' => $th->getMessage()
                     ]);

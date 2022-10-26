@@ -105,9 +105,9 @@
         }
 
         input:checked+label {
-            background-color: #f5fbff;
             filter: none;
             font-weight: 500;
+            color:black;
         }
 
         input:checked+label>span {

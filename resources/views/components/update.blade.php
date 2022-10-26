@@ -527,57 +527,57 @@
                 @break
 
                 @case('OpenHour')
-                    <div class="w-full">
-                        @foreach ($select[$param->api] as $i => $value )
-                            <div class="flex">
-                                <div class='px-4 whitespace-nowrap my-auto'>
-                                    <input type="checkbox" id="{{ $key }}{{$i}}"
-                                    {{-- @if ( isset($datas->open_hour[$i])) --}}
-                                        @if (isset($datas->open_hour[$i]['open_day']) && $datas->open_hour[$i]['open_day'] == $value['id'])
-                                            checked
-                                        @endif
-                                    {{-- @endif --}}
-                                    v-on:change="checkboxCheck({{$value['id']}},{{$i}},$event)" >
-                                    <label for="{{ $key }}{{$i}}"
-                                        class="pr-3">{{ $value['name'] }}</label>
-                                </div>
-                                <div class="ml-auto pb-5 pt-3 border-b-2 "/>
-                                    <div class="flex whitespace-nowrap ">
-                                        <input 
-                                            @if (isset($datas->open_hour[$i]['open_day']))
-                                                value="{{$datas->open_hour[$i]['open_day']}}"
-                                            @else
-                                                value="{{$value['id']}}"
-                                                disabled
-                                            @endif
-                                            hidden type="text" name="{{$key}}[{{$value['id']}}][open_day]" id="inputan-day-{{$i}}"/>
-                                        <input  
-                                            @if ( !isset($datas->open_hour[$i]))
-                                                disabled
-                                            @endif
-                                            @if (isset($datas->open_hour[$i]['open_hour']))
-                                                value="{{ $datas->open_hour[$i]['open_hour'] }}"
-                                            @endif
-                                            name="{{ $key }}[{{$value['id']}}][open_hour]" type="time" id="inputan-time-open-{{$i}}"
-                                            class="disabled:bg-gray-300 rounded ml-auto border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
-                                        <label for="inputan-time-open-{{$i}}"  class="pr-3">Open Hour</label>
-                                        <input 
-                                            @if ( !isset($datas->open_hour[$i]))
-                                                disabled
-                                            @endif
-                                            
-                                            @if (isset($datas->open_hour[$i]['close_hour']))
-                                                value="{{ $datas->open_hour[$i]['close_hour'] }}"
-                                            @endif
+                @php
+                    $openhour = array();
+                    foreach($datas->open_hour as $obj){
+                        $openhour[$obj->open_day] = $obj;
+                    }
+                @endphp
+                    <div class="col-start-2 col-end-5 shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                        <table class="divide-y divide-gray-200 min-w-full">
+                            <thead class="bg-gray-50 text-xs md:text-xs">
+                                <tr>
+                                    <th scope="col">
+                                        Hari
+                                    </th>
+                                    <th scope="col">
+                                        Buka
+                                    </th>
+                                    <th scope="col">
+                                        Tutup
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($select[$param->api] as $i => $value )
+                                @php $open = $openhour[$value['id']] ?? null; @endphp
+                                <tr>
+                                    <td height="50" class="px-3 bg-gray-50 text-gray-500">
+                                        <input
+                                            type="checkbox"
+                                            id="{{ $key }}{{$i}}"
+                                            v-on:change="checkboxCheck({{$value['id']}},{{$i}},$event)"
 
-                                            name="{{ $key }}[{{$value['id']}}][close_hour]" type="time" id="inputan-time-close-{{$i}}"
-                                            class="disabled:bg-gray-300 rounded ml-auto border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
-                                        <label for="inputan-time-open-{{$i}}"  class="pr-3">Close Hour</label>
-                                    </div>
-                                    <div class=""></div>
-                                </div>
-                            </div>
-                        @endforeach
+                                            @if ($open)
+                                                checked
+                                            @endif
+                                        >
+                                        <label for="{{ $key }}{{$i}}" class="pr-3">{{ $value['name'] }}</label>
+                                        <input hidden name="{{$key}}[{{$i}}][id]" value="{{$open['id']}}">
+                                        <input hidden @if($open) @else disabled @endif type="text" name="{{$key}}[{{$i}}][open_day]" value="{{$value['id']}}" id="inputan-day-{{$i}}"/>
+                                    </td>
+                                    <td height="50" class="text-center bg-gray-50 px-3">
+                                        <input @if(!$open)disabled @else value="{{$open->open_hour}}" @endif name="{{ $key }}[{{$i}}][open_hour]" type="time" id="inputan-time-open-{{$i}}"
+                                            class="w-2/3 disabled:bg-gray-300 rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
+                                    </td>
+                                    <td height="50" class="text-center bg-gray-50 px-3">
+                                        <input @if(!$open)disabled @else value="{{$open->close_hour}}" @endif name="{{ $key }}[{{$i}}][close_hour]" type="time" id="inputan-time-close-{{$i}}"
+                                        class="w-2/3 disabled:bg-gray-300 rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 @break
 
