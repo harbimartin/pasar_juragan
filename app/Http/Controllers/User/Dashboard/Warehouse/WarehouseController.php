@@ -193,10 +193,11 @@ class WarehouseController extends Controller {
                             ]);
                         }
                     }
+                    // return $request->toArray();
                     $wh->update($credentials);
                     $day_open_add = array();
                     foreach($request->day_open as $day_open){
-                        if ($day_open['id']){
+                        if (isset($day_open['id'])){
                             if (isset($day_open['open_day']))
                                 WarehouseOpenHour::find($day_open['id'])->update($day_open);
                             else
