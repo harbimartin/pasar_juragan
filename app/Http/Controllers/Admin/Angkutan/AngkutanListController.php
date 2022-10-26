@@ -14,8 +14,8 @@ class AngkutanListController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $data = Provider::where(['provider_type_id'=>Provider::TRANSPORT])->paginate();
-        return view('admin.provider.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data)]);
+        $data = Provider::where(['provider_type_id'=>Provider::TRANSPORT])->where('status', '!=', 'Draft')->paginate();
+        return view('admin.provider.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'module'=>'Angkutan']);
     }
 
     /**

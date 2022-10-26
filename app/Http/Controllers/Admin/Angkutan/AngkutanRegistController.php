@@ -16,7 +16,7 @@ class AngkutanRegistController extends Controller {
      */
     public function index() {
         $data = Provider::where(['status' => 'Proposed', 'provider_type_id'=>Provider::TRANSPORT])->paginate();
-        return view('admin.provider.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data)]);
+        return view('admin.provider.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'module'=>'Angkutan']);
     }
 
     /**

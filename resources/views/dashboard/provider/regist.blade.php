@@ -12,6 +12,6 @@
         $column = json_encode($column);
     @endphp
 
-    <x-add unique="gudang_regist" :column="$column" title="Tambah Gudang" :select="$select" idk="id">
+    <x-add unique="gudang_regist" :column="$column" title="Tambah Juragan {{$module}}" :select="$select" idk="id">
     </x-add>
 @endsection

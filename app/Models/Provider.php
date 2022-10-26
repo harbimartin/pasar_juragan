@@ -28,6 +28,10 @@ class Provider extends Model {
         'status'
     ];
 
+    public function type() {
+        return $this->hasOne(ProviderType::class, 'id', 'provider_type_id');
+    }
+
     public function company() {
         return $this->hasOne(Company::class, 'id', 'm_company_id');
     }

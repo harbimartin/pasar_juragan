@@ -9,7 +9,7 @@
         ];
         $column_contact = json_encode($column_contact);
     @endphp
-    <x-add unique="provider" :column="$column_contact" title="Tambah Kontak Juragan Gudang" :data="$data" :select="$select"
+    <x-add unique="provider" :column="$column_contact" title="Tambah Kontak Juragan" :data="$data" :select="$select"
         idk="id">
     </x-add>
 

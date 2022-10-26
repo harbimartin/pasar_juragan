@@ -11,6 +11,6 @@
         'act' => ['name' => 'Action', 'type' => 'Show', 'align' => 'center', 'sort' => false],
     ]);
     ?>
-    <x-table title="Daftar Registrasi Juragan Gudang" :column="$table" :datas="$data" :prop="$prop">
+    <x-table title="Daftar Registrasi Juragan {{$module}}" :column="$table" :datas="$data" :prop="$prop">
     </x-table>
 @endsection

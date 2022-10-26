@@ -12,7 +12,7 @@
             ],
         ],
         'place' => [
-            'name' => 'Nama/Alamat',
+            'name' => 'Provinsi/Kota',
             'type' => 'Multi',
             'children' => [
                 'province' => ['name' => 'City', 'type' => 'SString', 'child' => ['province_name']],
@@ -29,7 +29,7 @@
             ],
         ],
         'tdg' => [
-            'name' => 'Nama/Alamat',
+            'name' => 'TDG',
             'type' => 'Multi',
             'children' => [
                 'tdg_no' => ['name' => 'TDG', 'type' => 'String', 'sub' => 'no'],

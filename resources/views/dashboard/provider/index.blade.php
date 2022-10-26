@@ -12,7 +12,7 @@
         ];
         $column = json_encode($column);
     @endphp
-    <x-update unique="juragan-gudang" :column="$column" title="Registrasi Juragan Gudang ({{ $data->provider_code }})"
+    <x-update unique="juragan-gudang" :column="$column" title="Registrasi Juragan {{$data->type->provider_type_name}} ({{ $data->provider_code }})"
         :data="$data" burl="none" route="dashboard.juragan-gudang" :select="$select" idk="id">
         <x-popup-button key="propose" color="blue" name="Propose" show="{{ $data->status == 'Draft' }}"></x-popup-button>
         <x-popup-header>

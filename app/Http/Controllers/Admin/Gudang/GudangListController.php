@@ -14,8 +14,8 @@ class GudangListController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $data = Provider::where(['provider_type_id'=>Provider::WAREHOUSE])->paginate();
-        return view('admin.provider.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data)]);
+        $data = Provider::where(['provider_type_id'=>Provider::WAREHOUSE])->where('status', '!=', 'Draft')->paginate();
+        return view('admin.provider.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'module'=>'Gudang']);
     }
 
     /**

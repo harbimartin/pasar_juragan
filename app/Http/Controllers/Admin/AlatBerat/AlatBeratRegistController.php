@@ -16,7 +16,7 @@ class AlatBeratRegistController extends Controller {
      */
     public function index() {
         $data = Provider::where(['status' => 'Proposed', 'provider_type_id'=>Provider::HEAVY_EQUIPMENT])->paginate();
-        return view('admin.provider.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data)]);
+        return view('admin.provider.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'module'=>'Alat Berat']);
     }
 
     /**

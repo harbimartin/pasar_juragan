@@ -7,5 +7,6 @@ use App\Models\Provider;
 
 class JuraganGudangController extends ProviderController {
     protected $providerType = Provider::WAREHOUSE;
+    protected $providerName = "Gudang";
     protected $baseRoute = 'dashboard.juragan-gudang';
 }

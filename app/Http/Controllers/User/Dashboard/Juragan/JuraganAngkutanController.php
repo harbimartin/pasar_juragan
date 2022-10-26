@@ -7,5 +7,6 @@ use App\Models\Provider;
 
 class JuraganAngkutanController extends ProviderController {
     protected $providerType = Provider::TRANSPORT;
+    protected $providerName = "Angkutan";
     protected $baseRoute = 'dashboard.juragan-angkutan';
 }

@@ -7,5 +7,6 @@ use App\Models\Provider;
 
 class JuraganAlatBeratController extends ProviderController {
     protected $providerType = Provider::HEAVY_EQUIPMENT;
+    protected $providerName = 'Alat Berat';
     protected $baseRoute = 'dashboard.juragan-alatberat';
 }

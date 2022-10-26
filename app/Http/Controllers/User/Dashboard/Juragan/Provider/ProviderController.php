@@ -16,6 +16,7 @@ use Throwable;
 
 class ProviderController extends Controller {
     protected $providerType = '';
+    protected $providerName = '';
     protected $baseRoute = '';
 
     public static function base_index($gudang) {
@@ -34,7 +35,7 @@ class ProviderController extends Controller {
         $company = Auth::guard('user')->user()->company;
         $data = Provider::where(['m_company_id' => $company->id, 'provider_type_id' => $this->providerType])->paginate(10);
 
-        return view('dashboard.provider.list', ['data' => $data, 'prop' => Table::tableProp($data)]);
+        return view('dashboard.provider.list', ['data' => $data, 'prop' => Table::tableProp($data), 'module'=>$this->providerName]);
     }
 
     /**
@@ -48,7 +49,7 @@ class ProviderController extends Controller {
             'business_category' => BusinessCategory::where('status', 1)->get()
         ];
 
-        return view('dashboard.provider.regist', ['data' => $data, 'select' => $select]);
+        return view('dashboard.provider.regist', ['data' => $data, 'select' => $select, 'module'=>$this->providerName]);
     }
 
     /**
