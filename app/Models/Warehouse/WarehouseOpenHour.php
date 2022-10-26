@@ -23,7 +23,7 @@ class WarehouseOpenHour extends Model {
     public static function boot()
     {
         parent::boot();
-        // Will fire everytime an User is created
+
         static::creating(function (WarehouseOpenHour $openhour) {
             $openhour->status = 1;
         });

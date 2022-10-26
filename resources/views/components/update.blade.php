@@ -563,7 +563,9 @@
                                             @endif
                                         >
                                         <label for="{{ $key }}{{$i}}" class="pr-3">{{ $value['name'] }}</label>
-                                        <input hidden name="{{$key}}[{{$i}}][id]" value="{{$open['id']}}">
+                                        @if($open)
+                                            <input hidden name="{{$key}}[{{$i}}][id]" value="{{$open['id']}}">
+                                        @endif
                                         <input hidden @if($open) @else disabled @endif type="text" name="{{$key}}[{{$i}}][open_day]" value="{{$value['id']}}" id="inputan-day-{{$i}}"/>
                                     </td>
                                     <td height="50" class="text-center bg-gray-50 px-3">
