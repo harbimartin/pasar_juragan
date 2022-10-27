@@ -50,13 +50,13 @@ class Warehouse extends _List {
         'storage_methode' => 'm_wh_storage_methode'
     ];
     protected $searchable = [
-        'wh_name',
-        'address_detail',
-        'wh_pic_email',
-        'wh_pic_telephone',
-        'wh_pic_fax',
-        'wh_pic_phone',
-        'tdg_no'
+        'wh_name' => 0,
+        'address_detail' => 1,
+        'wh_pic_email' => 1,
+        'wh_pic_telephone' => 1,
+        'wh_pic_fax' => 1,
+        'wh_pic_phone' => 1,
+        'tdg_no' => 1
     ];
 
     public function provider() {
