@@ -9,7 +9,7 @@ use App\Models\Provider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class   Warehouse extends _List {
+class Warehouse extends _List {
     use HasFactory;
     protected $table = "m_warehouse_tab";
     /**
