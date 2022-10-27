@@ -47,7 +47,7 @@ class   Warehouse extends _List {
         'province' => 'm_province_id',
         'function' => 'm_wh_function_id',
         'category' => 'm_wh_category_id',
-        'storage' => 'm_wh_storage_methode'
+        'storage_methode' => 'm_wh_storage_methode'
     ];
 
     public function provider() {
