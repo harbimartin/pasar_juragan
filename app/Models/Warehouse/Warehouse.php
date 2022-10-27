@@ -40,12 +40,7 @@ class   Warehouse extends _List {
     ];
     protected $sortable = [
         'wh_name',
-        'address_detail',
-        'wh_pic_email',
-        'wh_pic_telephone',
-        'wh_pic_fax',
-        'wh_pic_phone',
-        'tdg_no'
+        'status'
     ];
     protected $filterable = [
         'city' => 'm_city_id',
@@ -56,8 +51,13 @@ class   Warehouse extends _List {
     ];
     protected $searchable = [
         'wh_name',
-        'wh_add'
-    ]
+        'address_detail',
+        'wh_pic_email',
+        'wh_pic_telephone',
+        'wh_pic_fax',
+        'wh_pic_phone',
+        'tdg_no'
+    ];
 
     public function provider() {
         return $this->hasOne(Provider::class, 'id', 'm_provider_id');
