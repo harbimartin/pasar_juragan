@@ -68,6 +68,7 @@ class TransportController extends Controller
             'stnk_no' => ['required'],
             'kir_no' => ['required'],
             'expired_stnk' => ['required'],
+            'expired_kir' => ['required'],
             'gps_imei' => ['required'],
             'gps_url' => ['required'],
             'gps_api_key' => ['required'],

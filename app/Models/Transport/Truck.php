@@ -18,6 +18,7 @@ class Truck extends _List
         'stnk_no',
         'kir_no',
         'expired_stnk',
+        'expired_kir',
         'gps_imei',
         'gps_url',
         'gps_api_key',

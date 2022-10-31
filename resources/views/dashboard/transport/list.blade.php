@@ -7,26 +7,26 @@
             'name' => 'Plate Nomor',
             'type' => 'Multi',
             'children' => [
-                'plat_no' => ['name' => 'Nama', 'type' => 'String', 'iclass' => 'text-gray-700 font-semibold border-b border-blue-500'],
+                // 'plate_no' => ['name' => 'Nama', 'type' => 'String'],
+                'type' => ['name' => 'Type', 'type' => 'SString','child' => ['truck_type']],
             ],
         ],
-        // 'place' => [
-        //     'name' => 'Plate Nomor',
-        //     'type' => 'Multi',
-        //     'children' => [
-        //         // 'province' => ['name' => 'City', 'type' => 'SString', 'child' => ['province_name']],
-        //         'type' => ['name' => 'Type', 'type' => 'SString', 'child' => ['truck_type']],
-        //     ],
-        // ],
-        // 'attribute' => [
-        //     'name' => 'Atribut',
-        //     'type' => 'Multi',
-        //     'children' => [
-        //         'function' => ['name' => 'Nama', 'type' => 'SString', 'child' => ['wh_function']],
-        //         'category' => ['name' => 'Nama', 'type' => 'SString', 'child' => ['wh_category']],
-        //         'storage_method' => ['name' => 'Nama', 'type' => 'SString', 'child' => ['wh_storage_methode']],
-        //     ],
-        // ],
+        'place' => [
+            'name' => 'STNK No/KIR No',
+            'type' => 'Multi',
+            'children' => [
+                'stnk_no' => ['name' => 'Nama', 'type' => 'String','iclass' => 'text-gray-700 font-semibold border-b border-blue-500'],
+                'kir_no' => ['name' => 'Nama', 'type' => 'String'],
+            ],
+        ],
+        'attribute' => [
+            'name' => 'Expired KIR/STNK',
+            'type' => 'Multi',
+            'children' => [
+                'expired_kir' => ['name' => 'Nama', 'type' => 'String','iclass' => 'text-gray-700 font-semibold border-b border-blue-500'],
+                'expired_stnk' => ['name' => 'Nama', 'type' => 'String'],
+            ],
+        ],
         // 'tdg' => [
         //     'name' => 'TDG',
         //     'type' => 'Multi',
