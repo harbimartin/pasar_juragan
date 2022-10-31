@@ -37,6 +37,10 @@ class Menu {
                 ['name' => 'Registrasi Juragan', 'key' => 'dashboard.create.juragan-alatberat', 'icon' => self::ICON_CONTENT],
                 ['name' => 'Daftar Alat Berat', 'key' => 'dashboard.juragan-alatberat', 'icon' => self::ICON_CONTENT]
             ]],
+            ['name' => 'Juragan Truck', 'key' => 'mk04', 'icon' => self::ICON_PARENT, 'children' => [
+                ['name' => 'Registrasi Truck', 'key' => 'dashboard.create.juragan-truck', 'icon' => self::ICON_CONTENT],
+                ['name' => 'Daftar Truck', 'key' => 'dashboard.juragan-truck', 'icon' => self::ICON_CONTENT]
+            ]],
         ];
 
         Session::put('menu', $menu);
