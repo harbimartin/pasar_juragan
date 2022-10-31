@@ -44,4 +44,8 @@ class Truck extends _List
     public function provider() {
         return $this->hasOne(Provider::class, 'id', 'm_provider_id');
     }
+
+    public function type(){
+        return $this->hasOne(TruckType::class, 'id', 'm_truck_type_id');
+    }
 }
