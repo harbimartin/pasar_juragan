@@ -3,30 +3,18 @@
     @php
         $column = [
             'm_provider_id' => ['name' => 'Juragan', 'type' => 'Select', 'val' => ['provider_name'], 'api' => 'provider', 'full' => true],
-            'wh_name' => ['name' => 'Nama Gudang', 'type' => 'String', 'full' => true],
-            'm_province_id' => ['name' => 'Provinsi', 'type' => 'TextSel', 'val' => ['province_code', 'province_name'], 'desc' => [], 'api' => 'province', 'full' => false],
-            'm_city_id' => ['name' => 'Kota', 'type' => 'TextSel', 'val' => ['city_name'], 'desc' => [], 'api' => 'city', 'full' => false],
-            'address_detail' => ['name' => 'Alamat Gudang', 'type' => 'TextArea', 'full' => true],
-            'longitude' => ['name' => 'Latitude', 'type' => 'String', 'full' => false],
-            'latitude' => ['name' => 'Longitude', 'type' => 'String', 'full' => false],
-            'wh_pic_email' => ['name' => 'Email PIC', 'type' => 'String', 'full' => false],
-            'wh_pic_telephone' => ['name' => 'No. Telp PIC', 'type' => 'String', 'full' => false],
-            'wh_pic_fax' => ['name' => 'No. Fax PIC', 'type' => 'String', 'full' => false],
-            'wh_pic_phone' => ['name' => 'No. Handphone PIC', 'type' => 'String', 'full' => false],
-            'tdg_no' => ['name' => 'No. TDG', 'type' => 'String', 'full' => false],
-            'tdg_date' => ['name' => 'Tanggal TDG', 'type' => 'Date', 'full' => false],
-            'tdg_expired_date' => ['name' => 'Expired TDG', 'type' => 'Date', 'full' => false],
-            'tdg_attachment' => ['name' => 'Upload TDG', 'type' => 'Upload', 'accept' => 'pdf/*', 'key' => 'file', 'folder' => 'file_tdg', 'mono' => true, 'full' => true],
-
-            'm_wh_category_id' => ['name' => 'Kategori', 'type' => 'TextSel', 'val' => ['wh_category'], 'desc' => ['wh_category_desc'], 'api' => 'category', 'full' => true],
-            'm_wh_function_id' => ['name' => 'Tipe Fungsi', 'type' => 'TextSel', 'val' => ['wh_function'], 'desc' => ['wh_function_desc'], 'api' => 'function', 'full' => true],
-            'm_wh_storage_methode' => ['name' => 'Metode Penyimpanan', 'type' => 'TextSel', 'val' => ['wh_storage_methode'], 'desc' => ['wh_storage_methode_desc'], 'api' => 'storage_methode', 'full' => true],
-
-            'day_open' => ['name' => 'Hari & Jam Buka', 'type' => 'OpenHour', 'val' => ['name'], 'api' => 'days', 'full' => true]
+            'plate_no' => ['name' => 'Plat Nomor', 'type' => 'String', 'full' => false],
+            'm_truck_type_id' => ['name' => 'Type Truck', 'type' => 'TextSel', 'val' => ['truck_type', 'truck_type_desc'], 'desc' => [], 'api' => 'truck_type', 'full' => false],
+            'stnk_no' => ['name' => 'Nomor STNK', 'type' => 'String', 'full' => false],
+            'kir_no' => ['name' => 'Nomor KIR', 'type' => 'String', 'full' => false],
+            'expired_stnk' => ['name' => 'Expired TDG', 'type' => 'Date', 'full' => false],
+            'gps_imei' => ['name' => 'Gps IMEI', 'type' => 'String', 'full' => false],
+            'gps_url' => ['name' => 'Gps Url', 'type' => 'String', 'full' => true],
+            'gps_api_key' => ['name' => 'GPS Key', 'type' => 'TextArea', 'full' => true],
         ];
         $column = json_encode($column);
     @endphp
 
-    <x-add unique="gudang_add" :column="$column" title="Buat Gudang" :select="$select" idk="id">
+    <x-add unique="transport_add" :column="$column" title="Buat Transport" :select="$select" idk="id">
     </x-add>
 @endsection
