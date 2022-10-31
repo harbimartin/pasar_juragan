@@ -33,8 +33,8 @@ class Menu {
                 ['name' => 'Registrasi Juragan', 'key' => 'dashboard.create.juragan-angkutan', 'icon' => self::ICON_CONTENT],
                 ['name' => 'Daftar Angkutan', 'key' => 'dashboard.juragan-angkutan', 'icon' => self::ICON_CONTENT],
                 ['name' => 'Kelola Angkutan', 'key' => 'mk04', 'icon' => self::ICON_PARENT, 'children' => [
-                    ['name' => 'Tambah Angkutan', 'key' => 'dashboard.create.angkutan', 'icon' => self::ICON_CONTENT],
-                    ['name' => 'List Angkutan', 'key' => 'dashboard.angkutan', 'icon' => self::ICON_CONTENT]
+                    ['name' => 'Tambah Angkutan', 'key' => 'dashboard.create.transport', 'icon' => self::ICON_CONTENT],
+                    ['name' => 'List Angkutan', 'key' => 'dashboard.transport', 'icon' => self::ICON_CONTENT]
                 ]]
             ]],
             ['name' => 'Juragan Alat Berat', 'key' => 'mk05', 'icon' => self::ICON_PARENT, 'children' => [
