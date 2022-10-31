@@ -85,6 +85,7 @@ Route::group([
     //     Route::resource('/add', WarehouseAddController::class, Routing::setName('add'));
     // });
     Route::resource('/warehouse', WarehouseController::class, Routing::setName('warehouse'));
+    Route::resource('/transport', TransportController::class, Routing::setName('transport'));
 
     Route::group([
         'prefix' => 'profile-company',

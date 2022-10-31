@@ -32,14 +32,14 @@ class Menu {
             ['name' => 'Juragan Angkutan', 'key' => 'mk03', 'icon' => self::ICON_PARENT, 'children' => [
                 ['name' => 'Registrasi Juragan', 'key' => 'dashboard.create.juragan-angkutan', 'icon' => self::ICON_CONTENT],
                 ['name' => 'Daftar Angkutan', 'key' => 'dashboard.juragan-angkutan', 'icon' => self::ICON_CONTENT],
+                ['name' => 'Kelola Angkutan', 'key' => 'mk04', 'icon' => self::ICON_PARENT, 'children' => [
+                    ['name' => 'Tambah Angkutan', 'key' => 'dashboard.create.angkutan', 'icon' => self::ICON_CONTENT],
+                    ['name' => 'List Angkutan', 'key' => 'dashboard.angkutan', 'icon' => self::ICON_CONTENT]
+                ]]
             ]],
-            ['name' => 'Juragan Alat Berat', 'key' => 'mk04', 'icon' => self::ICON_PARENT, 'children' => [
+            ['name' => 'Juragan Alat Berat', 'key' => 'mk05', 'icon' => self::ICON_PARENT, 'children' => [
                 ['name' => 'Registrasi Juragan', 'key' => 'dashboard.create.juragan-alatberat', 'icon' => self::ICON_CONTENT],
                 ['name' => 'Daftar Alat Berat', 'key' => 'dashboard.juragan-alatberat', 'icon' => self::ICON_CONTENT]
-            ]],
-            ['name' => 'Juragan Truck', 'key' => 'mk04', 'icon' => self::ICON_PARENT, 'children' => [
-                ['name' => 'Registrasi Truck', 'key' => 'dashboard.create.juragan-truck', 'icon' => self::ICON_CONTENT],
-                ['name' => 'Daftar Truck', 'key' => 'dashboard.juragan-truck', 'icon' => self::ICON_CONTENT]
             ]],
         ];
 
