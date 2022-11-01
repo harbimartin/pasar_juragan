@@ -18,9 +18,6 @@ class Menu {
         $menu = [
             ['name' => 'Profile User', 'key' => 'dashboard.profile-user', 'icon' => self::ICON_CONTENT],
             ['name' => 'Profile Perusahaan', 'key' => 'dashboard.profile-company', 'icon' => self::ICON_CONTENT],
-            // ['name' => 'Juragan Barang', 'key' => 'dashboard.juragan-barang', 'icon' => 1, 'children' => [
-            //     ['name' => 'Registrasi Juragan', 'key' => 'dashboard.juragan-barang.regist', 'icon' => 2]
-            // ]],
             ['name' => 'Juragan Gudang', 'key' => 'mk01', 'icon' => self::ICON_PARENT, 'children' => [
                 ['name' => 'Registrasi Juragan', 'key' => 'dashboard.create.juragan-gudang', 'icon' => self::ICON_ADD],
                 ['name' => 'Daftar Juragan', 'key' => 'dashboard.juragan-gudang', 'icon' => self::ICON_CONTENT],
@@ -39,7 +36,11 @@ class Menu {
             ]],
             ['name' => 'Juragan Alat Berat', 'key' => 'mk05', 'icon' => self::ICON_PARENT, 'children' => [
                 ['name' => 'Registrasi Juragan', 'key' => 'dashboard.create.juragan-alatberat', 'icon' => self::ICON_CONTENT],
-                ['name' => 'Daftar Alat Berat', 'key' => 'dashboard.juragan-alatberat', 'icon' => self::ICON_CONTENT]
+                ['name' => 'Daftar Alat Berat', 'key' => 'dashboard.juragan-alatberat', 'icon' => self::ICON_CONTENT],
+                ['name' => 'Kelola Alat Berat', 'key' => 'mk06', 'icon' => self::ICON_PARENT, 'children' => [
+                    ['name' => 'Tambah Alat Berat', 'key' => 'dashboard.create.heavy', 'icon' => self::ICON_CONTENT],
+                    ['name' => 'List Alat Berat', 'key' => 'dashboard.heavy', 'icon' => self::ICON_CONTENT]
+                ]]
             ]],
         ];
 

@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\Admin\ProfileUserController as AdminProfileUserController;
 use App\Http\Controllers\Auth\AuthAdminController;
 use App\Http\Controllers\Auth\AuthUserController;
+use App\Http\Controllers\User\Dashboard\Heavy\HeavyController;
 use App\Http\Controllers\User\Dashboard\Home\HomeWarehouseController;
 use App\Http\Controllers\User\Dashboard\Home\Juragan\HomeJuraganAlatBeratController;
 use App\Http\Controllers\User\Dashboard\Home\Juragan\HomeJuraganAngkutanController;
@@ -116,6 +117,7 @@ Route::group([
     // });
     Route::resource('/warehouse', WarehouseController::class, Routing::setName('warehouse'));
     Route::resource('/transport', TransportController::class, Routing::setName('transport'));
+    Route::resource('/heavy', HeavyController::class, Routing::setName('heavy'));
 
     Route::group([
         'prefix' => 'profile-company',
