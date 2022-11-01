@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class HeavyEquipment extends _List
 {
     use HasFactory;
+    public $timestamps = true;
     protected $table = "m_heavy_equipment_tab";
 
     protected $fillable = [
