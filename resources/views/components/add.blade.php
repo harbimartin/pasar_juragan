@@ -393,6 +393,22 @@
                                 class="rounded border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
                         @break
 
+                        @case('Datetime')
+                            <?php
+                            if (!($tsdef = isset($error['data'][$key]) ? $error['data'][$key] : null)) {
+                                if (isset($param->def)) {
+                                    $date = new DateTime();
+                                    $date->modify('+' . $param->def . ' day');
+                                    $tsdef = $date->format('Y-m-d H:i:s');
+                                }
+                            }
+                            ?>
+                            <input id="{{ $key }}" name="{{ $key }}" type="date"
+                                @if ($tsdef) value="{{ $tsdef }}" @endif
+                                @isset($param->off) readonly @endisset
+                                class="rounded border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
+                        @break
+
                         @case('Image')
                             @isset($param->def)
                                 <div>

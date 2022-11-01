@@ -1,47 +1,37 @@
 @extends('dashboard._index')
 @section('content')
     <?php
-    $table_warehouse = json_encode([
+    $table_angkutan = json_encode([
         'index' => ['name' => 'No.', 'type' => 'Index'],
         'identity' => [
-            'name' => 'Nama/Alamat',
+            'name' => 'Plate Nomor/Type Truck',
             'type' => 'Multi',
             'children' => [
-                'wh_name' => ['name' => 'Nama', 'type' => 'String', 'iclass' => 'text-gray-700 font-semibold border-b border-blue-500'],
-                'address_detail' => ['name' => 'Nama', 'type' => 'TextArea'],
+                'plate_no' => ['name' => 'Nama', 'type' => 'String','iclass' => 'text-gray-700 font-semibold border-b border-blue-500'],
+                'type' => ['name' => 'Type', 'type' => 'SString','child' => ['truck_type']],
             ],
         ],
         'place' => [
-            'name' => 'Provinsi/Kota',
+            'name' => 'STNK No/KIR No',
             'type' => 'Multi',
             'children' => [
-                'province' => ['name' => 'City', 'type' => 'SString', 'child' => ['province_name']],
-                'city' => ['name' => 'No TDG', 'type' => 'SString', 'child' => ['city_name']],
+                'stnk_no' => ['name' => 'Nama', 'type' => 'String','iclass' => 'text-gray-700 font-semibold border-b border-blue-500'],
+                'kir_no' => ['name' => 'Nama', 'type' => 'String'],
             ],
         ],
         'attribute' => [
-            'name' => 'Atribut',
+            'name' => 'Expired KIR/STNK',
             'type' => 'Multi',
             'children' => [
-                'function' => ['name' => 'Nama', 'type' => 'SString', 'child' => ['wh_function']],
-                'category' => ['name' => 'Nama', 'type' => 'SString', 'child' => ['wh_category']],
-                'storage_method' => ['name' => 'Nama', 'type' => 'SString', 'child' => ['wh_storage_methode']],
-            ],
-        ],
-        'tdg' => [
-            'name' => 'TDG',
-            'type' => 'Multi',
-            'children' => [
-                'tdg_no' => ['name' => 'TDG', 'type' => 'String', 'sub' => 'no'],
-                'tdg_date' => ['name' => 'TDG', 'type' => 'Date', 'sub' => 'date'],
-                'tdg_expired_date' => ['name' => 'TDG', 'type' => 'Date', 'sub' => 'exp'],
+                'expired_kir' => ['name' => 'Nama', 'type' => 'String','iclass' => 'text-gray-700 font-semibold border-b border-blue-500'],
+                'expired_stnk' => ['name' => 'Nama', 'type' => 'String'],
             ],
         ],
         'status' => ['name' => 'Status', 'type' => 'State'],
         'toggle' => ['by' => 'status', 'name' => 'Aktifkan', 'type' => 'Toggle', 'sort' => false, 'align' => 'center', 'value' => 'toggle-comp_contact'],
-        'act' => ['name' => 'Action', 'type' => 'Edit', 'route' => 'dashboard.warehouse.list', 'align' => 'center', 'sort' => false],
+        'act' => ['name' => 'Action', 'type' => 'Edit', 'route' => 'dashboard.transport.list', 'align' => 'center', 'sort' => false],
     ]);
     ?>
-    <x-table :column="$table_warehouse" :datas="$data" :prop="$prop" :selfilter="$sel_filter">
+    <x-table :column="$table_angkutan" :datas="$data" :prop="$prop" :selfilter="$sel_filter">
     </x-table>
 @endsection
