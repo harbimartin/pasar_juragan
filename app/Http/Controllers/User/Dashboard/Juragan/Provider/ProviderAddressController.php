@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\User\Dashboard\Juragan\Provider;
 
 use App\Http\Controllers\Controller;
+use App\Models\GeoCity;
+use App\Models\GeoProvince;
 use App\Models\Provider;
 use App\Models\ProviderAddress;
 use Illuminate\Http\Request;
@@ -10,7 +12,10 @@ use Illuminate\Http\Request;
 class ProviderAddressController extends Controller {
     const baseRoute = 'dashboard.provider.address';
     public function getMySelect() {
-        return [];
+        return [
+            'province' => GeoProvince::where('status', 1)->get(),
+            'city' => GeoCity::where('status', 1)->get(),
+        ];
     }
 
     /**
@@ -19,11 +24,13 @@ class ProviderAddressController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index($provider) {
-        [$data, $select] = ProviderController::base_index($provider);
+        [$data, $select, $detail, $submenu] = ProviderController::base_index($provider);
 
         return view(self::baseRoute . '.index', [
             'data' => $data,
-            'select' => array_merge($select, $this->getMySelect())
+            'select' => array_merge($select, $this->getMySelect()),
+            'detail' => $detail,
+            'submenu' => $submenu
         ]);
     }
 

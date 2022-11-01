@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Warehouse\Warehouse;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -58,6 +59,10 @@ class Provider extends Model {
 
     public function service() {
         return $this->hasMany(ProviderService::class, 't_provider_id', 'id');
+    }
+
+    public function warehouse() {
+        return $this->hasMany(Warehouse::class, 'm_provider_id', 'id');
     }
 
     public static function status_attr() {

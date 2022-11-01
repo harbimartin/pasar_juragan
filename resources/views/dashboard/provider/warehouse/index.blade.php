@@ -1,5 +1,5 @@
-@extends('dashboard._index')
-@section('content')
+@extends('dashboard.provider.index', ['tab' => 'warehouse'])
+@section('tab-content')
     <?php
     $table_warehouse = json_encode([
         'index' => ['name' => 'No.', 'type' => 'Index'],
@@ -58,6 +58,6 @@
         'act' => ['name' => 'Action', 'type' => $target == 'public' ? 'Show' : 'Edit', 'align' => 'center', 'sort' => false],
     ]);
     ?>
-    <x-table :column="$table_warehouse" :datas="$data" :prop="$prop" :selfilter="$sel_filter">
+    <x-table :column="$table_warehouse" :datas="$warehouses" :selfilter="$sel_filter" :lim="false">
     </x-table>
 @endsection

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\FileApiController;
 use App\Http\Controllers\API\utils\AuthApiController;
 use App\Http\Controllers\API\utils\UtilsApiController;
 use Illuminate\Support\Facades\Route;
@@ -22,3 +23,5 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 
 Route::post('v1/util/province',[UtilsApiController::class,'store_province']);
 Route::post('v1/util/city',[UtilsApiController::class,'store_city']);
+
+Route::post('v1/download', [FileApiController::class, 'download']);

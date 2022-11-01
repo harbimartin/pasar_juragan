@@ -48,17 +48,17 @@ class WarehouseController extends Controller {
      */
     public function index(Request $request) {
         $sel_filter = [
-            'province' => ['name'=>'Provinsi', 'key'=>'province_name', 'option' => GeoProvince::get()],
-            'city' => ['name'=>'Kota', 'key'=>'city_name', 'option' => GeoCity::get()],
-            'function' => ['name'=>'Fungsi', 'key'=>'wh_function', 'option' => WarehouseFunction::get()],
-            'category' => ['name'=>'Kategori', 'key'=>'wh_category', 'option' => WarehouseCategory::get()],
-            'storage_methode' => ['name'=>'Metode Penyimpanan', 'key'=>'wh_storage_methode', 'option' => WarehouseStorageMethod::get()],
+            'province' => ['name' => 'Provinsi', 'key' => 'province_name', 'option' => GeoProvince::get()],
+            'city' => ['name' => 'Kota', 'key' => 'city_name', 'option' => GeoCity::get()],
+            'function' => ['name' => 'Fungsi', 'key' => 'wh_function', 'option' => WarehouseFunction::get()],
+            'category' => ['name' => 'Kategori', 'key' => 'wh_category', 'option' => WarehouseCategory::get()],
+            'storage_methode' => ['name' => 'Metode Penyimpanan', 'key' => 'wh_storage_methode', 'option' => WarehouseStorageMethod::get()],
         ];
         $company_id = Auth::guard('user')->user()->company->id;
-        $data = Warehouse::filter($request)->whereHas('provider', function($q)use($company_id)    {
+        $data = Warehouse::filter($request)->whereHas('provider', function ($q) use ($company_id) {
             $q->where('m_company_id', $company_id);
         })->paginate(10);
-        return view('dashboard.warehouse.list', ['data' => $data->getCollection(), 'prop'=>Table::tableProp($data), 'sel_filter'=>$sel_filter]);
+        return view('dashboard.warehouse.list', ['target'=>'provider', 'data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'sel_filter' => $sel_filter]);
     }
 
     /**
@@ -77,7 +77,6 @@ class WarehouseController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        // return $request->toArray();
         $credentials = $request->validate([
             'm_provider_id' => ['required', 'exists:t_provider_tab,id'],
             'wh_name' => ['required'],
@@ -140,7 +139,7 @@ class WarehouseController extends Controller {
     public function edit($id) {
         $provider = Warehouse::find($id);
         if ($provider)
-            return view('dashboard.warehouse.show', ['data' => $provider, 'select' => $this->getMySelect()]);
+            return view('dashboard.warehouse.edit', ['data' => $provider, 'select' => $this->getMySelect()]);
         return back();
     }
 
@@ -152,6 +151,7 @@ class WarehouseController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
+        return $request->toArray();
         switch ($request->__type) {
             case 'toggle':
                 Warehouse::find($id)->update(['status' => $request->toggle]);
@@ -196,13 +196,13 @@ class WarehouseController extends Controller {
                     // return $request->toArray();
                     $wh->update($credentials);
                     $day_open_add = array();
-                    foreach($request->day_open as $day_open){
-                        if (isset($day_open['id'])){
+                    foreach ($request->day_open as $day_open) {
+                        if (isset($day_open['id'])) {
                             if (isset($day_open['open_day']))
                                 WarehouseOpenHour::find($day_open['id'])->update($day_open);
                             else
                                 WarehouseOpenHour::find($day_open['id'])->delete();
-                        }else{
+                        } else {
                             if (isset($day_open['open_day']))
                                 $day_open_add[] = $day_open;
                         }

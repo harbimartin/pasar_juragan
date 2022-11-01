@@ -7,28 +7,31 @@
 
     $columns = json_decode($column);
     foreach ($columns as $k => $v) {
-        if (!isset($v->by)) {
-            $v->by = $k;
-        }
-        if (isset($v->if)) {
-            $final = true;
-            for ($i = 0; $i < sizeof($v->if); $i += 3) {
-                if (($datas[$v->if[$i]] == $v->if[$i + 1]) != $v->if[$i + 2]) {
-                    $final = false;
-                    break;
-                }
+        if ($v) {
+            if (!isset($v->by)) {
+                $v->by = $k;
             }
-            if (!$final) {
-                $v->class = 'hidden';
-            } else {
-                $v->class = '';
+            if (isset($v->if)) {
+                $final = true;
+                for ($i = 0; $i < sizeof($v->if); $i += 3) {
+                    if (($datas[$v->if[$i]] == $v->if[$i + 1]) != $v->if[$i + 2]) {
+                        $final = false;
+                        break;
+                    }
+                }
+                if (!$final) {
+                    $v->class = 'hidden';
+                } else {
+                    $v->class = '';
+                }
             }
         }
     }
     ?>
     @if ($burl != 'none')
-        <a class="text-xs md:text-base inline-flex rounded-full md:rounded border px-3 my-2 md:mt-4 bg-gray-500 hover:bg-gray-600 mr-5 cursor-pointer text-white"
-            type="button" href="{{ url()->previous() }}">
+        <div onclick="window.history.back()"
+            class="text-xs md:text-base inline-flex rounded-full md:rounded border px-3 my-2 md:mt-4 bg-gray-500 hover:bg-gray-600 mr-5 cursor-pointer text-white"
+            type="button">
             <svg class="my-auto mr-2" xmlns="http://www.w3.org/2000/svg" width="16" height="20" fill="currentColor"
                 viewBox="0 0 16 16">
                 <path
@@ -37,10 +40,10 @@
                     d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z" />
             </svg>
             <span class="my-2 font-semibold"> Kembali</span>
-        </a>
+        </div>
     @endif
     <form class="container md:rounded-lg shadow my-1 md:my-4 py-2 md:py-4 px-3 md:px-6 bg-white text-xs md:text-base"
-        action="{{ Routing::getUpdateWithID($id, $route ?? null) }}" method="POST" enctype="multipart/form-data"
+        @if (!$detail) action="{{ Routing::getUpdateWithID($id, $route ?? null) }}" method="POST" enctype="multipart/form-data" @endif
         autocomplete="new-password">
         @csrf
         @method('PUT')
@@ -61,37 +64,39 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-4 md:p-5">
             <x-error-box></x-error-box>
             @foreach ($columns as $key => $param)
-                <div @isset($param->if)if="{{ json_encode($param->if) }}"@endisset
-                    class="grid @isset($param->class){{ $param->class }}@endisset {{ isset($param->full) ? 'grid-cols-6 col-span-2' : 'grid-cols-3' }}">
-                    @isset($param->name)
-                        <label for="{{ $key }}" class="my-1 md:mb-0 col-span-6 md:col-span-1">{{ $param->name }}
-                            {{-- ({{$key}}) --}}
-                        </label>
-                    @endisset
-                    @switch($param->type)
-                        @case('Info')
-                        @case('Infos')
-                            <div
-                                class="col-end-7 col-start-1 md:col-start-2 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition">
-                                <span class="hidden md:inline">:</span>
-                                <span class="border pl-1 rounded-md flex md:border-0 md:p-0 md:inline md:ml-2">
-                                    <?php
-                                    if ($param->type == 'Info') {
-                                        $value = isset($param->val) ? $param->val : $datas[isset($param->by) ? $param->by : $key];
-                                    } else {
-                                        $value = isset($param->val) ? $param->val : $datas[isset($param->by) ? $param->by : $key][$param->child];
-                                    }
-                                    ?>
-                                    @isset($param->format)
-                                        @switch($param->format)
-                                            @case('Money')
-                                                {{ 'Rp ' . number_format($value, 2, ',', '.') }}
-                                            @break
-                                        @endswitch
-                                    @else
-                                        {{ $value }}
-                        @endif
-                        </span>
+                @if ($param)
+                    <div @isset($param->if)if="{{ json_encode($param->if) }}"@endisset
+                        class="grid @isset($param->class){{ $param->class }}@endisset {{ isset($param->full) ? 'grid-cols-6 col-span-2' : 'grid-cols-3' }}">
+                        @isset($param->name)
+                            <label for="{{ $key }}"
+                                class="my-1 md:mb-0 col-span-6 md:col-span-1">{{ $param->name }}
+                                {{-- ({{$key}}) --}}
+                            </label>
+                        @endisset
+                        @switch($param->type)
+                            @case('Info')
+                            @case('Infos')
+                                <div
+                                    class="col-end-7 col-start-1 md:col-start-2 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition">
+                                    <span class="hidden md:inline">:</span>
+                                    <span class="border pl-1 rounded-md flex md:border-0 md:p-0 md:inline md:ml-2">
+                                        <?php
+                                        if ($param->type == 'Info') {
+                                            $value = isset($param->val) ? $param->val : $datas[isset($param->by) ? $param->by : $key];
+                                        } else {
+                                            $value = isset($param->val) ? $param->val : $datas[isset($param->by) ? $param->by : $key][$param->child];
+                                        }
+                                        ?>
+                                        @isset($param->format)
+                                            @switch($param->format)
+                                                @case('Money')
+                                                    {{ 'Rp ' . number_format($value, 2, ',', '.') }}
+                                                @break
+                                            @endswitch
+                                        @else
+                                            {{ $value }}
+                            @endif
+                            </span>
                     </div>
                 @break
 
@@ -99,8 +104,8 @@
                     <input readonly id="{{ $key }}" name="{{ $key }}" value-from="{{ $param->key }}"
                         based="{{ $param->val }}"
                         @isset($param->def)
-                                    value="{{ $param->def }}"
-                                @endisset
+                                                value="{{ $param->def }}"
+                                            @endisset
                         type="text"
                         class="rounded border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
                 @break
@@ -124,9 +129,9 @@
                             @isset($param->disabled) disabled @endisset
                             @isset($param->placeholder) placeholder="{{ $param->placeholder }}" @endisset
                             @isset($param->max)
-                                        maxlength="{{ $param->max }}"
-                                        v-on:input="refMax($event,'{{ $key }}_v_',{{ $param->max }})"
-                                    @endisset
+                                                    maxlength="{{ $param->max }}"
+                                                    v-on:input="refMax($event,'{{ $key }}_v_',{{ $param->max }})"
+                                                @endisset
                             name="{{ $key }}" value="{{ $datas[$param->by] }}" type="text"
                             class="w-full h-full rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->iclass){{ $param->iclass }}@endisset" />
                         @isset($param->max)
@@ -169,17 +174,17 @@
                 @case('Number')
                     <input
                         @isset($param->count)
-                                    v-on:input="onCount($event, '{{ $param->count }}')"
-                                @endisset
+                                                v-on:input="onCount($event, '{{ $param->count }}')"
+                                            @endisset
                         @isset($param->lock)
-                                    disabled
-                                @endisset
+                                                disabled
+                                            @endisset
                         id="{{ $key }}" name="{{ $key }}" value="{{ $datas[$param->by] }}"
                         @isset($param->float)
-                                    step="{{ $param->float }}"
-                                @else
-                                    step="0.1"
-                                @endisset
+                                                step="{{ $param->float }}"
+                                            @else
+                                                step="0.1"
+                                            @endisset
                         placeholder="0" @if (($detail && !(isset($param->force) && $param->force)) || isset($param->readonly)) readonly @endif type="number"
                         class="rounded border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
                 @break
@@ -298,24 +303,24 @@
                             @if ($set)
                                 <option
                                     @isset($param->share)
-                                                <?php
-                                                $otxt = '{';
-                                                $i = 0;
-                                                foreach ($param->share as $column => $share) {
-                                                    if ($share) {
-                                                        $otxt = $otxt . ($i > 0 ? '","' : '"') . $column . '":"';
-                                                        foreach ($share as $k => $v) {
-                                                            $otxt = $otxt . ($k == 0 ? '' : ' - ') . str_replace('"', '!q', $item[$column][$v]);
-                                                        }
-                                                    } else {
-                                                        $otxt = $otxt . ($i > 0 ? '","' : '"') . $column . '":"' . str_replace('"', '!q', $item[$column]);
-                                                    }
-                                                    $i++;
-                                                }
-                                                $otxt = $otxt . '"}';
-                                                ?>
-                                                data-item="{{ $otxt }}"
-                                            @endisset
+                                                            <?php
+                                                            $otxt = '{';
+                                                            $i = 0;
+                                                            foreach ($param->share as $column => $share) {
+                                                                if ($share) {
+                                                                    $otxt = $otxt . ($i > 0 ? '","' : '"') . $column . '":"';
+                                                                    foreach ($share as $k => $v) {
+                                                                        $otxt = $otxt . ($k == 0 ? '' : ' - ') . str_replace('"', '!q', $item[$column][$v]);
+                                                                    }
+                                                                } else {
+                                                                    $otxt = $otxt . ($i > 0 ? '","' : '"') . $column . '":"' . str_replace('"', '!q', $item[$column]);
+                                                                }
+                                                                $i++;
+                                                            }
+                                                            $otxt = $otxt . '"}';
+                                                            ?>
+                                                            data-item="{{ $otxt }}"
+                                                        @endisset
                                     data-value="{{ $item->id }}" value="{{ $txt }}">
                                 </option>
                             @endif
@@ -326,14 +331,14 @@
                             v-on:change="inputSetUp('{{ $key }}',$event, {{ isset($param->share) }})" type="text"
                             value="{{ $base_value }}" list="datalist_{{ $key }}"
                             @isset($param->null)
-                                        placeholder="(Blank)"
-                                        onblank
-                                    @else
-                                        placeholder="Pilih {{ $param->name }}"
-                                    @endisset
+                                                    placeholder="(Blank)"
+                                                    onblank
+                                                @else
+                                                    placeholder="Pilih {{ $param->name }}"
+                                                @endisset
                             @isset($param->free)
-                                        name="__{{ $key }}"
-                                    @endisset
+                                                    name="__{{ $key }}"
+                                                @endisset
                             class="hide-ico w-full h-full rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition">
                         @if (!$readonly)
                             <div class="pointer-events-none absolute top-0 right-2 h-full">
@@ -527,12 +532,12 @@
                 @break
 
                 @case('OpenHour')
-                @php
-                    $openhour = array();
-                    foreach($datas->open_hour as $obj){
-                        $openhour[$obj->open_day] = $obj;
-                    }
-                @endphp
+                    @php
+                        $openhour = [];
+                        foreach ($datas->open_hour as $obj) {
+                            $openhour[$obj->open_day] = $obj;
+                        }
+                    @endphp
                     <div class="col-start-2 col-end-5 shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                         <table class="divide-y divide-gray-200 min-w-full">
                             <thead class="bg-gray-50 text-xs md:text-xs">
@@ -549,34 +554,44 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($select[$param->api] as $i => $value )
-                                @php $open = $openhour[$value['id']] ?? null; @endphp
-                                <tr>
-                                    <td height="50" class="px-3 bg-gray-50 text-gray-500">
-                                        <input
-                                            type="checkbox"
-                                            id="{{ $key }}{{$i}}"
-                                            v-on:change="checkboxCheck({{$value['id']}},{{$i}},$event)"
-
+                                @foreach ($select[$param->api] as $i => $value)
+                                    @php $open = $openhour[$value['id']] ?? null; @endphp
+                                    <tr>
+                                        <td height="50" class="px-3 bg-gray-50 text-gray-500">
+                                            <input type="checkbox" id="{{ $key }}{{ $i }}"
+                                                @if ($detail) disabled
+                                                        @else
+                                                            v-on:change="checkboxCheck({{ $value['id'] }},{{ $i }},$event)" @endif
+                                                @if ($open) checked @endif>
+                                            <label for="{{ $key }}{{ $i }}"
+                                                class="pr-3">{{ $value['name'] }}</label>
                                             @if ($open)
-                                                checked
+                                                <input hidden name="{{ $key }}[{{ $i }}][id]"
+                                                    value="{{ $open['id'] }}">
                                             @endif
-                                        >
-                                        <label for="{{ $key }}{{$i}}" class="pr-3">{{ $value['name'] }}</label>
-                                        @if($open)
-                                            <input hidden name="{{$key}}[{{$i}}][id]" value="{{$open['id']}}">
-                                        @endif
-                                        <input hidden @if($open) @else disabled @endif type="text" name="{{$key}}[{{$i}}][open_day]" value="{{$value['id']}}" id="inputan-day-{{$i}}"/>
-                                    </td>
-                                    <td height="50" class="text-center bg-gray-50 px-3">
-                                        <input @if(!$open)disabled @else value="{{$open->open_hour}}" @endif name="{{ $key }}[{{$i}}][open_hour]" type="time" id="inputan-time-open-{{$i}}"
-                                            class="w-2/3 disabled:bg-gray-300 rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
-                                    </td>
-                                    <td height="50" class="text-center bg-gray-50 px-3">
-                                        <input @if(!$open)disabled @else value="{{$open->close_hour}}" @endif name="{{ $key }}[{{$i}}][close_hour]" type="time" id="inputan-time-close-{{$i}}"
-                                        class="w-2/3 disabled:bg-gray-300 rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
-                                    </td>
-                                </tr>
+                                            <input hidden @if ($open) @else disabled @endif type="text"
+                                                name="{{ $key }}[{{ $i }}][open_day]"
+                                                value="{{ $value['id'] }}" id="inputan-day-{{ $i }}" />
+                                        </td>
+                                        <td height="50" class="text-center bg-gray-50 px-3">
+                                            <input
+                                                @if (!$open) disabled @else @if ($detail) readonly @endif
+                                                value="{{ $open->open_hour }}" @endif
+                                            name="{{ $key }}[{{ $i }}][open_hour]" type="time"
+                                            id="inputan-time-open-{{ $i }}"
+                                            class="w-2/3 disabled:bg-gray-300 rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition"
+                                            />
+                                        </td>
+                                        <td height="50" class="text-center bg-gray-50 px-3">
+                                            <input
+                                                @if (!$open) disabled @else @if ($detail) readonly @endif
+                                                value="{{ $open->close_hour }}" @endif
+                                            name="{{ $key }}[{{ $i }}][close_hour]" type="time"
+                                            id="inputan-time-close-{{ $i }}"
+                                            class="w-2/3 disabled:bg-gray-300 rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition"
+                                            />
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -584,11 +599,15 @@
                 @break
 
                 @default
+                    Type Mismatch!
+                @break
+
             @endswitch
             @isset($param->text)
                 <small class="col-start-1 md:col-start-2 col-end-6 {{ $param->text[1] }}">{{ $param->text[0] }}</small>
             @endisset
     </div>
+    @endif
     @endforeach
     </div>
     <div class="mt-4 md:mt-0">

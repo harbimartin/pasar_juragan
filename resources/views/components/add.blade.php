@@ -436,7 +436,7 @@
                                         <td height="50" class="px-3 bg-gray-50 text-gray-500">
                                             <input type="checkbox" id="{{ $key }}{{$i}}" v-on:change="checkboxCheck({{$value['id']}},{{$i}},$event)" >
                                             <label for="{{ $key }}{{$i}}" class="pr-3">{{ $value['name'] }}</label>
-                                            <input hidden disabled type="text" name="{{$key}}[{{$i}}][open_day]" value="{{$i}}" id="inputan-day-{{$i}}"/>
+                                            <input hidden disabled type="text" name="{{$key}}[{{$i}}][open_day]" value="{{$value['id']}}" id="inputan-day-{{$i}}"/>
                                         </td>
                                         <td height="50" class="text-center bg-gray-50 px-3">
                                             <input disabled name="{{ $key }}[{{$i}}][open_hour]" type="time" id="inputan-time-open-{{$i}}"

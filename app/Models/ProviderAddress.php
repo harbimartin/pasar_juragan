@@ -25,4 +25,10 @@ class ProviderAddress extends Model {
     public function provider() {
         return $this->hasOne(Provider::class, 'id', 't_provider_id');
     }
+    public function province() {
+        return $this->hasOne(GeoProvince::class, 'id', 'provider_province');
+    }
+    public function city() {
+        return $this->hasOne(GeoCity::class, 'id', 'provider_city');
+    }
 }

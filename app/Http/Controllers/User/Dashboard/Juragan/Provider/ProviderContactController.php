@@ -22,11 +22,12 @@ class ProviderContactController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index($provider) {
-        [$data, $select] = ProviderController::base_index($provider);
-
+        [$data, $select, $detail, $submenu] = ProviderController::base_index($provider);
         return view(self::baseRoute . '.index', [
             'data' => $data,
-            'select' => array_merge($select, $this->getMySelect())
+            'select' => array_merge($select, $this->getMySelect()),
+            'detail' => $detail,
+            'submenu' => $submenu
         ]);
     }
 

@@ -201,7 +201,7 @@
                     link.remove();
                     setTimeout(() => URL.revokeObjectURL(link.href), 7000);
                 };
-                fetch("{!! url('/api/downloadson') !!}" + "?id=" + id + "&f=" + key, requestOptions).then(
+                fetch("{!! url('/api/v1/download') !!}" + "?id=" + id + "&name=" + name + "&f=" + key, requestOptions).then(
                     response => {
                         if (response.status == 200)
                             return response.blob();

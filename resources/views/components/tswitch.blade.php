@@ -16,10 +16,16 @@
         @break
     @case('SString')
         <?php
-            $pkey = isset($param->by) ? $param->by : $key;
+            if (isset($param->by)) {
+                $pkey = $param->by;
+                $child = isset($param->child) ? $param->child : $key;
+            }else{
+                $pkey = $key;
+                $child = $param->child;
+            }
             $txt = '';
-            if (is_array($param->child)){
-                foreach($param->child as $kk => $val){
+            if (is_array($child)){
+                foreach($child as $kk => $val){
                     $str = $item[$pkey][$val];
                     if ($kk == 0)
                         $txt = $txt.($str == '' ? '(Blank)':$str);
@@ -27,7 +33,7 @@
                         $txt = $txt.' - '.$str;
                 }
             }else {
-                $txt = $item[$pkey][$param->child];
+                $txt = $item[$pkey][$child];
             }
         ?>
             <div class="@isset($param->iclass){{$param->iclass}}@endisset @isset($param->wrap) whitespace-normal @endisset">{{$txt}}</div>
@@ -80,6 +86,59 @@
         @break
     @case('String')
             <div class="@isset($param->iclass){{$param->iclass}}@endisset @isset($param->wrap) whitespace-normal @endisset" @isset($param->wrap)style="min-width:200px;"@endisset>{{$item[$key]}}</div>
+        @break
+    @case('SLink')
+        <?php
+            if (isset($param->by)) {
+                $pkey = $param->by;
+                $child = isset($param->child) ? $param->child : $key;
+            }else{
+                $pkey = $key;
+                $child = $param->child;
+            }
+            $link = '';
+            if (is_array($child)){
+                foreach($child as $kk => $val){
+                    $str = $item[$pkey][$val];
+                    if ($kk == 0)
+                        $link = $link.($str == '' ? '(Blank)':$str);
+                    else
+                        $link = $link.' - '.$str;
+                }
+            } else {
+                $link = $item[$pkey][$child];
+            }
+            $txt = $link;
+        ?>
+    @case('Link')
+        @php
+            if (!isset($link)){
+                $txt = $item[$key];
+                $link = $item[$key];
+            }
+        @endphp
+    @case('Route')
+        @php
+            if (!isset($link)){
+                if (isset($param->by)){
+                    $txt = $item[$param->by][$key];
+                }else{
+                    $txt = $item[$key];
+                }
+                $link = route($param->name, $item[$param->key]);
+            }
+        @endphp
+        <a href="{{$link}}" target="_blank" class="text-blue-800 hover:text-blue-600 whitespace-normal flex">{{$txt}}</a>
+        @break
+    @case('Location')
+        <a href="http://maps.google.com/maps?z=12&t=m&q=loc:{{$item[$param->lat]}}+{{$item[$param->long]}}" target="_blank" class="text-blue-800 hover:text-blue-600 inline-flex py-0.5">
+            <svg class="mx-0.5 my-auto" xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+            </svg>
+            <div class=" whitespace-nowrap">
+                Lihat Lokasi
+            </div>
+        </a>
         @break
     @case('TextArea')
         @if($item[$key])
@@ -182,28 +241,45 @@
     @case('No')
         <div class="text-gray-900">{{$iind + 1}}</div>
     @break
+    @case('Upload')
+        @php
+            $files = $item->{$key};
+            $exists = is_array($files) ? sizeof($files) : $files;
+        @endphp
+        @if($exists)
+            <ol class="mt-2 ml-4 list-decimal">
+                @if(is_array($files))
+                    @foreach ($files as $vkey => $vfile)
+                        <li class="w-full text-gray-600 group cursor-pointer hover:bg-blue-100 px-1" v-on:click="downloadFileOn({{$vfile[$param->id]}}, '{{$vfile[$param->name]}}', '{{$param->folder}}')">
+                            <div class="mr-2 truncate flex">
+                                <div class="my-auto mr-3">{{$vfile[$param->name]}}</div>
+                                <div class="text-blue-300 ml-auto group-hover:bg-blue-500 group-hover:text-white p-1 rounded">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-arrow-down-fill" viewBox="0 0 16 16">
+                                        <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </li>
+                    @endforeach
+                @else
+                    <li class="w-full text-gray-600 group cursor-pointer hover:bg-blue-100 px-1" v-on:click="downloadFileOn({{$item->id}}, '{{$files}}', '{{$param->folder}}')">
+                        <div class="mr-2 truncate flex">
+                            <div class="my-auto mr-3">{{$files}}</div>
+                            <div class="text-blue-300 ml-auto group-hover:bg-blue-500 group-hover:text-white p-1 rounded">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-arrow-down-fill" viewBox="0 0 16 16">
+                                    <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </li>
+                @endif
+            </ol>
+        @else
+            <div class="text-gray-400 ml-6 mt-1">(Tidak ada)</div>
+        @endif
+    @break
     @case('Slot')
             @switch($key)
-                @case('file')
-                    @if(sizeof($item->file)==0)
-                        <div class="text-gray-400 ml-6 mt-1">(Tidak ada)</div>
-                    @else
-                        <ol class="mt-2 ml-4 list-decimal">
-                            @foreach ($item->file as $vkey => $vfile)
-                                <li class="w-full text-gray-600 group cursor-pointer hover:bg-blue-100 px-1" v-on:click="downloadFileOn({{$vfile->id}}, '{{$vfile->file_desc}}', '{{$param->folder}}')">
-                                    <div class="mr-2 truncate flex">
-                                        <div class="my-auto mr-3">{{$vfile->file_desc}}</div>
-                                        <div class="text-blue-300 ml-auto group-hover:bg-blue-500 group-hover:text-white p-1 rounded">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-arrow-down-fill" viewBox="0 0 16 16">
-                                                <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z"/>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ol>
-                    @endif
-                @break
                 @case('aging')
                     <div class="{{isset($param->align) ? 'text-'.$param->align : 'text-right mr-3'}}">{{$item[$key]}} Hari</div>
                 @break

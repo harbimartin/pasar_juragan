@@ -26,15 +26,23 @@ class ProviderDocumentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index($provider) {
-        [$data, $select] = ProviderController::base_index($provider);
+        [$data, $select, $detail, $submenu] = ProviderController::base_index($provider);
+
+        // GET REQUIRE DOCUMENT
         $provider_id = $data->id;
+        $provider_type_id = $data->provider_type_id;
         $require = Document::whereDoesntHave('provider', function ($qq) use ($provider_id) {
             $qq->where('t_provider_id', $provider_id)->where('status', '=', 1);
-        })->where(['m_provider_type_id' => $data->provider_type_id, 'status' => 1])->get();
+        })->where(function ($q) use ($provider_type_id) {
+            $q->where('m_provider_type_id', $provider_type_id)->orWhere('m_provider_type_id', 0);
+        })->where('status', 1)->get();
+
         return view(self::baseRoute . '.index', [
             'data' => $data,
             'select' => array_merge($select, $this->getMySelect($data)),
-            'require' => $require
+            'require' => $require,
+            'detail' => $detail,
+            'submenu' => $submenu
         ]);
     }
 

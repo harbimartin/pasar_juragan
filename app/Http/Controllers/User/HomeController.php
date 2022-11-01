@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Warehouse\Warehouse;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller {
@@ -12,7 +13,12 @@ class HomeController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view('dashboard.home.index');
+        $total = [
+            'warehouse' =>  Warehouse::where('status', 1)->count(),
+            'transport' =>  0, //Transport::where('status', 1)->count(),
+            'equipment' =>  0 //Equipment::where('status', 1)->count(),
+        ];
+        return view('dashboard.home.index', ['total' => $total]);
     }
 
     /**

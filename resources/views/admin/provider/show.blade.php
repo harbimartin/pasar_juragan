@@ -109,7 +109,7 @@
                 'doc_no' => ['name' => 'No. Dokumen', 'type' => 'String', 'full' => true],
                 'doc_date' => ['name' => 'Tgl. Dokumen', 'type' => 'String', 'full' => true],
                 'doc_expired' => ['name' => 'Tgl. Kadaluarsa', 'type' => 'String', 'full' => true],
-                'doc_attachment' => ['name' => 'Lampiran', 'type' => 'String', 'full' => true],
+                'doc_attachment' => ['name' => 'Lampiran', 'type' => 'Upload', 'folder' => 'file_provider'],
                 'status' => ['name' => 'Status', 'type' => 'State'],
             ];
             $column_service = [

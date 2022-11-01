@@ -19,12 +19,33 @@ class ProviderController extends Controller {
     protected $providerName = '';
     protected $baseRoute = '';
 
-    public static function base_index($gudang) {
-        $data = Provider::find($gudang);
-        $select = [
-            'business_category' => BusinessCategory::where('status', 1)->get()
-        ];
-        return [$data, $select];
+    public static function base_index($provider) {
+        $data = Provider::find($provider);
+        if ($data) {
+            $select = [
+                'business_category' => BusinessCategory::where('status', 1)->get()
+            ];
+            $detail = $data->m_company_id != Auth::guard('user')->user()->m_company_id;
+            if ($detail) {
+                $submenu = [
+                    ['key' => 'service', 'name' => 'Layanan'],
+                    ['key' => 'address', 'name' => 'Alamat'],
+                    ['key' => 'contact', 'name' => 'Kontak'],
+                    ['key' => 'document', 'name' => 'Dokumen'],
+                ];
+                $submenu[] = ['key' => $data->type->provider_type_key, 'name' => 'Daftar ' . $data->type->provider_type_name];
+            } else {
+                $submenu = [
+                    ['key' => 'address', 'name' => 'Alamat'],
+                    ['key' => 'service', 'name' => 'Layanan'],
+                    ['key' => 'contact', 'name' => 'Kontak'],
+                    ['key' => 'document', 'name' => 'Dokumen'],
+                ];
+            }
+            return [$data, $select, $detail, $submenu];
+        } else {
+            return back();
+        }
     }
     /**
      * Display a listing of the resource.
@@ -35,7 +56,7 @@ class ProviderController extends Controller {
         $company = Auth::guard('user')->user()->company;
         $data = Provider::where(['m_company_id' => $company->id, 'provider_type_id' => $this->providerType])->paginate(10);
 
-        return view('dashboard.provider.list', ['data' => $data, 'prop' => Table::tableProp($data), 'module'=>$this->providerName]);
+        return view('dashboard.provider.list', ['data' => $data, 'prop' => Table::tableProp($data), 'module' => $this->providerName]);
     }
 
     /**
@@ -49,7 +70,7 @@ class ProviderController extends Controller {
             'business_category' => BusinessCategory::where('status', 1)->get()
         ];
 
-        return view('dashboard.provider.regist', ['data' => $data, 'select' => $select, 'module'=>$this->providerName]);
+        return view('dashboard.provider.regist', ['data' => $data, 'select' => $select, 'module' => $this->providerName]);
     }
 
     /**
@@ -111,8 +132,13 @@ class ProviderController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
-        return redirect(route($this->baseRoute . '.address', [$id]));
+    public function show($provider) {
+        $data = Provider::find($provider);
+        $detail = $data->m_company_id != Auth::guard('user')->user()->m_company_id;
+        if ($detail)
+            return redirect(route($this->baseRoute . '.service', [$provider]));
+        else
+            return redirect(route($this->baseRoute . '.address', [$provider]));
     }
 
     /**
