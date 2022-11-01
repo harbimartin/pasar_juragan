@@ -10,6 +10,10 @@ use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\Admin\ProfileUserController as AdminProfileUserController;
 use App\Http\Controllers\Auth\AuthAdminController;
 use App\Http\Controllers\Auth\AuthUserController;
+use App\Http\Controllers\User\Dashboard\Home\HomeWarehouseController;
+use App\Http\Controllers\User\Dashboard\Home\Juragan\HomeJuraganAlatBeratController;
+use App\Http\Controllers\User\Dashboard\Home\Juragan\HomeJuraganAngkutanController;
+use App\Http\Controllers\User\Dashboard\Home\Juragan\HomeJuraganGudangController;
 use App\Http\Controllers\User\Dashboard\HomeController;
 use App\Http\Controllers\User\Dashboard\Juragan\Provider\ProviderAddressController;
 use App\Http\Controllers\User\Dashboard\Juragan\Provider\ProviderContactController;
@@ -18,6 +22,7 @@ use App\Http\Controllers\User\Dashboard\Juragan\Provider\ProviderServiceControll
 use App\Http\Controllers\User\Dashboard\Juragan\JuraganAlatBeratController;
 use App\Http\Controllers\User\Dashboard\Juragan\JuraganAngkutanController;
 use App\Http\Controllers\User\Dashboard\Juragan\JuraganGudangController;
+use App\Http\Controllers\User\Dashboard\Juragan\Provider\ProviderWarehouseController;
 use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyAddressController;
 use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyContactController;
 use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyController;
@@ -60,7 +65,31 @@ Route::group([
     Route::any('/', function () {
         return redirect(route('d-home'));
     });
+    Route::group([
+        'prefix' => 'home',
+        'as' => 'home.',
+    ], function () {
+        Route::resource('/warehouse', HomeWarehouseController::class, Routing::setName('warehouse'))->only('index', 'show');
+        // Angkutan & Alat Berat tambahkan isi disini
+
+        foreach (['barang', 'gudang', 'angkutan', 'alatberat'] as $provider) {
+            Route::group([
+                'prefix' => 'juragan-' . $provider . '/{provider}',
+                'as' => 'juragan-' . $provider . '.',
+            ], function () {
+                Route::resource('/contact', ProviderContactController::class, Routing::setName('contact'))->except('create', 'destroy');
+                Route::resource('/address', ProviderAddressController::class, Routing::setName('address'))->except('create', 'destroy');
+                Route::resource('/document', ProviderDocumentController::class, Routing::setName('document'))->except('create', 'destroy');
+                Route::resource('/service', ProviderServiceController::class, Routing::setName('service'))->except('create', 'destroy');
+                Route::resource('/warehouse', ProviderWarehouseController::class, Routing::setName('warehouse'))->except('create', 'destroy');
+            });
+        }
+        Route::resource('/juragan-gudang', HomeJuraganGudangController::class, Routing::setName('juragan-gudang'))->only('show');
+        Route::resource('/juragan-angkutan', HomeJuraganAngkutanController::class, Routing::setName('juragan-angkutan'))->only('show');
+        Route::resource('/juragan-alatberat', HomeJuraganAlatBeratController::class, Routing::setName('juragan-alatberat'))->only('show');
+    });
     Route::resource('/home', HomeController::class, Routing::setName('home'))->only('index');
+
     Route::resource('/profile-user', ProfileUserController::class, Routing::setName('profile-user'))->only('index', 'store', 'update');
 
     foreach (['barang', 'gudang', 'angkutan', 'alatberat'] as $provider) {
@@ -68,10 +97,10 @@ Route::group([
             'prefix' => 'juragan-' . $provider . '/{provider}',
             'as' => 'juragan-' . $provider . '.',
         ], function () {
-            Route::resource('/contact', ProviderContactController::class, Routing::setName('contact'))->except('create', 'show', 'destroy');
-            Route::resource('/address', ProviderAddressController::class, Routing::setName('address'))->except('create', 'show', 'destroy');
-            Route::resource('/document', ProviderDocumentController::class, Routing::setName('document'))->except('create', 'show', 'destroy');
-            Route::resource('/service', ProviderServiceController::class, Routing::setName('service'))->except('create', 'show', 'destroy');
+            Route::resource('/contact', ProviderContactController::class, Routing::setName('contact'))->except('create', 'destroy');
+            Route::resource('/address', ProviderAddressController::class, Routing::setName('address'))->except('create', 'destroy');
+            Route::resource('/document', ProviderDocumentController::class, Routing::setName('document'))->except('create', 'destroy');
+            Route::resource('/service', ProviderServiceController::class, Routing::setName('service'))->except('create', 'destroy');
         });
     }
     Route::resource('/juragan-gudang', JuraganGudangController::class, Routing::setName('juragan-gudang'))->except('edit', 'destroy');
