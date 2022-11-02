@@ -23,7 +23,7 @@
             'name' => 'Nama/Posisi',
             'type' => 'Multi',
             'children' => [
-                'provider_contact_name' => ['type' => 'String', 'iclass' => 'font-semibold text-gray-600'],
+                'provider_contact_name' => ['type' => 'String', 'class' => 'font-semibold text-gray-600'],
                 'provider_contact_position' => ['name' => 'Nama Kontak', 'type' => 'String'],
             ],
         ],

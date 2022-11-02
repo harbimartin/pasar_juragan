@@ -5,6 +5,7 @@ namespace App\Models\Warehouse;
 use App\Models\_List;
 use App\Models\GeoCity;
 use App\Models\GeoProvince;
+use App\Models\Image;
 use App\Models\Provider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -36,6 +37,7 @@ class Warehouse extends _List {
         'm_wh_function_id',
         'm_wh_category_id',
         'm_wh_storage_methode',
+        'wh_large',
         'status'
     ];
     protected $sortable = [
@@ -79,5 +81,14 @@ class Warehouse extends _List {
     }
     public function open_hour() {
         return $this->hasMany(WarehouseOpenHour::class, 'm_warehouse_id', 'id');
+    }
+    public function image() {
+        return $this->hasMany(Image::class, 'm_code_id', 'id')->where('image_type', Provider::WAREHOUSE);
+    }
+    public function getWhLargeUomAttribute(){
+        return $this->wh_large . ' m²';
+    }
+    public function getCityProvinceAttribute(){
+        return $this->city->city_name . ', '. $this->province->province_name;
     }
 }

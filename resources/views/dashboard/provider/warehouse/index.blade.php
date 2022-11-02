@@ -10,7 +10,7 @@
                     'name' => 'Juragan',
                     'type' => 'Multi',
                     'children' => [
-                        'provider_code' => ['by' => 'provider', 'name' => 'Nama', 'type' => 'SString', 'iclass' => 'text-gray-700 font-semibold border-b border-blue-500'],
+                        'provider_code' => ['by' => 'provider', 'name' => 'Nama', 'type' => 'SString', 'class' => 'text-gray-700 font-semibold border-b border-blue-500'],
                         'provider_name' => ['by' => 'provider', 'name' => 'Nama', 'type' => 'Route', 'name' => 'dashboard.home.juragan-gudang.show', 'key' => 'm_provider_id'],
                         'provider_website' => ['by' => 'provider', 'name' => 'Nama', 'type' => 'SLink'],
                     ],
@@ -19,7 +19,7 @@
             'name' => 'Nama/Alamat',
             'type' => 'Multi',
             'children' => [
-                'wh_name' => ['name' => 'Nama', 'type' => 'String', 'iclass' => 'text-gray-700 font-semibold border-b border-blue-500'],
+                'wh_name' => ['name' => 'Nama', 'type' => 'String', 'class' => 'text-gray-700 font-semibold border-b border-blue-500'],
                 'address_detail' => ['name' => 'Nama', 'type' => 'TextArea'],
                 'location' => ['name' => 'Lokasi', 'type' => 'Location', 'lat' => 'latitude', 'long' => 'longitude'],
             ],

@@ -58,7 +58,7 @@ class WarehouseController extends Controller {
         $data = Warehouse::filter($request)->whereHas('provider', function ($q) use ($company_id) {
             $q->where('m_company_id', $company_id);
         })->paginate(10);
-        return view('dashboard.warehouse.list', ['target'=>'provider', 'data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'sel_filter' => $sel_filter]);
+        return view('dashboard.warehouse.list', ['target' => 'provider', 'data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'sel_filter' => $sel_filter]);
     }
 
     /**
@@ -95,6 +95,7 @@ class WarehouseController extends Controller {
             'm_wh_category_id' => ['required'],
             'm_wh_function_id' => ['required'],
             'm_wh_storage_methode' => ['required'],
+            'wh_large' => ['required'],
             'day_open' => ['required']
         ]);
         $credentials['status'] = 1;
@@ -151,12 +152,12 @@ class WarehouseController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        return $request->toArray();
         switch ($request->__type) {
             case 'toggle':
                 Warehouse::find($id)->update(['status' => $request->toggle]);
                 break;
             case 'update':
+                return $request->toArray();
                 $credentials = $request->validate([
                     'm_provider_id' => ['required', 'exists:t_provider_tab,id'],
                     'wh_name' => ['required'],
@@ -174,22 +175,28 @@ class WarehouseController extends Controller {
                     'tdg_expired_date' => ['required'],
                     'm_wh_category_id' => ['required'],
                     'm_wh_function_id' => ['required'],
-                    'm_wh_storage_methode' => ['required']
+                    'm_wh_storage_methode' => ['required'],
+                    'wh_large' => ['required']
                 ]);
                 try {
                     DB::beginTransaction();
                     $wh = Warehouse::find($id);
-                    if ($request->file_logo && $request->has('file_logo.0')) {
+                    if ($request->has('image')) {
                         try {
-                            $bfile = $request->file_logo[0];
-                            $filename = $wh->id . date("YmdHms") . '.' . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
-                            if ($wh->file_logo)
-                                unlink(storage_path('file_provider/') . $wh->file_provider);
-                            $bfile->move(storage_path('file_provider/'), $filename);
-                            $credentials['provider_logo'] = $filename;
+                            foreach ($request->image as $ind => $img_file) {
+                                $bfile = $img_file;
+                                $filename = 'WH' . $wh->id . date("YmdHms") . $ind . '.' . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
+                                $bfile->move(storage_path('product_image/'), $filename);
+                                $wh->image()->create([
+                                    'image_type' => Provider::WAREHOUSE,
+                                    'm_code_id' => $wh->id,
+                                    'image_url' => $filename,
+                                    'image_desc' => pathinfo($bfile->getClientOriginalName(), PATHINFO_FILENAME)
+                                ]);
+                            }
                         } catch (Throwable $th) {
                             back()->withErrors([
-                                'update' => "Ada kegagalan dalam menunggah File Lampiran. : " . $th->getMessage()
+                                'update' => "Ada kegagalan dalam menunggah File Foto. : " . $th->getMessage()
                             ]);
                         }
                     }

@@ -7,15 +7,15 @@
             'name' => 'Plate Nomor/Type Truck',
             'type' => 'Multi',
             'children' => [
-                'plate_no' => ['name' => 'Nama', 'type' => 'String','iclass' => 'text-gray-700 font-semibold border-b border-blue-500'],
-                'type' => ['name' => 'Type', 'type' => 'SString','child' => ['truck_type']],
+                'plate_no' => ['name' => 'Nama', 'type' => 'String', 'class' => 'text-gray-700 font-semibold border-b border-blue-500'],
+                'type' => ['name' => 'Type', 'type' => 'SString', 'child' => ['truck_type']],
             ],
         ],
         'place' => [
             'name' => 'STNK No/KIR No',
             'type' => 'Multi',
             'children' => [
-                'stnk_no' => ['name' => 'Nama', 'type' => 'String','iclass' => 'text-gray-700 font-semibold border-b border-blue-500'],
+                'stnk_no' => ['name' => 'Nama', 'type' => 'String', 'class' => 'text-gray-700 font-semibold border-b border-blue-500'],
                 'kir_no' => ['name' => 'Nama', 'type' => 'String'],
             ],
         ],
@@ -23,7 +23,7 @@
             'name' => 'Expired KIR/STNK',
             'type' => 'Multi',
             'children' => [
-                'expired_kir' => ['name' => 'Nama', 'type' => 'String','iclass' => 'text-gray-700 font-semibold border-b border-blue-500'],
+                'expired_kir' => ['name' => 'Nama', 'type' => 'String', 'class' => 'text-gray-700 font-semibold border-b border-blue-500'],
                 'expired_stnk' => ['name' => 'Nama', 'type' => 'String'],
             ],
         ],

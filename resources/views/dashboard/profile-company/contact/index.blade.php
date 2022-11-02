@@ -21,7 +21,7 @@
             'name' => 'Nama/Posisi',
             'type' => 'Multi',
             'children' => [
-                'comp_contact_name' => ['type' => 'String', 'iclass' => 'font-semibold text-gray-600'],
+                'comp_contact_name' => ['type' => 'String', 'class' => 'font-semibold text-gray-600'],
                 'comp_contact_position' => ['name' => 'Nama Kontak', 'type' => 'Index'],
             ],
         ],

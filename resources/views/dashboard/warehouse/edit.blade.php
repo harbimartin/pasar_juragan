@@ -17,10 +17,12 @@
             'tdg_date' => ['name' => 'Tanggal TDG', 'type' => 'Date', 'full' => false],
             'tdg_expired_date' => ['name' => 'Expired TDG', 'type' => 'Date', 'full' => false],
             'tdg_attachment' => ['name' => 'Upload TDG', 'type' => 'Upload', 'accept' => 'pdf/*', 'key' => 'file', 'folder' => 'file_tdg', 'mono' => true, 'full' => true],
+            'image' => ['name' => 'Foto Gudang', 'type' => 'Upload', 'accept' => 'image/*', 'key' => 'file_image', 'desc_key' => 'image_desc', 'folder' => 'image_product', 'full' => true],
 
             'm_wh_category_id' => ['name' => 'Kategori', 'type' => 'TextSel', 'val' => ['wh_category'], 'desc' => ['wh_category_desc'], 'api' => 'category', 'full' => true],
             'm_wh_function_id' => ['name' => 'Tipe Fungsi', 'type' => 'TextSel', 'val' => ['wh_function'], 'desc' => ['wh_function_desc'], 'api' => 'function', 'full' => true],
             'm_wh_storage_methode' => ['name' => 'Metode Penyimpanan', 'type' => 'TextSel', 'val' => ['wh_storage_methode'], 'desc' => ['wh_storage_methode_desc'], 'api' => 'storage_methode', 'full' => true],
+            'wh_large' => ['name' => 'Luas Gudang (m²)', 'type' => 'Number', 'step' => '0.01'],
 
             'day_open' => ['name' => 'Hari & Jam Buka', 'type' => 'OpenHour', 'val' => ['name'], 'api' => 'days', 'full' => true],
         ];

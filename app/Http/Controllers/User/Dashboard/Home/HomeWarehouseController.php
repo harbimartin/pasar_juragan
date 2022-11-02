@@ -22,7 +22,7 @@ class HomeWarehouseController extends Controller {
      */
     public function index(Request $request) {
         $sel_filter = [
-            'provider' => ['name' => 'Provider', 'key' => 'provider_name', 'option' => Provider::whereHas('warehouse', function($q){
+            'provider' => ['name' => 'Provider', 'key' => 'provider_name', 'option' => Provider::whereHas('warehouse', function ($q) {
                 $q->where('status', 1);
             })->where('status', 'Approved')->get()],
             'province' => ['name' => 'Provinsi', 'key' => 'province_name', 'option' => GeoProvince::where('status', 1)->get()],
@@ -32,7 +32,7 @@ class HomeWarehouseController extends Controller {
             'storage_methode' => ['name' => 'Metode Penyimpanan', 'key' => 'wh_storage_methode', 'option' => WarehouseStorageMethod::where('status', 1)->get()],
         ];
         $data = Warehouse::filter($request)->where('status', 1)->paginate(10);
-        return view('dashboard.warehouse.list', ['target' => 'public', 'data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'sel_filter' => $sel_filter]);
+        return view('dashboard.warehouse.catalog', ['target' => 'public', 'data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'sel_filter' => $sel_filter]);
     }
 
     /**

@@ -99,7 +99,7 @@
                         @case('Password')
                             <div class="col-end-7 col-start-1 md:col-start-2 relative block p-0">
                                 <input name="{{ $key }}" type="password" autocomplete="new-password"
-                                    class="w-full h-full rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->iclass) {{ $param->iclass }} @endisset" />
+                                    class="w-full h-full rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->class) {{ $param->class }} @endisset" />
                             </div>
                         @break
 
@@ -447,22 +447,28 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($select[$param->api] as $i => $value )
-                                    <tr>
-                                        <td height="50" class="px-3 bg-gray-50 text-gray-500">
-                                            <input type="checkbox" id="{{ $key }}{{$i}}" v-on:change="checkboxCheck({{$value['id']}},{{$i}},$event)" >
-                                            <label for="{{ $key }}{{$i}}" class="pr-3">{{ $value['name'] }}</label>
-                                            <input hidden disabled type="text" name="{{$key}}[{{$i}}][open_day]" value="{{$value['id']}}" id="inputan-day-{{$i}}"/>
-                                        </td>
-                                        <td height="50" class="text-center bg-gray-50 px-3">
-                                            <input disabled name="{{ $key }}[{{$i}}][open_hour]" type="time" id="inputan-time-open-{{$i}}"
-                                                class="w-2/3 disabled:bg-gray-300 rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
-                                        </td>
-                                        <td height="50" class="text-center bg-gray-50 px-3">
-                                            <input disabled name="{{ $key }}[{{$i}}][close_hour]" type="time" id="inputan-time-close-{{$i}}"
-                                            class="w-2/3 disabled:bg-gray-300 rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
-                                        </td>
-                                    </tr>
+                                    @foreach ($select[$param->api] as $i => $value)
+                                        <tr>
+                                            <td height="50" class="px-3 bg-gray-50 text-gray-500">
+                                                <input type="checkbox" id="{{ $key }}{{ $i }}"
+                                                    v-on:change="checkboxCheck({{ $value['id'] }},{{ $i }},$event)">
+                                                <label for="{{ $key }}{{ $i }}"
+                                                    class="pr-3">{{ $value['name'] }}</label>
+                                                <input hidden disabled type="text"
+                                                    name="{{ $key }}[{{ $i }}][open_day]"
+                                                    value="{{ $value['id'] }}" id="inputan-day-{{ $i }}" />
+                                            </td>
+                                            <td height="50" class="text-center bg-gray-50 px-3">
+                                                <input disabled name="{{ $key }}[{{ $i }}][open_hour]"
+                                                    type="time" id="inputan-time-open-{{ $i }}"
+                                                    class="w-2/3 disabled:bg-gray-300 rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
+                                            </td>
+                                            <td height="50" class="text-center bg-gray-50 px-3">
+                                                <input disabled name="{{ $key }}[{{ $i }}][close_hour]"
+                                                    type="time" id="inputan-time-close-{{ $i }}"
+                                                    class="w-2/3 disabled:bg-gray-300 rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition" />
+                                            </td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>

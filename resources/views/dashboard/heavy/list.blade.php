@@ -7,15 +7,15 @@
             'name' => 'Code/Type Equipment',
             'type' => 'Multi',
             'children' => [
-                'equipment_code' => ['name' => 'Code', 'type' => 'String','iclass' => 'text-gray-700 font-semibold border-b border-blue-500'],
-                'type' => ['name' => 'Type', 'type' => 'SString','child' => ['heavy_equipment_type']],
+                'equipment_code' => ['name' => 'Code', 'type' => 'String', 'class' => 'text-gray-700 font-semibold border-b border-blue-500'],
+                'type' => ['name' => 'Type', 'type' => 'SString', 'child' => ['heavy_equipment_type']],
             ],
         ],
         'place' => [
             'name' => 'Brand / Desc',
             'type' => 'Multi',
             'children' => [
-                'equipment_code' => ['name' => 'Brand', 'type' => 'String','iclass' => 'text-gray-700 font-semibold border-b border-blue-500'],
+                'equipment_code' => ['name' => 'Brand', 'type' => 'String', 'class' => 'text-gray-700 font-semibold border-b border-blue-500'],
                 'equipment_desc' => ['name' => 'Desc', 'type' => 'String'],
             ],
         ],

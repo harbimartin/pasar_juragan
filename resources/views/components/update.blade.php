@@ -133,7 +133,7 @@
                                                     v-on:input="refMax($event,'{{ $key }}_v_',{{ $param->max }})"
                                                 @endisset
                             name="{{ $key }}" value="{{ $datas[$param->by] }}" type="text"
-                            class="w-full h-full rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->iclass){{ $param->iclass }}@endisset" />
+                            class="w-full h-full rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->class){{ $param->class }}@endisset" />
                         @isset($param->max)
                             <div id="{{ $key }}_v_" class="pointer-events-none absolute top-1 right-2 h-full">
                                 <span>{{ strlen($datas[$param->by]) }}</span>/{{ $param->max }}
@@ -146,7 +146,7 @@
                     <div class="col-end-7 col-start-1 md:col-start-2 relative block p-0">
                         <input name="{{ $key }}" value="{{ $datas[$param->by] }}" type="password"
                             autocomplete="new-password"
-                            class="w-full h-full rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->iclass){{ $param->iclass }}@endisset" />
+                            class="w-full h-full rounded border px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->class){{ $param->class }}@endisset" />
                     </div>
                 @break
 
@@ -168,7 +168,7 @@
                     ?>
                     <input readonly id="{{ $key }}" name="{{ $key }}" value="{{ $txt }}"
                         type="text"
-                        class="rounded border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->iclass){{ $param->iclass }}@endisset" />
+                        class="rounded border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->class){{ $param->class }}@endisset" />
                 @break
 
                 @case('Number')
@@ -368,7 +368,7 @@
                 @case('TextArea')
                     <textarea id="{{ $key }}" name="{{ $key }}" type="textarea"
                         rows="{{ isset($param->rows) ? $param->rows : 4 }}" @if ($detail || isset($param->off)) readonly @endif
-                        class="rounded border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->iclass){{ $param->iclass }}@endisset">{{ isset($param->child) ? $datas[$param->by][$param->child] : $datas[$param->by] }}</textarea>
+                        class="rounded border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->class){{ $param->class }}@endisset">{{ isset($param->child) ? $datas[$param->by][$param->child] : $datas[$param->by] }}</textarea>
                 @break
 
                 @case('Upload')
@@ -377,7 +377,11 @@
                         if (isset($param->force)) {
                             $readonly = !$param->force;
                         }
-                        VueControl::Mono()->prepareFile($key, isset($param->anonymous) ? [] : VueControl::FileMonoByName($datas[$key]));
+                        if (isset($param->mono)) {
+                            VueControl::Mono()->prepareFile($key, isset($param->anonymous) ? [] : VueControl::FileMonoByName($datas[$key]));
+                        } else {
+                            VueControl::Mono()->prepareFile($key, VueControl::Mapping($datas[$key], isset($param->desc_key) ? $param->desc_key : 'file_desc'));
+                        }
                     @endphp
                     <div class="col-end-7 col-start-1 md:col-start-2 flex">
                         @if (!$readonly)
