@@ -131,6 +131,25 @@ class TransportController extends Controller
                 try {
                     DB::beginTransaction();
                     $truck = Truck::find($id);
+                    if ($request->has('image')) {
+                        try {
+                            foreach ($request->image as $ind => $img_file) {
+                                $bfile = $img_file;
+                                $filename = 'TP' . $truck->id . date("YmdHms") . $ind . '.' . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
+                                $bfile->move(storage_path('product_image/'), $filename);
+                                $truck->image()->create([
+                                    'image_type' => Provider::TRANSPORT,
+                                    'm_code_id' => $truck->id,
+                                    'image_url' => $filename,
+                                    'image_desc' => pathinfo($bfile->getClientOriginalName(), PATHINFO_FILENAME)
+                                ]);
+                            }
+                        } catch (Throwable $th) {
+                            back()->withErrors([
+                                'update' => "Ada kegagalan dalam menunggah File Foto. : " . $th->getMessage()
+                            ]);
+                        }
+                    }
                     $truck->update($credentials);
                     DB::commit();
                 } catch (Throwable $th) {

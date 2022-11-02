@@ -12,6 +12,7 @@
             'gps_imei' => ['name' => 'Gps IMEI', 'type' => 'String', 'full' => false],
             'gps_url' => ['name' => 'Gps Url', 'type' => 'String', 'full' => true],
             'gps_api_key' => ['name' => 'GPS Key', 'type' => 'TextArea', 'full' => true],
+            'image' => ['name' => 'Foto Angkutan', 'type' => 'Upload', 'accept' => 'image/*', 'key' => 'file_image', 'folder' => 'image_product', 'full' => true],
         ];
         $column = json_encode($column);
     @endphp

@@ -3,6 +3,7 @@
 namespace App\Models\Heavy;
 
 use App\Models\_List;
+use App\Models\Image;
 use App\Models\Provider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -43,6 +44,10 @@ class HeavyEquipment extends _List
 
     public function provider() {
         return $this->hasOne(Provider::class, 'id', 'm_provider_id');
+    }
+
+    public function image() {
+        return $this->hasMany(Image::class, 'm_code_id', 'id')->where('image_type', Provider::HEAVY_EQUIPMENT);
     }
 
     public function type(){

@@ -19,7 +19,8 @@ class HeavyController extends Controller
         $company = Auth::guard('user')->user()->company;
         return [
             'provider' => Provider::where(['provider_type_id' => Provider::HEAVY_EQUIPMENT, 'm_company_id' => $company->id, 'status' => 'Approved'])->get(),
-            'heavy_type' => HeavyEquipmentType::where('status', 1)->get()
+            'heavy_type' => HeavyEquipmentType::where('status', 1)->get(),
+            // 'image' =>
         ];
     }
     /**
@@ -138,13 +139,13 @@ class HeavyController extends Controller
                 ]);
                 try {
                     DB::beginTransaction();
-                    $wh = HeavyEquipment::find($id);
+                    $heavy = HeavyEquipment::find($id);
                     if ($request->equipment_attachment && $request->has('equipment_attachment.0')) {
                         try {
                             $bfile = $request->equipment_attachment[0];
-                            $filename = $wh->id . date("YmdHms") . '.' . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
-                            if ($wh->equipment_attachment)
-                                unlink(storage_path('file_tdg/') . $wh->equipment_attachment);
+                            $filename = $heavy->id . date("YmdHms") . '.' . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
+                            if ($heavy->equipment_attachment)
+                                unlink(storage_path('file_tdg/') . $heavy->equipment_attachment);
                             $bfile->move(storage_path('file_tdg/'), $filename);
                             $credentials['equipment_attachment'] = $filename;
                         } catch (Throwable $th) {
@@ -153,7 +154,27 @@ class HeavyController extends Controller
                             ]);
                         }
                     }
-                    $wh->update($credentials);
+
+                    if ($request->has('image')) {
+                        try {
+                            foreach ($request->image as $ind => $img_file) {
+                                $bfile = $img_file;
+                                $filename = 'HV' . $heavy->id . date("YmdHms") . $ind . '.' . pathinfo($bfile->getClientOriginalName(), PATHINFO_EXTENSION);
+                                $bfile->move(storage_path('product_image/'), $filename);
+                                $heavy->image()->create([
+                                    'image_type' => Provider::HEAVY_EQUIPMENT,
+                                    'm_code_id' => $heavy->id,
+                                    'image_url' => $filename,
+                                    'image_desc' => pathinfo($bfile->getClientOriginalName(), PATHINFO_FILENAME)
+                                ]);
+                            }
+                        } catch (Throwable $th) {
+                            back()->withErrors([
+                                'update' => "Ada kegagalan dalam menunggah File Foto. : " . $th->getMessage()
+                            ]);
+                        }
+                    }
+                    $heavy->update($credentials);
                     DB::commit();
                 } catch (Throwable $th) {
                     DB::rollback();
