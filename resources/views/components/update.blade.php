@@ -372,6 +372,7 @@
                 @break
 
                 @case('Upload')
+                {{-- {{sizeof($item->image)}} --}}
                     @php
                         $readonly = $detail || isset($param->off);
                         if (isset($param->force)) {

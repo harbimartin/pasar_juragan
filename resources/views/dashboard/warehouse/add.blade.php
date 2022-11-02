@@ -17,7 +17,7 @@
             'tdg_date' => ['name' => 'Tanggal TDG', 'type' => 'Date', 'full' => false],
             'tdg_expired_date' => ['name' => 'Expired TDG', 'type' => 'Date', 'full' => false],
             'tdg_attachment' => ['name' => 'Upload TDG', 'type' => 'Upload', 'accept' => 'pdf/*', 'key' => 'file', 'folder' => 'file_tdg', 'mono' => true, 'full' => true],
-            // 'image' => ['name' => 'Foto Gudang', 'type' => 'Upload', 'accept' => 'image/*', 'key' => 'file_image', 'folder' => 'image_product', 'full' => true],
+            'image' => ['name' => 'Foto Gudang', 'type' => 'Upload', 'accept' => 'image/*', 'key' => 'file_image', 'folder' => 'image_product', 'full' => true],
 
             'm_wh_category_id' => ['name' => 'Kategori', 'type' => 'TextSel', 'val' => ['wh_category'], 'desc' => ['wh_category_desc'], 'api' => 'category', 'full' => true],
             'm_wh_function_id' => ['name' => 'Tipe Fungsi', 'type' => 'TextSel', 'val' => ['wh_function'], 'desc' => ['wh_function_desc'], 'api' => 'function', 'full' => true],

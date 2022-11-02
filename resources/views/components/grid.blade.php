@@ -197,7 +197,7 @@
                         </tr>
                     @endif --}}
                     @foreach ($datas as $iind => $item)
-                        <label for="link{{$iind}}"
+                        <div
                             class="p-3 bg-white hover:bg-blue-50 text-gray-900 text-xs md:text-sm rounded-xl shadow overflow-hidden border-b border-gray-200 sm:rounded-lg cursor-pointer">
                             @foreach (json_decode($column) as $key => $param)
                                 @if ($param)
@@ -224,8 +224,7 @@
                                     </div>
                                 @endif
                             @endforeach
-                            <a id="link{{$iind}}" href="http://harbi.com">123</a>
-                        </label>
+                        </div>
                     @endforeach
                 </div>
             </div>
