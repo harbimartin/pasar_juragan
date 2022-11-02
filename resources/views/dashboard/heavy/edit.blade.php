@@ -9,7 +9,7 @@
             'operational_weight' => ['name' => 'Operational Weight', 'type' => 'Number', 'full' => false],
             'equipment_desc' => ['name' => 'Equipment Desc', 'type' => 'TextArea', 'full' => true],
             'equipment_attachment' => ['name' => 'Upload', 'type' => 'Upload', 'accept' => 'pdf/*', 'key' => 'file', 'folder' => 'file_tdg', 'mono' => true, 'full' => true],
-            'image' => ['name' => 'Foto Alat Berat', 'type' => 'Upload', 'accept' => 'image/*', 'key' => 'file_image', 'folder' => 'image_product', 'full' => true],
+            'image' => ['name' => 'Foto Alat Berat', 'type' => 'Upload', 'accept' => 'image/*', 'key' => 'file_image', 'desc_key' => 'image_desc', 'folder' => 'image_product', 'full' => true],
         ];
         $column = json_encode($column);
     @endphp
