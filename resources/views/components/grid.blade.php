@@ -197,8 +197,8 @@
                         </tr>
                     @endif --}}
                     @foreach ($datas as $iind => $item)
-                        <div
-                            class="p-3 bg-white hover:bg-blue-50 text-gray-900 text-xs md:text-sm rounded-xl shadow overflow-hidden border-b border-gray-200 sm:rounded-lg cursor-pointer">
+                        <div onclick="window.location='{{ Routing::getShowWithNextID($item[$idk]) }}'"
+                            class="p-3 bg-white group hover:bg-sky-50 text-gray-900 text-xs md:text-sm rounded-xl shadow overflow-hidden border-b border-gray-200 sm:rounded-lg cursor-pointer">
                             @foreach (json_decode($column) as $key => $param)
                                 @if ($param)
                                     <div class="whitespace-nowrap flex">
@@ -236,7 +236,8 @@
                     Show {{ $prop['count'] }} of {{ $prop['total'] }}
                 </div>
                 <div class="mt-2 md:mt-0 md:mr-6 md:ml-0 inline-flex text-sm md:text-base">
-                    <svg @if ($prop['current_page'] > 1) v-on:click="updateParam('page', 1);"
+                    <svg
+                        @if ($prop['current_page'] > 1) v-on:click="updateParam('page', 1);"
                             class="mt-0.5 text-gray-800 hover:text-blue-500 cursor-pointer"
                         @else
                             class="mt-0.5 text-gray-300 cursor-not-allowed" @endif
@@ -247,7 +248,8 @@
                         <path fill-rule="evenodd"
                             d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
                     </svg>
-                    <svg @if ($prop['current_page'] > 1) v-on:click="updateParam('page', {{ $prop['current_page'] - 1 }});"
+                    <svg
+                        @if ($prop['current_page'] > 1) v-on:click="updateParam('page', {{ $prop['current_page'] - 1 }});"
                             class="mt-0.5 text-gray-800 hover:text-blue-500 cursor-pointer"
                         @else
                             class="mt-0.5 text-gray-300 cursor-not-allowed" @endif
@@ -292,7 +294,8 @@
                             @endif
                         @endif
                     </ul>
-                    <svg @if ($prop['current_page'] < $prop['total_pages']) v-on:click="updateParam('page', {{ $prop['current_page'] + 1 }});"
+                    <svg
+                        @if ($prop['current_page'] < $prop['total_pages']) v-on:click="updateParam('page', {{ $prop['current_page'] + 1 }});"
                             class="mt-0.5 text-gray-800 hover:text-blue-500 cursor-pointer"
                         @else
                             class="mt-0.5 text-gray-300 cursor-not-allowed" @endif
@@ -301,7 +304,8 @@
                         <path fill-rule="evenodd"
                             d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
                     </svg>
-                    <svg @if ($prop['current_page'] < $prop['total_pages'] - 1) v-on:click="updateParam('page', {{ $prop['total_pages'] }});"
+                    <svg
+                        @if ($prop['current_page'] < $prop['total_pages'] - 1) v-on:click="updateParam('page', {{ $prop['total_pages'] }});"
                             class="mt-0.5 text-gray-800 hover:text-blue-500 cursor-pointer"
                         @else
                             class="mt-0.5 text-gray-300 cursor-not-allowed" @endif

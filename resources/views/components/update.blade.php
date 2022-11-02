@@ -170,6 +170,30 @@
                         type="text"
                         class="rounded border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->class){{ $param->class }}@endisset" />
                 @break
+                @case('SLink')
+                <?php
+                    $link = route($param->route, $datas[$param->key]);
+                    $blank = isset($param->noblank) ? '' : '(Blank)';
+                    $txt = '';
+                    $by = isset($param->by) ? $param->by : $key;
+                    if ($datas[$by]) {
+                        foreach ($param->child as $on => $child) {
+                            $str = $datas[$by][$child];
+                            if ($on == 0) {
+                                $txt = $str == '' ? $blank : $str;
+                            } else {
+                                $txt = $txt . ' - ' . $str;
+                            }
+                        }
+                    }
+                ?>
+                    <input readonly id="{{ $key }}" name="{{ $key }}" value="{{ $txt }}"
+                        type="text"
+                        class="rounded border col-end-3 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->class){{ $param->class }}@endisset" />
+                    <a href="{{$link}}" class="mx-3 text-center rounded-full border col-start-4 md:col-start-3 py-1 transition bg-blue-600 hover:bg-blue-600 text-white font-semibold cursor-pointer">
+                        {{$param->val}}
+                    </a>
+                @break
 
                 @case('Number')
                     <input

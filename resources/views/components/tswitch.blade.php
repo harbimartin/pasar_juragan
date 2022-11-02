@@ -2,7 +2,7 @@
     @case('Image')
     <div class="overflow-hidden flex" style="height:22vh;">
         @if (sizeof($item[$key]) > 0)
-            <img class="min-h-100  @isset($param->class){{$param->class}}@endisset" src="{{ route('storage', [$param->module, $item[$key][0]['image_desc'], $item[$key][0]['id']]) }}"
+            <img style="@isset($param->class) {{$param->class}}@endisset" src="{{ route('storage', [$param->module, $item[$key][0]['image_desc'], $item[$key][0]['id']]) }}"
                 alt="Logo">
         @else
             <img class="my-auto" src="https://tirtorahayu-kulonprogo.desa.id/desa/themes/natra_kp/images/noimage.png"/>
@@ -208,8 +208,8 @@
                 @break
 
                 @case('Location')
-                    <a href="http://maps.google.com/maps?z=12&t=m&q=loc:{{ $item[$param->lat] }}+{{ $item[$param->long] }}"
-                        target="_blank" class="text-blue-800 hover:text-blue-600 inline-flex py-0.5 @isset($param->class) {{$param->class}} @endisset">
+                    <a onclick="event.stopPropagation();" href="http://maps.google.com/maps?z=12&t=m&q=loc:{{ $item[$param->lat] }}+{{ $item[$param->long] }}"
+                        target="_blank" class="text-blue-800 hover:text-blue-600 inline-flex py-0.5 @isset($param->class) {{$param->class}} @endisset" >
                         <svg class="mx-0.5 my-auto" xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
                             class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
                             <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />

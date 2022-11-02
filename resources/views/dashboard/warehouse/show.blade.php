@@ -2,7 +2,7 @@
 @section('content')
     @php
         $column = [
-            'provider' => ['name' => 'Juragan Gudang', 'type' => 'SString', 'child' => ['provider_name'], 'full' => true],
+            'provider' => ['name' => 'Juragan Gudang', 'type' => 'SLink', 'route' => 'dashboard.home.juragan-gudang.show', 'key'=>'m_provider_id', 'val'=>'Lihat Juragan', 'child' => ['provider_name'], 'full' => true],
             'wh_name' => ['name' => 'Nama Gudang', 'type' => 'String', 'full' => true],
             'province' => ['name' => 'Provinsi', 'type' => 'SString', 'child' => ['province_code', 'province_name'], 'full' => false],
             'city' => ['name' => 'Kota', 'type' => 'SString', 'child' => ['city_name'], 'full' => false],
