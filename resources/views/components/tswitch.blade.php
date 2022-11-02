@@ -1,9 +1,13 @@
 @switch($param->type)
     @case('Image')
+    <div class="overflow-hidden flex" style="height:22vh;">
         @if (sizeof($item[$key]) > 0)
-            <img src="{{ route('storage', [$param->module, $item[$key][0]['image_desc'], $item[$key][0]['id']]) }}" @isset($param->class) class="{{$param->class}}" @endisset
+            <img class="min-h-100  @isset($param->class){{$param->class}}@endisset" src="{{ route('storage', [$param->module, $item[$key][0]['image_desc'], $item[$key][0]['id']]) }}"
                 alt="Logo">
+        @else
+            <img class="my-auto" src="https://tirtorahayu-kulonprogo.desa.id/desa/themes/natra_kp/images/noimage.png"/>
         @endif
+    </div>
     @break
 
     @case('Check')
