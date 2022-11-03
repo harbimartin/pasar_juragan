@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\User\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Heavy\HeavyEquipment;
+use App\Models\Provider;
 use App\Models\Warehouse\Warehouse;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Transport\Transport;
 
 class HomeController extends Controller {
     /**
@@ -15,8 +18,12 @@ class HomeController extends Controller {
     public function index() {
         $total = [
             'warehouse' =>  Warehouse::where('status', 1)->count(),
-            'transport' =>  0, //Transport::where('status', 1)->count(),
-            'equipment' =>  0 //Equipment::where('status', 1)->count(),
+            'transport' =>  Provider::where('provider_type_id', Provider::TRANSPORT)->whereHas('truck', function($q){
+                $q->where('status', 1);
+            })->count(),
+            'equipment' =>  Provider::where('provider_type_id', Provider::HEAVY_EQUIPMENT)->whereHas('heavy', function($q){
+                $q->where('status', 1);
+            })->count(),
         ];
         return view('dashboard.home.index', ['total' => $total]);
     }

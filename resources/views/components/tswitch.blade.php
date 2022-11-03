@@ -1,7 +1,10 @@
 @switch($param->type)
     @case('Image')
     <div class="overflow-hidden flex" style="height:22vh;">
-        @if (sizeof($item[$key]) > 0)
+        @if (!is_countable($item[$key]))
+            <img style="@isset($param->class) {{$param->class}}@endisset" src="{{ route('storage', [$param->module, $item[$key], $item['id']]) }}"
+                alt="Logo">
+        @elseif (sizeof($item[$key]) > 0)
             <img style="@isset($param->class) {{$param->class}}@endisset" src="{{ route('storage', [$param->module, $item[$key][0]['image_desc'], $item[$key][0]['id']]) }}"
                 alt="Logo">
         @else
@@ -108,6 +111,24 @@
                         <span class="text-gray-400 font-normal">-</span>
                     @endif
                 </div>
+            @break
+            @case('GString')
+                @foreach($item[$key] as $attribute)
+                    <div class="@isset($param->class){{ $param->class }}@endisset whitespace-normal pb-0.5"
+                        @isset($param->wrap)style="min-width:200px;"@endisset>
+                        {{-- @isset($param->subkey)
+                            <span
+                                class="px-1 pb-0.5 rounded-xl  {{ $item[$param->subkey] ? 'bg-gray-100 text-gray-500' : 'bg-red-100 rounded-xl text-red-500' }} text-xs font-semibold">{{ $item[$param->subkey] ? $item[$param->subkey] : $param->sub }}</span>
+                        @else --}}
+                        <span class="px-1 pb-0.5 bg-gray-100 rounded-xl text-gray-500 text-xs font-semibold">{{ $attribute[$param->key[0]][$param->key[1]] }}</span>
+                        {{-- @endisset --}}
+                        @if ($attribute[$param->total])
+                            <span>{{ $attribute[$param->total] }}</span>
+                        @else
+                            <span class="text-gray-400 font-normal">-</span>
+                        @endif
+                    </div>
+                @endforeach
             @break
 
             @case('Array')
@@ -347,11 +368,11 @@
                 @case('Upload')
                     @php
                         $files = $item->{$key};
-                        $exists = is_array($files) ? sizeof($files) : $files;
+                        $exists = is_countable($files) ? sizeof($files) : $files;
                     @endphp
                     @if ($exists)
                         <ol class="mt-2 ml-4 list-decimal">
-                            @if (is_array($files))
+                            @if (is_countable($files))
                                 @foreach ($files as $vkey => $vfile)
                                     <li class="w-full text-gray-600 group cursor-pointer hover:bg-blue-100 px-1"
                                         v-on:click="downloadFileOn({{ $vfile[$param->id] }}, '{{ $vfile[$param->name] }}', '{{ $param->folder }}')">

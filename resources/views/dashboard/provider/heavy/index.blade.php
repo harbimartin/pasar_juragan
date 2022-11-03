@@ -1,5 +1,5 @@
-@extends('dashboard._index')
-@section('content')
+@extends('dashboard.provider.index', ['tab' => 'heavy'])
+@section('tab-content')
     <?php
     $table_heavy = json_encode([
         'index' => ['name' => 'No.', 'type' => 'Index'],
@@ -26,11 +26,9 @@
                 'operational_weight' => ['name' => 'Weight', 'type' => 'Number'],
             ],
         ],
-        'status' => ['name' => 'Status', 'type' => 'State'],
-        'toggle' => ['by' => 'status', 'name' => 'Aktifkan', 'type' => 'Toggle', 'sort' => false, 'align' => 'center', 'value' => 'toggle-comp_contact'],
-        'act' => ['name' => 'Action', 'type' => 'Edit', 'route' => 'dashboard.transport.list', 'align' => 'center', 'sort' => false],
+        'act' => ['name' => 'Action', 'type' => 'Show', 'align' => 'center', 'sort' => false],
     ]);
     ?>
-    <x-table :column="$table_heavy" :datas="$data" :prop="$prop" :selfilter="$sel_filter">
+    <x-table :column="$table_heavy" :datas="$heavys" :selfilter="$sel_filter" :lim="false">
     </x-table>
 @endsection

@@ -6,6 +6,7 @@
             </div>
         @endisset
         @if ($tool)
+        <div class="md:flex">
             <div class="md:flex flex-wrap gap-y-2 text-xs md:text-sm">
                 @if ($lim)
                     <?php
@@ -53,20 +54,20 @@
                                     d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z" />
                             </svg>
                         </div>
-                        @foreach (json_decode($filter) as $flt)
-                            <div <?php $selected = request()->fl == $flt->key && request()->tfl == $flt->type; ?>
-                                v-on:click="updateParamArray([{k:'fl',v:'{{ $flt->key }}'},{k:'tfl',v:'{{ $flt->type }}'}]);"
+                        @foreach ($filter as $flt)
+                            <div <?php $selected = request()->fl == $flt['key'] && request()->tfl == $flt['type']; ?>
+                                v-on:click="updateParamArray([{k:'fl',v:'{{ $flt['key'] }}'},{k:'tfl',v:'{{ $flt['type'] }}'}]);"
                                 class="
                         inline-flex
-                        {{ $selected ? 'bg-' . $flt->col . '-600 text-white hover:bg-' . $flt->col . '-500 border-' . $flt->col . '-600 ' : 'hover:bg-' . $flt->col . '-300 border-gray-300 ' }}
+                        {{ $selected ? 'bg-' . $flt['col'] . '-600 text-white hover:bg-' . $flt['col'] . '-500 border-' . $flt['col'] . '-600 ' : 'hover:bg-' . $flt['col'] . '-300 border-gray-300 ' }}
                         {{ $loop->first ? 'rounded-tl-xl rounded-bl-xl' : 'border-l-0' }}
                         @if ($loop->last) rounded-tr-xl rounded-br-xl @endif
                         border col-start-2 col-end-7 px-2 hover:shadow-inner hover:outline-none hover:ring-1 hover:border-transparent transition cursor-pointer py-0.5">
-                                <div class="my-auto">{{ $flt->name }}</div>
-                                @isset($flt->count)
+                                <div class="my-auto">{{ $flt['name'] }}</div>
+                                @isset($flt['count'])
                                     <div
-                                        class="mx-2 my-auto rounded-xl {{ $selected ? 'bg-white text-' . $flt->col . '-600' : 'bg-' . $flt->col . '-600 text-white' }} text-sm font-semibold px-2.5 pb-0.5">
-                                        <small>{{ $flt->count }}</small>
+                                        class="mx-2 my-auto rounded-xl {{ $selected ? 'bg-white text-' . $flt['col'] . '-600' : 'bg-' . $flt['col'] . '-600 text-white' }} text-sm font-semibold px-2.5 pb-0.5">
+                                        <small>{{ $flt['count'] }}</small>
                                     </div>
                                 @endisset
                             </div>
@@ -86,17 +87,6 @@
                             <input v-on:click="exportExcels('{{ request()->url() }}','{{ request()->fullUrl() }}')"
                                 class="md:float-right rounded border border-green-600 px-4 py-1 md:py-2 bg-green-500 hover:bg-green-600 mr-2 cursor-pointer text-white font-semibold"
                                 type="button" value="Export Excel" />
-                        </div>
-                    @endif
-                    @if ($search)
-                        <div
-                            class="w-full md:w-auto flex md:ml-auto mt-1 border-b-2 pb-1 @if (request()->sc) border-blue-300 @endif">
-                            <input type="search" id="{{ $sign ? $sign . '_' : '' }}searchs"
-                                class="w-full rounded-lg border border-gray-300 col-start-2 col-end-7 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition"
-                                placeholder="Type for search..." value="{{ request()->sc }}" />
-                            <button
-                                class="ml-2 px-2 rounded-lg border border-blue-800 transition bg-blue-700 hover:bg-blue-800 text-white font-semibold"
-                                v-on:click="updateParamById('sc', '{{ $sign ? $sign . '_' : '' }}searchs');">Search</button>
                         </div>
                     @endif
                 @endif
@@ -128,6 +118,18 @@
                     </div>
                 @endif
             </div>
+            @if ($search)
+                <div
+                    class="mb-auto w-full md:w-auto flex md:ml-auto mt-1 border-b-2 pb-1 @if (request()->sc) border-blue-300 @endif">
+                    <input type="search" id="{{ $sign ? $sign . '_' : '' }}searchs"
+                        class="w-full rounded-lg border border-gray-300 col-start-2 col-end-7 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition"
+                        placeholder="Type for search..." value="{{ request()->sc }}" />
+                    <button
+                        class="ml-2 px-2 rounded-lg border border-blue-800 transition bg-blue-700 hover:bg-blue-800 text-white font-semibold"
+                        v-on:click="updateParamById('sc', '{{ $sign ? $sign . '_' : '' }}searchs');">Search</button>
+                </div>
+            @endif
+        </div>
         @endif
         @if ($import)
             <div v-if="onImport" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog"
@@ -201,13 +203,15 @@
                             class="p-3 bg-white group hover:bg-sky-50 text-gray-900 text-xs md:text-sm rounded-xl shadow overflow-hidden border-b border-gray-200 sm:rounded-lg cursor-pointer">
                             @foreach (json_decode($column) as $key => $param)
                                 @if ($param)
-                                    <div class="whitespace-nowrap flex">
+                                    <div class="whitespace-nowrap">
                                         @switch($param->type)
                                             @case('Multi')
-                                                @foreach ($param->children as $ckey => $cparam)
-                                                    <x-tswitch :key="$ckey" :param="$cparam" :item="$item"
-                                                        :idk="$idk" :iind="$iind"></x-tswitch>
-                                                @endforeach
+                                                <div class="flex">
+                                                    @foreach ($param->children as $ckey => $cparam)
+                                                        <x-tswitch :key="$ckey" :param="$cparam" :item="$item"
+                                                            :idk="$idk" :iind="$iind"></x-tswitch>
+                                                    @endforeach
+                                                </div>
                                             @break
 
                                             @case('Index')

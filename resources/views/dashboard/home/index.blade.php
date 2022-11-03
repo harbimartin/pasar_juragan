@@ -16,7 +16,7 @@
     <section>
         <div class="py-8 px-4 mx-auto max-w-screen-xl py-12">
             <!-- <h2 class="mb-4 text-3xl font-extrabold tracking-tight leading-tight text-center text-gray-900 lg:mb-8 md:text-4xl">Produk Kami</h2>
-                                                                                                <h2 class="text-gray-500 mb-8 text-xl font-semibold tracking-tight leading-tight text-center text-gray-900 lg:mb-16 md:text-2xl">Berikut kegunaan produk kami sebagai solusi dari semua kebutuhan bisnis Anda</h2> -->
+                                                                                                                    <h2 class="text-gray-500 mb-8 text-xl font-semibold tracking-tight leading-tight text-center text-gray-900 lg:mb-16 md:text-2xl">Berikut kegunaan produk kami sebagai solusi dari semua kebutuhan bisnis Anda</h2> -->
             <div class="grid grid-cols-3 gap-8 text-gray-500 sm:gap-12">
                 <a href="{{ route('dashboard.home.warehouse') }}"
                     class="justify-center text-center hover:bg-blue-50 py-10 shadow rounded-md bg-white cursor-pointer">
@@ -33,7 +33,8 @@
                         Cari Gudang
                     </div>
                 </a>
-                <div class="justify-center text-center hover:bg-blue-50 py-10 shadow rounded-md bg-white cursor-pointer">
+                <a href="{{ route('dashboard.home.transport') }}"
+                    class="justify-center text-center hover:bg-blue-50 py-10 shadow rounded-md bg-white cursor-pointer">
                     <svg class="mx-auto" height="46" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                         class="bi bi-truck" viewBox="0 0 16 16">
                         <path
@@ -45,8 +46,9 @@
                     <div class="lg:text-lg font-semibold text-center">
                         Cari Angkutan
                     </div>
-                </div>
-                <div class="justify-center text-center hover:bg-blue-50 py-10 shadow rounded-md bg-white cursor-pointer">
+                </a>
+                <a href="{{ route('dashboard.home.heavy') }}"
+                    class="justify-center text-center hover:bg-blue-50 py-10 shadow rounded-md bg-white cursor-pointer">
                     <svg class="mx-auto" height="46" viewBox="0 0 50 40" aria-hidden="true" tabindex="-1"
                         title="forklift" class="jsx-3823162721 jsx-1567859774">
                         <path
@@ -59,7 +61,7 @@
                     <div class="lg:text-lg font-semibold text-center">
                         Cari Alat Berat
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </section>

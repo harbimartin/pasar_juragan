@@ -22,13 +22,10 @@ abstract class _List extends Model {
     protected $sort_default = 'created_at';
     protected $date_default = 'created';
 
-    public function filter_custom($query, $request) {
-        return false;
-    }
 
     public function scopeFilter($query, $request) {
         if ($request->fl) {
-            if (!$this->filter_custom($query, $request))
+            if (!$this->uniqueFilter($query, $request->fl, $request->tfl))
                 switch ($request->tfl) {
                     case 'null':
                         $query->whereNull($request->fl);
@@ -85,12 +82,20 @@ abstract class _List extends Model {
             }
         }
         foreach ($this->filterable as $k => $f) {
-            if ($request->{$k})
-                $query->where($f, $request->{$k});
+            if ($request->has($k)) {
+                if (!$this->uniqueOption($query, $k, $request->{$k}))
+                    $query->where($f, $request->{$k});
+            }
         }
         return $query;
     }
     protected function uniqueSearch($query) {
         return $query;
+    }
+    protected function uniqueOption($query, $key, $value) {
+        return false;
+    }
+    protected function uniqueFilter($query, $key, $value) {
+        return false;
     }
 }

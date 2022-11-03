@@ -3,18 +3,15 @@
 namespace App\Http\Controllers\User\Dashboard\Juragan\Provider;
 
 use App\Http\Controllers\Controller;
-use App\Http\Helper\Table;
 use App\Models\GeoCity;
 use App\Models\GeoProvince;
+use App\Models\Heavy\HeavyEquipment;
+use App\Models\Heavy\HeavyEquipmentType;
 use App\Models\Provider;
-use App\Models\Warehouse\Warehouse;
-use App\Models\Warehouse\WarehouseCategory;
-use App\Models\Warehouse\WarehouseFunction;
-use App\Models\Warehouse\WarehouseStorageMethod;
 use Illuminate\Http\Request;
 
-class ProviderWarehouseController extends Controller {
-    const baseRoute = 'dashboard.provider.warehouse';
+class ProviderHeavyController extends Controller {
+    const baseRoute = 'dashboard.provider.heavy';
     public function getMySelect() {
         return [];
     }
@@ -28,17 +25,12 @@ class ProviderWarehouseController extends Controller {
         [$data, $select, $detail, $submenu] = ProviderController::base_index($provider);
 
         $sel_filter = [
-            'province' => ['name' => 'Provinsi', 'key' => 'province_name', 'option' => GeoProvince::where('status', 1)->get()],
-            'city' => ['name' => 'Kota', 'key' => 'city_name', 'option' => GeoCity::where('status', 1)->get()],
-            'function' => ['name' => 'Fungsi', 'key' => 'wh_function', 'option' => WarehouseFunction::where('status', 1)->get()],
-            'category' => ['name' => 'Kategori', 'key' => 'wh_category', 'option' => WarehouseCategory::where('status', 1)->get()],
-            'storage_methode' => ['name' => 'Metode Penyimpanan', 'key' => 'wh_storage_methode', 'option' => WarehouseStorageMethod::where('status', 1)->get()],
+            'type' => ['name' => 'Tipe', 'key' => 'heavy_equipment_type', 'option' => HeavyEquipmentType::where('status', 1)->get()],
         ];
-        $warehouses = Warehouse::filter($request)->where('m_provider_id', $data->id)->paginate(10);
-        return view(self::baseRoute . '.catalog', [
+        $heavys = HeavyEquipment::filter($request)->where('m_provider_id', $data->id)->paginate(10);
+        return view(self::baseRoute . '.index', [
             'data' => $data,
-            'warehouses' => $warehouses->getCollection(),
-            'prop' => Table::tableProp($warehouses),
+            'heavys' => $heavys,
             'select' => array_merge($select, $this->getMySelect()),
             'detail' => $detail,
             'submenu' => $submenu,
@@ -92,7 +84,7 @@ class ProviderWarehouseController extends Controller {
                 ['name' => 'Minggu', 'id' => 7],
             ]
         ];
-        return view(self::baseRoute . '.show', ['data' => Warehouse::find($id), 'select' => $select]);
+        return view(self::baseRoute . '.show', ['data' => HeavyEquipment::find($id), 'select' => $select]);
     }
 
     /**
@@ -102,7 +94,7 @@ class ProviderWarehouseController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($provider, $id) {
-        return view(self::baseRoute . '.edit', ['data' => Warehouse::find($id), 'select' => $this->getMySelect()]);
+        return view(self::baseRoute . '.edit', ['data' => HeavyEquipment::find($id), 'select' => $this->getMySelect()]);
     }
 
     /**
@@ -115,7 +107,7 @@ class ProviderWarehouseController extends Controller {
     public function update(Request $request, $juragan, $id) {
         switch ($request->__type) {
             case 'toggle':
-                Warehouse::find($id)->update(['status' => $request->toggle]);
+                HeavyEquipment::find($id)->update(['status' => $request->toggle]);
                 break;
             case 'update':
                 $credentials = $request->validate([
@@ -123,7 +115,7 @@ class ProviderWarehouseController extends Controller {
                     'service_desc' => ['required'],
                     'service_reference' => ['required']
                 ]);
-                Warehouse::find($id)->update($credentials);
+                HeavyEquipment::find($id)->update($credentials);
                 break;
         }
         return back();

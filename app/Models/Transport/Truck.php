@@ -32,7 +32,7 @@ class Truck extends _List
     ];
 
     protected $filterable = [
-        'type' => 'm_truck_type_tab',
+        'type' => 'm_truck_type_id',
     ];
 
     protected $searchable = [

@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\ProfileUserController as AdminProfileUserControll
 use App\Http\Controllers\Auth\AuthAdminController;
 use App\Http\Controllers\Auth\AuthUserController;
 use App\Http\Controllers\User\Dashboard\Heavy\HeavyController;
+use App\Http\Controllers\User\Dashboard\Home\HomeHeavyController;
+use App\Http\Controllers\User\Dashboard\Home\HomeTransportController;
 use App\Http\Controllers\User\Dashboard\Home\HomeWarehouseController;
 use App\Http\Controllers\User\Dashboard\Home\Juragan\HomeJuraganAlatBeratController;
 use App\Http\Controllers\User\Dashboard\Home\Juragan\HomeJuraganAngkutanController;
@@ -23,7 +25,13 @@ use App\Http\Controllers\User\Dashboard\Juragan\Provider\ProviderServiceControll
 use App\Http\Controllers\User\Dashboard\Juragan\JuraganAlatBeratController;
 use App\Http\Controllers\User\Dashboard\Juragan\JuraganAngkutanController;
 use App\Http\Controllers\User\Dashboard\Juragan\JuraganGudangController;
+use App\Http\Controllers\User\Dashboard\Juragan\Provider\ProviderHeavyController;
+use App\Http\Controllers\User\Dashboard\Juragan\Provider\ProviderTransportController;
 use App\Http\Controllers\User\Dashboard\Juragan\Provider\ProviderWarehouseController;
+use App\Http\Controllers\User\Dashboard\JuraganBarangController;
+use App\Http\Controllers\User\Dashboard\KontrakBarangApprovalController;
+use App\Http\Controllers\User\Dashboard\KontrakBarangController;
+use App\Http\Controllers\User\Dashboard\KontrakBarangDetailController;
 use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyAddressController;
 use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyContactController;
 use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyController;
@@ -72,6 +80,8 @@ Route::group([
         'as' => 'home.',
     ], function () {
         Route::resource('/warehouse', HomeWarehouseController::class, Routing::setName('warehouse'))->only('index', 'show');
+        Route::resource('/transport', HomeTransportController::class, Routing::setName('transport'))->only('index', 'show');
+        Route::resource('/heavy', HomeHeavyController::class, Routing::setName('heavy'))->only('index', 'show');
         // Angkutan & Alat Berat tambahkan isi disini
 
         foreach (['barang', 'gudang', 'angkutan', 'alatberat'] as $provider) {
@@ -84,6 +94,8 @@ Route::group([
                 Route::resource('/document', ProviderDocumentController::class, Routing::setName('document'))->except('create', 'destroy');
                 Route::resource('/service', ProviderServiceController::class, Routing::setName('service'))->except('create', 'destroy');
                 Route::resource('/warehouse', ProviderWarehouseController::class, Routing::setName('warehouse'))->except('create', 'destroy');
+                Route::resource('/transport', ProviderTransportController::class, Routing::setName('transport'))->except('create', 'destroy');
+                Route::resource('/heavy', ProviderHeavyController::class, Routing::setName('heavy'))->except('create', 'destroy');
             });
         }
         Route::resource('/juragan-gudang', HomeJuraganGudangController::class, Routing::setName('juragan-gudang'))->only('show');
@@ -105,9 +117,18 @@ Route::group([
             Route::resource('/service', ProviderServiceController::class, Routing::setName('service'))->except('create', 'destroy');
         });
     }
+    Route::resource('/juragan-barang', JuraganBarangController::class, Routing::setName('juragan-barang'))->except('edit', 'destroy');
     Route::resource('/juragan-gudang', JuraganGudangController::class, Routing::setName('juragan-gudang'))->except('edit', 'destroy');
     Route::resource('/juragan-angkutan', JuraganAngkutanController::class, Routing::setName('juragan-angkutan'))->except('edit', 'destroy');
     Route::resource('/juragan-alatberat', JuraganAlatBeratController::class, Routing::setName('juragan-alatberat'))->except('edit', 'destroy');
+
+    Route::group([
+        'prefix' => 'kontrak-barang/{provider}',
+        'as' => 'kontrak-barang.',
+    ], function () {
+        Route::resource('/detail', KontrakBarangDetailController::class, Routing::setName('detail'))->except('create', 'destroy');
+    });
+    Route::resource('/kontrak-barang', KontrakBarangController::class, Routing::setName('kontrak-barang'))->except('destroy');
 
     // Route::group([
     //     'prefix' => 'warehouse',
@@ -127,6 +148,8 @@ Route::group([
         Route::resource('/address', ProfileCompanyAddressController::class, Routing::setName('address'))->except('show', 'create', 'destroy');
     });
     Route::resource('profile-company', ProfileCompanyController::class, Routing::setName('profile-company'))->only('index', 'update');
+
+    Route::resource('approval', KontrakBarangApprovalController::class, Routing::setName('approval'))->only('index', 'show', 'update');
 });
 
 

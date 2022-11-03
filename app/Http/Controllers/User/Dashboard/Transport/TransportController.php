@@ -26,7 +26,7 @@ class TransportController extends Controller
         $company = Auth::guard('user')->user()->company;
         return [
             'provider' => Provider::where(['provider_type_id' => Provider::TRANSPORT, 'm_company_id' => $company->id, 'status' => 'Approved'])->get(),
-            'truck_type' => TruckType::where('status', 1)->get()
+            'truck_type' => TruckType::where('status', 1)->get(),
         ];
     }
 
@@ -34,6 +34,8 @@ class TransportController extends Controller
     {
         $sel_filter = [
             'type' => ['name'=>'Type', 'key'=>'truck_type', 'option' => TruckType::get()],
+            'province' => ['name' => 'Provinsi', 'key' => 'province_name', 'option' => GeoProvince::where('status', 1)->get()],
+            'city' => ['name' => 'Kota', 'key' => 'city_name', 'option' => GeoCity::where('status', 1)->get()],
         ];
         $company_id = Auth::guard('user')->user()->company->id;
         $data = Truck::filter($request)->whereHas('provider', function($q)use($company_id)    {
@@ -74,7 +76,7 @@ class TransportController extends Controller
             'gps_api_key' => ['required'],
         ]);
         $credentials['status'] = 1;
-        
+
         $wh = Truck::create($credentials);
         return redirect(route($this->baseRoute . '.edit', $wh->id));
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Image;
 use App\Models\ProviderDocument;
+use App\Models\Transport\TruckContractDoc;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
@@ -22,6 +23,11 @@ class FileApiController extends Controller {
                     $image = Image::find($request->id);
                     if ($image->image_desc == $request->name)
                         $file = storage_path() . '/product_image/' . $image->image_url;
+                    break;
+                case 'file_contract':
+                    $file = TruckContractDoc::find($request->id);
+                    if ($file->doc_name == $request->name)
+                        $file = storage_path() . '/file_contract/' . $file->doc_attachment;
                     break;
             }
             if ($file)

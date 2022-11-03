@@ -32,7 +32,7 @@ class HeavyEquipment extends _List
     ];
 
     protected $filterable = [
-        'type' => 'm_heavy_equipment_type_tab',
+        'type' => 'm_heavy_equipment_type_id',
     ];
 
     protected $searchable = [

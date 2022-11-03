@@ -4,6 +4,8 @@ namespace App\Http\Controllers\User\Dashboard\Heavy;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helper\Table;
+use App\Models\GeoCity;
+use App\Models\GeoProvince;
 use App\Models\Heavy\HeavyEquipment;
 use App\Models\Heavy\HeavyEquipmentType;
 use App\Models\Provider;
@@ -12,15 +14,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
-class HeavyController extends Controller
-{
+class HeavyController extends Controller {
     protected $baseRoute = 'dashboard.heavy';
     public function getMySelect() {
         $company = Auth::guard('user')->user()->company;
         return [
             'provider' => Provider::where(['provider_type_id' => Provider::HEAVY_EQUIPMENT, 'm_company_id' => $company->id, 'status' => 'Approved'])->get(),
             'heavy_type' => HeavyEquipmentType::where('status', 1)->get(),
-            // 'image' =>
+            'province' => ['name' => 'Provinsi', 'key' => 'province_name', 'option' => GeoProvince::where('status', 1)->get()],
+            'city' => ['name' => 'Kota', 'key' => 'city_name', 'option' => GeoCity::where('status', 1)->get()],
         ];
     }
     /**
@@ -28,16 +30,15 @@ class HeavyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $sel_filter = [
-            'type' => ['name'=>'Type', 'key'=>'heavy_equipment_type', 'option' => HeavyEquipmentType::get()],
+            'type' => ['name' => 'Type', 'key' => 'heavy_equipment_type', 'option' => HeavyEquipmentType::get()],
         ];
         $company_id = Auth::guard('user')->user()->company->id;
-        $data = HeavyEquipment::filter($request)->whereHas('provider', function($q)use($company_id)    {
+        $data = HeavyEquipment::filter($request)->whereHas('provider', function ($q) use ($company_id) {
             $q->where('m_company_id', $company_id);
         })->paginate(10);
-        return view('dashboard.heavy.list', ['data' => $data->getCollection(), 'prop'=>Table::tableProp($data), 'sel_filter'=>$sel_filter]);
+        return view('dashboard.heavy.list', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'sel_filter' => $sel_filter]);
     }
 
     /**
@@ -45,8 +46,7 @@ class HeavyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         return view('dashboard.heavy.add', ['select' => $this->getMySelect()]);
     }
 
@@ -56,8 +56,7 @@ class HeavyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $credentials = $request->validate([
             'm_provider_id' => ['required', 'exists:t_provider_tab,id'],
             'm_heavy_equipment_type_id' => ['required'],
@@ -85,7 +84,7 @@ class HeavyController extends Controller
                 'add' => "Lampiran Attachment wajib diupload."
             ]);
         }
-        
+
         $heavy = HeavyEquipment::create($credentials);
         return redirect(route($this->baseRoute . '.edit', $heavy->id));
     }
@@ -96,8 +95,7 @@ class HeavyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -107,8 +105,7 @@ class HeavyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $provider = HeavyEquipment::find($id);
         if ($provider)
             return view('dashboard.heavy.edit', ['data' => $provider, 'select' => $this->getMySelect()]);
@@ -122,8 +119,7 @@ class HeavyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         switch ($request->__type) {
             case 'toggle':
                 HeavyEquipment::find($id)->update(['status' => $request->toggle]);
@@ -193,8 +189,7 @@ class HeavyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
 }

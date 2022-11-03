@@ -15,4 +15,7 @@ class HeavyEquipmentType extends Model
         'heavy_equipment_type_desc',
         'status'
     ];
+    public function heavy() {
+        return $this->hasMany(HeavyEquipment::class, 'm_heavy_equipment_type_id', 'id');
+    }
 }

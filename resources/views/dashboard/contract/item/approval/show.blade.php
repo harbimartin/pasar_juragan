@@ -1,13 +1,13 @@
-@extends('admin._index')
+@extends('dashboard._index')
 @section('content')
     <?php
-    $title = 'REGISTRASI JURAGAN GUDANG';
+    $title = 'PERMINTAAN KONTRAK BARANG';
     $code = 'Kode';
     $isVerify = false;
     $hasVFile = [];
     $sort = false;
     ?>
-    <form action="{{ Routing::getUpdateWithID($data->id, 'admin.gudang.regist') }}" method="POST"
+    <form action="{{ Routing::getUpdateWithID($data->id, 'dashboard.approval') }}" method="POST"
         class="md:px-3 text-sm md:text-base" enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -30,18 +30,18 @@
             <h1 class="border-gray-200 mt-5 underline font-bold text-center">{{ $title }}</h1>
             <p class="text-center text-xs md:text-sm">No. {{ $code }}: {{ $data->id }}</p>
             <div class="mt-8 ml-1 md:w-1/3 text-sm md:text-base">
-                <span class="text-gray-500 font-semibold">Rincian Juragan</span>
+                <span class="text-gray-500 font-semibold">Rincian Kontrak</span>
             </div>
             <div class="px-3">
                 <div class="mt-2 text-gray-700">
                     @php
                         $attr = [
-                            'category' => ['name' => 'Jenis Bisnis', 'type' => 'SString', 'child' => 'business_category'],
-                            'provider_code' => ['name' => 'Kode Juragan'],
-                            'provider_name' => ['name' => 'Alasan'],
-                            'provider_npwp' => ['name' => 'NPWP'],
-                            'provider_website' => ['name' => 'Website'],
-                            'provider_logo' => ['name' => 'Logo'],
+                            'juragan_barang' => ['name' => 'Juragan Barang', 'type' => 'SString', 'child'=>'comp_name'],
+                            'juragan_angkutan' => ['name' => 'Juragan Angkutan', 'type' => 'SString', 'child'=>'provider_name'],
+                            'contract_no' => ['name' => 'No. Kontrak', 'type' => 'String'],
+                            'contract_no' => ['name' => 'No. Kontrak', 'type' => 'String'],
+                            'contract_date' => ['name' => 'Tgl Kontrak', 'type'=> 'Date'],
+                            'contract_expired' => ['name' => 'Tgl Kadaluarsa', 'type'=> 'Date']
                         ];
                     @endphp
                     <table>
@@ -81,46 +81,27 @@
                 @yield('detail')
             </div>
             {{-- Lampiran User, History Verifikasi & History Pending : BEGIN --}}
-            <?php
-            $column_address = [
-                'index' => ['name' => 'No.', 'type' => 'Index'],
-                'provider_address_detail' => ['name' => 'Alamat', 'type' => 'TextArea'],
-                'provider_city' => ['name' => 'Kota', 'type' => 'String'],
-                'provider_province' => ['name' => 'Provinsi', 'type' => 'String'],
-                'provider_country' => ['name' => 'Negara', 'type' => 'String'],
-                'status' => ['name' => 'Status', 'type' => 'State'],
-            ];
-            $column_contact = [
-                'index' => ['name' => 'No.', 'type' => 'Index'],
-                'type' => ['name' => 'Tipe Kontak', 'type' => 'SString', 'child' => ['contact_type']],
-                'tgl_um' => [
-                    'name' => 'Nama/Posisi',
-                    'type' => 'Multi',
-                    'children' => [
-                        'provider_contact_name' => ['type' => 'String', 'class' => 'font-semibold text-gray-600'],
-                        'provider_contact_position' => ['name' => 'Nama Kontak', 'type' => 'String'],
-                    ],
-                ],
-                'provider_contact' => ['name' => 'Kontak', 'type' => 'String'],
-                'status' => ['name' => 'Status', 'type' => 'State'],
-            ];
-            $column_document = [
-                'index' => ['name' => 'No.', 'type' => 'Index'],
-                'doc_no' => ['name' => 'No. Dokumen', 'type' => 'String', 'full' => true],
-                'doc_date' => ['name' => 'Tgl. Dokumen', 'type' => 'String', 'full' => true],
-                'doc_expired' => ['name' => 'Tgl. Kadaluarsa', 'type' => 'String', 'full' => true],
-                'doc_attachment' => ['name' => 'Lampiran', 'type' => 'Upload', 'folder' => 'file_provider'],
-                'status' => ['name' => 'Status', 'type' => 'State'],
-            ];
-            $column_service = [
-                'index' => ['name' => 'No.', 'type' => 'Index'],
-                'service_title' => ['name' => 'Judul', 'type' => 'String'],
-                'service_desc' => ['name' => 'Deskripsi', 'type' => 'String'],
-                'service_reference' => ['name' => 'Referensi', 'type' => 'String'],
-                'status' => ['name' => 'Status', 'type' => 'State'],
-            ];
-            $tables = [['title' => 'Address', 'data' => $data->address, 'column' => $column_address], ['title' => 'Contact', 'data' => $data->contact, 'column' => $column_contact], ['title' => 'Document', 'data' => $data->document, 'column' => $column_document], ['title' => 'Service', 'data' => $data->service, 'column' => $column_service]];
-            ?>
+            @php
+                $column_detail = [
+                    'index' => ['name' => 'No.', 'type' => 'Index'],
+                    'origin' => ['name' => 'Asal', 'type' => 'SString', 'child' => 'origin_name'],
+                    'destination' => ['name' => 'Tujuan', 'type' => 'SString', 'child' => ['destination_name']],
+                    'truck_type' => ['name' => 'Tipe Truk', 'type' => 'SString', 'child' => ['truck_type']],
+                    'commodity' => ['name' => 'Barang', 'type' => 'SString', 'child' => ['commodity_name']],
+                    'price_per_ton' => ['name' => 'Harga Per Ton', 'type' => 'Number', 'full' => true],
+                    'price_per_rit' => ['name' => 'Harga Per Rit', 'type' => 'Number', 'full' => true],
+                    'minimum_ton' => ['name' => 'Minimum Tonase', 'type' => 'Number', 'full' => true],
+                ];
+                $column_lampiran = [
+                    'index' => ['name' => 'No.', 'type' => 'Index'],
+                    'user_types' => ['name' => 'User', 'type' => 'String'],
+                    'doc' => ['name' => 'Lampiran', 'type' => 'Upload', 'folder' => 'file_contract', 'id'=>'id', 'name'=>'doc_name'],
+                ];
+                $tables = [
+                    ['title' => 'Barang', 'data' => $data->detail, 'column' => $column_detail],
+                    ['title' => 'Lampiran', 'data' => $data->log_proposed, 'column' => $column_lampiran],
+                ];
+            @endphp
             @if (sizeof($tables) > 0)
                 @foreach ($tables as $table)
                     <div class="mt-8 ml-1 md:w-1/3 text-sm md:text-base">
@@ -131,7 +112,7 @@
                             <div class="py-2 align-middle inline-block min-w-full lg:px-1">
                                 <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                                     <table class="min-w-full divide-y divide-gray-200">
-                                        <thead class="bg-gray-50 md:tracking-wider text-gray-500 text-xs md:text-sm">
+                                        <thead class="bg-gray-50 md:tracking-wider text-gray-500 text-xs">
                                             <tr>
                                                 @foreach ($table['column'] as $key => $param)
                                                     <th
@@ -172,7 +153,7 @@
                                                                 @break
 
                                                                 @case('Index')
-                                                                    <div class="mr-3">
+                                                                    <div class="mr-3 text-center">
                                                                         {{ $iind + 1 }}
                                                                     </div>
                                                                 @break

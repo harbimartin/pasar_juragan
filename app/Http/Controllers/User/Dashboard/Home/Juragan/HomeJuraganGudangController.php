@@ -9,5 +9,4 @@ class HomeJuraganGudangController extends ProviderController {
     protected $providerType = Provider::WAREHOUSE;
     protected $providerName = "Gudang";
     protected $baseRoute = 'dashboard.home.juragan-gudang';
-    protected $index = 'grid';
 }
