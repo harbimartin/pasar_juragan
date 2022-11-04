@@ -7,6 +7,7 @@ use App\Http\Helper\Table;
 use App\Models\Company;
 use App\Models\Provider;
 use App\Models\Transport\TruckContract;
+use App\Models\Transport\TruckContractLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -72,10 +73,11 @@ class KontrakBarangController extends Controller {
     public function store(Request $request) {
         // return $request->toArray();
         $credentials = $request->validate([
-            'juragan_angkutan_id' => ['required', 'exists:t_contract_tab,id'],
+            'juragan_angkutan_id' => ['required', 'exists:t_provider_tab,id'],
             'juragan_barang_id' => ['required', 'exists:m_company_tab,id'],
             // 'juragan_angkutan_id' => ['required', 'exists:t_contract_tab,id'],
             'contract_no' => ['required'],
+            'contract_desc' => ['required'],
             'contract_date' => ['required'],
             'contract_expired' => ['required']
         ]);
@@ -141,7 +143,7 @@ class KontrakBarangController extends Controller {
                         'status' => 'Proposed'
                     ]);
                     $contract->log()->create([
-                        'user_type' => 0,
+                        'user_type' => TruckContractLog::JURAGAN_ANGKUTAN,
                         'user_id' => Auth::guard('user')->user()->id,
                         'status' => 'Proposed',
                         'status_note' => ''
@@ -151,21 +153,25 @@ class KontrakBarangController extends Controller {
                 break;
             case 'update':
                 $credentials = $request->validate([
-                    'm_business_category_id' => ['required'],
-                    'contract_name' => ['required'],
-                    'contract_npwp' => ['required'],
-                    'contract_website' => ['required']
+                    'juragan_angkutan_id' => ['required', 'exists:t_provider_tab,id'],
+                    'juragan_barang_id' => ['required', 'exists:m_company_tab,id'],
+                    'contract_no' => ['required'],
+                    'contract_desc' => ['required'],
+                    'contract_date' => ['required'],
+                    'contract_expired' => ['required']
                 ]);
                 try {
                     $contract = TruckContract::find($id);
-                    foreach ($request->file as $ind => $file) {
-                        $filename = 'CO' . $contract->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
-                        $file->move(storage_path('file_contract/'), $filename);
-                        $contract->doc()->create([
-                            'doc_name' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
-                            'doc_attachment' => $filename,
-                            'status' => 1
-                        ]);
+                    if ($request->has('file')) {
+                        foreach ($request->file as $ind => $file) {
+                            $filename = 'CO' . $contract->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+                            $file->move(storage_path('file_contract/'), $filename);
+                            $contract->doc()->create([
+                                'doc_name' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+                                'doc_attachment' => $filename,
+                                'status' => 1
+                            ]);
+                        }
                     }
                     $contract->update($credentials);
                 } catch (Throwable $th) {

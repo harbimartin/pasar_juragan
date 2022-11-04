@@ -7,7 +7,7 @@
     $hasVFile = [];
     $sort = false;
     ?>
-    <form action="{{ Routing::getUpdateWithID($data->id, 'dashboard.approval') }}" method="POST"
+    <form action="{{ Routing::getUpdateWithID($data->id, 'dashboard.approval.transport.order') }}" method="POST"
         class="md:px-3 text-sm md:text-base" enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -36,12 +36,11 @@
                 <div class="mt-2 text-gray-700">
                     @php
                         $attr = [
-                            'juragan_barang' => ['name' => 'Juragan Barang', 'type' => 'SString', 'child'=>'comp_name'],
-                            'juragan_angkutan' => ['name' => 'Juragan Angkutan', 'type' => 'SString', 'child'=>'provider_name'],
-                            'contract_no' => ['name' => 'No. Kontrak', 'type' => 'String'],
-                            'contract_desc' => ['name' => 'Judul Kontrak', 'type' => 'String'],
-                            'contract_date' => ['name' => 'Tgl Kontrak', 'type'=> 'Date'],
-                            'contract_expired' => ['name' => 'Tgl Kadaluarsa', 'type'=> 'Date']
+                            'contract_no' => ['by' => 'contract', 'name' => 'No. Kontrak', 'type' => 'SString', 'child' => 'contract_no', 'full' => true],
+                            'contract_name' => ['by' => 'contract', 'name' => 'Nama. Kontrak', 'type' => 'SString', 'child' => 'contract_desc', 'full' => true],
+                            'to_no' => ['name' => 'No. Order', 'type' => 'String', 'full' => true],
+                            'to_date' => ['name' => 'Tanggal Order', 'type' => 'Date', 'full' => true],
+                            'to_desc' => ['name' => 'Deskripsi Order', 'type' => 'String', 'full' => true],
                         ];
                     @endphp
                     <table>
@@ -64,7 +63,7 @@
                                         @break
 
                                         @case('SString')
-                                            {{ $data[$ak][$at['child']] }}
+                                            {{ $data[$at['by']][$at['child']] }}
                                         @break
 
                                         @default
@@ -84,23 +83,40 @@
             @php
                 $column_detail = [
                     'index' => ['name' => 'No.', 'type' => 'Index'],
-                    'origin' => ['name' => 'Asal', 'type' => 'SString', 'child' => 'origin_name'],
-                    'destination' => ['name' => 'Tujuan', 'type' => 'SString', 'child' => ['destination_name']],
-                    'truck_type' => ['name' => 'Tipe Truk', 'type' => 'SString', 'child' => ['truck_type']],
-                    'commodity' => ['name' => 'Barang', 'type' => 'SString', 'child' => ['commodity_name']],
-                    'price_per_ton' => ['name' => 'Harga Per Ton', 'type' => 'Number', 'full' => true],
-                    'price_per_rit' => ['name' => 'Harga Per Rit', 'type' => 'Number', 'full' => true],
-                    'minimum_ton' => ['name' => 'Minimum Tonase', 'type' => 'Number', 'full' => true],
+                    'plan' => [
+                        'name' => 'Tariff',
+                        'type' => 'Multi',
+                        'children' => [
+                            'origin' => ['by' => 'contract_rpt', 'name' => 'Asal', 'type' => 'CString', 'child' => ['origin_name'], 'sub' => 'Asal', 'sclass' => 'mr-auto'],
+                            'destination_name' => ['by' => 'contract_rpt', 'name' => 'Tujuan', 'type' => 'CString', 'child' => ['destination_name'], 'sub' => 'Tujuan', 'sclass' => 'mr-auto'],
+                        ],
+                    ],
+                    'truck_type' => ['by' => 'contract_rpt', 'name' => 'Tipe Truk', 'type' => 'SString', 'child' => ['truck_type_desc']],
+                    'commodity' => ['by' => 'contract_rpt', 'name' => 'Barang', 'type' => 'SString', 'child' => ['commodity_name']],
+                    'picking' => [
+                        'name' => 'Barang Diambil',
+                        'type' => 'Multi',
+                        'children' => [
+                            'unloading_name' => ['by' => 'unloading', 'name' => 'Alamat Diambil', 'type' => 'SString', 'child' => 'name', 'class' => 'font-semibold border-b border-blue-300'],
+                            'unloading_address' => ['by' => 'unloading', 'name' => 'Alamat Diambil', 'type' => 'STextArea', 'child' => 'address'],
+                            'picking_date' => ['name' => 'Barang Diambil', 'type' => 'Date', 'class' => 'font-semibold text-xs text-gray-500 pt-1 text-right'],
+                        ],
+                    ],
+                    'unload' => [
+                        'name' => 'Barang Sampai',
+                        'type' => 'Multi',
+                        'children' => [
+                            'loading_name' => ['by' => 'loading', 'name' => 'Alamat Diambil', 'type' => 'SString', 'child' => 'name', 'class' => 'font-semibold border-b border-blue-300'],
+                            'loading_address' => ['by' => 'loading', 'name' => 'Alamat Diambil', 'type' => 'STextArea', 'child' => 'address'],
+                            'due_date' => ['name' => 'Barang Diambil', 'type' => 'Date', 'class' => 'font-semibold text-xs text-gray-500 pt-1 text-right'],
+                        ],
+                    ],
+
+                    'tonage' => ['name' => 'Tonase', 'type' => 'Number', 'step' => '0.01', 'full' => true],
+                    'estimate_truck_required' => ['name' => 'Estimasi Truk Diperlukan', 'type' => 'String', 'align' => 'center'],
+                    'order_note' => ['name' => 'Catatan', 'type' => 'TextArea', 'empty' => 'Tidak ada Catatan'],
                 ];
-                $column_lampiran = [
-                    'index' => ['name' => 'No.', 'type' => 'Index'],
-                    'user_types' => ['name' => 'User', 'type' => 'String'],
-                    'doc' => ['name' => 'Lampiran', 'type' => 'Upload', 'folder' => 'file_contract', 'id'=>'id', 'name'=>'doc_name'],
-                ];
-                $tables = [
-                    ['title' => 'Barang', 'data' => $data->detail, 'column' => $column_detail],
-                    ['title' => 'Lampiran', 'data' => $data->log_proposed, 'column' => $column_lampiran],
-                ];
+                $tables = [['title' => 'Detail', 'data' => $data->detail, 'column' => $column_detail]];
             @endphp
             @if (sizeof($tables) > 0)
                 @foreach ($tables as $table)
@@ -175,11 +191,12 @@
                     </div>
                 @endforeach
             @endif
-
             <div class="flex mt-10">
                 <div class="md:inline-flex mx-auto">
                     <div class="flex mt-2 md:mt-0 gap-2">
-                        <x-popup-button-mid key="pending" color="yellow" name="Pending" :show="$data->status == 'Proposed'">
+                        <x-popup-button-mid key="pending" color="yellow" name="Tunda" :show="$data->status == 'Proposed'">
+                        </x-popup-button-mid>
+                        <x-popup-button-mid key="reject" color="red" name="Tolak" :show="$data->status == 'Proposed'">
                         </x-popup-button-mid>
                         <x-popup-button-mid key="approve" color="green" name="Setujui" :show="$data->status == 'Proposed'">
                         </x-popup-button-mid>
@@ -194,12 +211,20 @@
                         <textarea id="reason" name="reason" class="border rounded shadow w-full text-sm px-2 py-1"
                             placeholder="Tulis alasan anda menunda Pengajuan ini"></textarea>
                     </x-popup-content>
+                    <x-popup-content name="Reject" key="reject" color="red">
+                        Apa anda yakin ingin membatalkan pending pada Juragan {{ $data->provider_code }} ?
+                        <div class="my-2 text-sm text-gray-500 font-semibold">Alasan Batal : </div>
+                        <textarea id="reason" name="reason" class="border rounded shadow w-full text-sm px-2 py-1"
+                            placeholder="Tulis alasan anda menunda Pengajuan ini"></textarea>
+                    </x-popup-content>
                     <x-popup-content name="Setujui" key="approve" color="green">
                         Apa anda yakin ingin menyetujui Juragan {{ $data->provider_code }} ?
                     </x-popup-content>
                 </x-slot>
                 <x-slot name="submit">
                     <x-popup-submit name="Pending" key="pending" color="yellow">
+                    </x-popup-submit>
+                    <x-popup-submit name="Reject" key="reject" color="red">
                     </x-popup-submit>
                     <x-popup-submit name="Setujui" key="approve" color="green">
                     </x-popup-submit>

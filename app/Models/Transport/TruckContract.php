@@ -16,6 +16,7 @@ class TruckContract extends _List {
         'juragan_barang_id',
         'juragan_angkutan_id',
         'contract_no',
+        'contract_desc',
         'contract_date',
         'contract_expired',
         'status'
@@ -23,12 +24,14 @@ class TruckContract extends _List {
 
     protected $sortable = [
         'contract_no',
+        'contract_desc',
         'contract_date',
         'contract_expired',
     ];
 
     protected $searchable = [
         'contract_no' => 0,
+        'contract_desc' => 1,
         'contract_date' => 1,
         'contract_expired' => 1,
     ];
@@ -52,5 +55,8 @@ class TruckContract extends _List {
     }
     public function log_proposed(){
         return $this->hasMany(TruckContractLog::class, 't_truck_contract_id', 'id')->where('status', 'Proposed')->latest();
+    }
+    public function log_approved() {
+        return $this->hasMany(TruckContractLog::class, 't_truck_contract_id', 'id')->where('status', 'Approved')->latest();
     }
 }

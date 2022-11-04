@@ -5,15 +5,19 @@
             'status' => Provider::status_attr(),
             'juragan_angkutan_id' => ['name' => 'Juragan Angkutan', 'type' => 'Select', 'val' => ['provider_name'], 'api' => 'angkutan', 'full' => true],
             'juragan_barang_id' => ['name' => 'Juragan Barang', 'type' => 'Select', 'val' => ['comp_name'], 'api' => 'barang', 'full' => true],
-            'contract_no' => ['name' => 'Nama', 'type' => 'String', 'full' => true],
+            'contract_no' => ['name' => 'No. Kontrak', 'type' => 'String', 'full' => true],
+            'contract_desc' => ['name' => 'Judul Kontrak', 'type' => 'String', 'full' => true],
             'contract_date' => ['name' => 'Tanggal Kontrak', 'type' => 'Date', 'full' => true],
             'contract_expired' => ['name' => 'Tanggal Expired', 'type' => 'Date', 'full' => true],
             'doc' => ['name' => 'Upload Lampiran', 'type' => 'Upload', 'accept' => 'application/pdf', 'key' => 'file', 'folder' => 'file_contract', 'desc_key' => 'doc_name', 'full' => true],
         ];
         $column = json_encode($column);
     @endphp
-    <x-update unique="kontrak-barang" :column="$column" title="Kontrak Barang ({{ $data->provider_code }})"
+    <x-update unique="kontrak-barang" :column="$column" title="Kontrak Barang"
         :data="$data" burl="none" route="dashboard.kontrak-barang" :select="$select" idk="id" :detail="$detail">
+
+
+
         <x-popup-button key="propose" color="blue" name="Propose" show="{{ $data->status == 'Draft' }}"></x-popup-button>
         <x-popup-header>
             <x-slot name="content">

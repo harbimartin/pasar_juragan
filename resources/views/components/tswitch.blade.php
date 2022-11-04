@@ -1,16 +1,17 @@
 @switch($param->type)
     @case('Image')
-    <div class="overflow-hidden flex" style="height:22vh;">
-        @if (!is_countable($item[$key]))
-            <img style="@isset($param->class) {{$param->class}}@endisset" src="{{ route('storage', [$param->module, $item[$key], $item['id']]) }}"
-                alt="Logo">
-        @elseif (sizeof($item[$key]) > 0)
-            <img style="@isset($param->class) {{$param->class}}@endisset" src="{{ route('storage', [$param->module, $item[$key][0]['image_desc'], $item[$key][0]['id']]) }}"
-                alt="Logo">
-        @else
-            <img class="my-auto" src="https://tirtorahayu-kulonprogo.desa.id/desa/themes/natra_kp/images/noimage.png"/>
-        @endif
-    </div>
+        <div class="overflow-hidden flex" style="height:22vh;">
+            @if (!is_countable($item[$key]))
+                <img style="@isset($param->class) {{ $param->class }}@endisset"
+                    src="{{ route('storage', [$param->module, $item[$key], $item['id']]) }}" alt="Logo">
+            @elseif (sizeof($item[$key]) > 0)
+                <img style="@isset($param->class) {{ $param->class }}@endisset"
+                    src="{{ route('storage', [$param->module, $item[$key][0]['image_desc'], $item[$key][0]['id']]) }}"
+                    alt="Logo">
+            @else
+                <img class="my-auto" src="https://tirtorahayu-kulonprogo.desa.id/desa/themes/natra_kp/images/noimage.png" />
+            @endif
+        </div>
     @break
 
     @case('Check')
@@ -62,6 +63,7 @@
                     class="@isset($param->class){{ $param->class }}@endisset @isset($param->wrap) whitespace-normal @endisset">
                     {{ $txt }}</div>
             @break
+
             {{--
                 class : Class Attribute
                 wrap : is Wrapping with min width is 200px
@@ -70,57 +72,58 @@
                 --}}
             @case('CString')
                 <?php
-                    $pkey = $key;
-                    if (isset($param->by)) {
-                        $pkey = $param->by;
-                        $child = isset($param->child) ? $param->child : $key;
-                    } else
-                    if (isset($param->child)){
-                        $child = $param->child;
-                    }else {
-                        $child = null;
-                    }
-                    $txt = '';
-                    if (is_array($child)) {
-                        foreach ($child as $kk => $val) {
-                            $str = $item[$pkey][$val];
-                            if ($kk == 0) {
-                                $txt = $txt . ($str == '' ? '(Blank)' : $str);
-                            } else {
-                                $txt = $txt . ' - ' . $str;
-                            }
+                $pkey = $key;
+                if (isset($param->by)) {
+                    $pkey = $param->by;
+                    $child = isset($param->child) ? $param->child : null;
+                } elseif (isset($param->child)) {
+                    $child = $param->child;
+                } else {
+                    $child = null;
+                }
+                $txt = '';
+                if (is_countable($child)) {
+                    foreach ($child as $kk => $val) {
+                        $str = $item[$pkey][$val];
+                        if ($kk == 0) {
+                            $txt = $txt . ($str == '' ? '(Blank)' : $str);
+                        } else {
+                            $txt = $txt . ' - ' . $str;
                         }
-                    } else
-                    if ($child) {
-                        $txt = $item[$pkey][$child];
-                    } else {
-                        $txt = $item[$pkey];
                     }
+                } elseif ($child) {
+                    $txt = $item[$pkey][$child];
+                } else {
+                    $txt = $item[$pkey];
+                }
                 ?>
-                <div class="@isset($param->class){{ $param->class }}@endisset whitespace-normal pb-0.5"
+                <div class="@isset($param->class){{ $param->class }}@endisset whitespace-normal pb-0.5 flex"
                     @isset($param->wrap)style="min-width:200px;"@endisset>
                     @isset($param->subkey)
                         <span
                             class="px-1 pb-0.5 rounded-xl  {{ $item[$param->subkey] ? 'bg-gray-100 text-gray-500' : 'bg-red-100 rounded-xl text-red-500' }} text-xs font-semibold">{{ $item[$param->subkey] ? $item[$param->subkey] : $param->sub }}</span>
                     @else
-                        <span class="px-1 pb-0.5 bg-gray-100 rounded-xl text-gray-500 text-xs font-semibold">{{ $param->sub }}</span>
+                        <span
+                            class="px-1 pb-0.5 bg-gray-100 rounded-xl text-gray-500 text-xs font-semibold text-right @isset($param->sclass) {{ $param->sclass }} @endisset">{{ $param->sub }}</span>
                     @endisset
-                    @if ($item[$key])
+                    @if ($item[$pkey])
                         <span>{{ $txt }}</span>
                     @else
                         <span class="text-gray-400 font-normal">-</span>
                     @endif
                 </div>
             @break
+
             @case('GString')
-                @foreach($item[$key] as $attribute)
+                @foreach ($item[$key] as $attribute)
                     <div class="@isset($param->class){{ $param->class }}@endisset whitespace-normal pb-0.5"
                         @isset($param->wrap)style="min-width:200px;"@endisset>
                         {{-- @isset($param->subkey)
                             <span
                                 class="px-1 pb-0.5 rounded-xl  {{ $item[$param->subkey] ? 'bg-gray-100 text-gray-500' : 'bg-red-100 rounded-xl text-red-500' }} text-xs font-semibold">{{ $item[$param->subkey] ? $item[$param->subkey] : $param->sub }}</span>
                         @else --}}
-                        <span class="px-1 pb-0.5 bg-gray-100 rounded-xl text-gray-500 text-xs font-semibold">{{ $attribute[$param->key[0]][$param->key[1]] }}</span>
+                        <span
+                            class="px-1 pb-0.5 bg-gray-100 rounded-xl text-gray-500 text-xs font-semibold">{{ $attribute[$param->key[0]][$param->key[1]] }}</span>
                         {{-- @endisset --}}
                         @if ($attribute[$param->total])
                             <span>{{ $attribute[$param->total] }}</span>
@@ -177,6 +180,7 @@
                     <div class="@isset($param->class){{ $param->class }}@endisset @isset($param->wrap) whitespace-normal @endisset"
                         @isset($param->wrap)style="min-width:200px;"@endisset>{!! $param->val !!}</div>
                 @break
+
                 @case('String')
                     <div class="@isset($param->class){{ $param->class }}@endisset @isset($param->wrap) whitespace-normal @endisset"
                         @isset($param->wrap)style="min-width:200px;"@endisset>{{ $item[$key] }}</div>
@@ -229,8 +233,10 @@
                 @break
 
                 @case('Location')
-                    <a onclick="event.stopPropagation();" href="http://maps.google.com/maps?z=12&t=m&q=loc:{{ $item[$param->lat] }}+{{ $item[$param->long] }}"
-                        target="_blank" class="text-blue-800 hover:text-blue-600 inline-flex py-0.5 @isset($param->class) {{$param->class}} @endisset" >
+                    <a onclick="event.stopPropagation();"
+                        href="http://maps.google.com/maps?z=12&t=m&q=loc:{{ $item[$param->lat] }}+{{ $item[$param->long] }}"
+                        target="_blank"
+                        class="text-blue-800 hover:text-blue-600 inline-flex py-0.5 @isset($param->class) {{ $param->class }} @endisset">
                         <svg class="mx-0.5 my-auto" xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
                             class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
                             <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
@@ -239,6 +245,21 @@
                             Lihat Lokasi
                         </div>
                     </a>
+                @break
+
+                @case('STextArea')
+                    @php
+                        $pkey = isset($param->by) ? $param->by : $key;
+                    @endphp
+                    @if ($item[$pkey])
+                        <p class="text-ellipsis whitespace-normal">{{ $item[$pkey][$param->child] }}</p>
+                    @else
+                        <p class="text-gray-400 text-ellipsis whitespace-normal" style="min-width:200px;">
+                            @isset($param->empty) {{ $param->empty }}
+                            @else
+                            - @endisset
+                        </p>
+                    @endif
                 @break
 
                 @case('TextArea')
@@ -262,7 +283,8 @@
                 @break
 
                 @case('Date')
-                    <div class="text-gray-900">{{ date('j F, Y', strtotime($item[$key])) }}</div>
+                    <div class="text-gray-900 @isset($param->class){{ $param->class }}@endisset">
+                        {{ date('j F, Y', strtotime($item[$key])) }}</div>
                 @break
 
                 @case('DateTime')
@@ -314,7 +336,7 @@
                 @break
 
                 @case('Show')
-                    <a href="{{ Routing::getShowWithNextID($item[$idk]) }}}}" class="text-indigo-600 hover:text-indigo-900">
+                    <a href="{{ Routing::getShowWithNextID($item[$idk]) }}" class="text-indigo-600 hover:text-indigo-900">
                         View
                     </a>
                 @break

@@ -32,6 +32,9 @@ use App\Http\Controllers\User\Dashboard\JuraganBarangController;
 use App\Http\Controllers\User\Dashboard\KontrakBarangApprovalController;
 use App\Http\Controllers\User\Dashboard\KontrakBarangController;
 use App\Http\Controllers\User\Dashboard\KontrakBarangDetailController;
+use App\Http\Controllers\User\Dashboard\PesananAngkutanApprovalController;
+use App\Http\Controllers\User\Dashboard\PesananAngkutanController;
+use App\Http\Controllers\User\Dashboard\PesananAngkutanDetailController;
 use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyAddressController;
 use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyContactController;
 use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyController;
@@ -149,7 +152,16 @@ Route::group([
     });
     Route::resource('profile-company', ProfileCompanyController::class, Routing::setName('profile-company'))->only('index', 'update');
 
-    Route::resource('approval', KontrakBarangApprovalController::class, Routing::setName('approval'))->only('index', 'show', 'update');
+    Route::resource('approval/item-contract', KontrakBarangApprovalController::class, Routing::setName('approval.item.contract'))->only('index', 'show', 'update');
+    Route::resource('approval/transport-order', PesananAngkutanApprovalController::class, Routing::setName('approval.transport.order'))->only('index', 'show', 'update');
+
+    Route::group([
+        'prefix' => 'pesanan-angkutan/{order}',
+        'as' => 'pesanan-angkutan.',
+    ], function () {
+        Route::resource('/detail', PesananAngkutanDetailController::class, Routing::setName('detail'))->except('create');
+    });
+    Route::resource('/pesanan-angkutan', PesananAngkutanController::class, Routing::setName('pesanan-angkutan'))->except('destroy');
 });
 
 

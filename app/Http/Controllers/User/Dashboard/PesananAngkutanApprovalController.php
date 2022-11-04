@@ -5,13 +5,13 @@ namespace App\Http\Controllers\User\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Helper\Routing;
 use App\Http\Helper\Table;
-use App\Models\Provider;
-use App\Models\Transport\TruckContract;
-use App\Models\Transport\TruckContractLog;
+use App\Models\OrderTransport\OrderTransport;
+use App\Models\OrderTransport\OrderTransportLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
-class KontrakBarangApprovalController extends Controller {
+class PesananAngkutanApprovalController extends Controller {
     /**
      * Display a listing of the resource.
      *
@@ -19,8 +19,12 @@ class KontrakBarangApprovalController extends Controller {
      */
     public function index() {
         $company_id = Auth::guard('user')->user()->company->id;
-        $data = TruckContract::where(['juragan_barang_id' => $company_id, 'status' => 'Proposed'])->paginate(10);
-        return view('dashboard.contract.item.approval.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'module' => 'Gudang']);
+        $data = OrderTransport::whereHas('contract', function ($q) use ($company_id) {
+            $q->whereHas('juragan_angkutan', function ($qq) use ($company_id) {
+                $qq->where('m_company_id', $company_id);
+            });
+        })->where('status', 'Proposed')->paginate(10);
+        return view('dashboard.order.transport.approval.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'module' => 'Gudang']);
     }
 
     /**
@@ -49,9 +53,9 @@ class KontrakBarangApprovalController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        $contract = TruckContract::find($id);
-        if ($contract && $contract->status == "Proposed")
-            return view('dashboard.contract.item.approval.show', ['data' => $contract]);
+        $order = OrderTransport::find($id);
+        if ($order && $order->status == "Proposed")
+            return view('dashboard.order.transport.approval.show', ['data' => $order]);
         return back();
     }
 
@@ -75,27 +79,45 @@ class KontrakBarangApprovalController extends Controller {
     public function update(Request $request, $id) {
         switch ($request->__type) {
             case 'approve':
-                $provider = TruckContract::find($id);
-                $provider->update([
+                $order = OrderTransport::find($id);
+                DB::beginTransaction();
+                $order->update([
                     'status' => 'Approved'
                 ]);
-                $provider->log()->create([
-                    'user_type' => TruckContractLog::JURAGAN_BARANG,
+                $order->log()->create([
+                    'user_type' => OrderTransportLog::JURAGAN_ANGKUTAN,
                     'user_id' => Auth::guard('user')->user()->id,
                     'status' => "Approved"
                 ]);
+                DB::commit();
                 break;
             case 'pending':
-                $provider = TruckContract::find($id);
-                $provider->update([
+                $order = OrderTransport::find($id);
+                DB::beginTransaction();
+                $order->update([
                     'status' => 'Pending'
                 ]);
-                $provider->log()->create([
-                    'user_type' => TruckContractLog::JURAGAN_BARANG,
+                $order->log()->create([
+                    'user_type' => OrderTransportLog::JURAGAN_ANGKUTAN,
                     'user_id' => Auth::guard('user')->user()->id,
                     'status' => "Pending",
                     'status_note' => $request->reason
                 ]);
+                DB::commit();
+                break;
+            case 'reject':
+                $order = OrderTransport::find($id);
+                DB::beginTransaction();
+                $order->update([
+                    'status' => 'Rejected'
+                ]);
+                $order->log()->create([
+                    'user_type' => OrderTransportLog::JURAGAN_ANGKUTAN,
+                    'user_id' => Auth::guard('user')->user()->id,
+                    'status' => "Rejected",
+                    'status_note' => $request->reason
+                ]);
+                DB::commit();
                 break;
         }
         return redirect(route(str_replace('.update', '', Routing::getCurrentRouteName())));

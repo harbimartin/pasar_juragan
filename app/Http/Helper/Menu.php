@@ -2,7 +2,9 @@
 
 namespace App\Http\Helper;
 
+use App\Models\OrderTransport\OrderTransport;
 use App\Models\Transport\TruckContract;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class Menu {
@@ -11,7 +13,15 @@ class Menu {
     const ICON_CONTENT = 2;
     const ICON_ADD = 3;
     public static function getMenu() {
-        Session::put('notif_dashboard.approval', TruckContract::where(['status' => 'Proposed'])->count());
+        $company_id = Auth::guard('user')->user()->company->id;
+        Session::put('notif_dashboard.approval', TruckContract::where(['status' => 'Approved'])->whereHas('juragan_barang', function ($q) use ($company_id) {
+            $q->where('id', $company_id);
+        })->count());
+        Session::put('notif_dashboard.approval.transport.order', OrderTransport::whereHas('contract', function ($q) use ($company_id) {
+            $q->whereHas('juragan_angkutan', function ($qq) use ($company_id) {
+                $qq->where('m_company_id', $company_id);
+            });
+        })->where('status', 'Proposed')->count());
         $menu = Session::get('menu');
 
         if ($menu)
@@ -20,11 +30,16 @@ class Menu {
         $menu = [
             ['name' => 'Profile User', 'key' => 'dashboard.profile-user', 'icon' => self::ICON_CONTENT],
             ['name' => 'Profile Perusahaan', 'key' => 'dashboard.profile-company', 'icon' => self::ICON_CONTENT],
-            ['name' => 'Notifikasi Kontrak', 'key' => 'dashboard.approval', 'icon' => self::ICON_NOTIFICATION],
+            ['name' => 'Notifikasi Kontrak', 'key' => 'dashboard.approval.item.contract', 'icon' => self::ICON_NOTIFICATION],
+            ['name' => 'Pesanan Angkutan', 'key' => 'dashboard.approval.transport.order', 'icon' => self::ICON_NOTIFICATION],
             // ['name' => 'Juragan Barang', 'key' => 'mk01', 'icon' => self::ICON_PARENT, 'children' => [
             //     ['name' => 'Registrasi Juragan', 'key' => 'dashboard.create.juragan-barang', 'icon' => self::ICON_ADD],
             //     ['name' => 'Daftar Juragan', 'key' => 'dashboard.juragan-barang', 'icon' => self::ICON_CONTENT]
             // ]],
+            ['name' => 'Juragan Barang', 'key' => 'mk00', 'icon' => self::ICON_PARENT, 'children' => [
+                ['name' => 'Pesan Angkutan', 'key' => 'dashboard.create.pesanan-angkutan', 'icon' => self::ICON_ADD],
+                ['name' => 'Daftar Pesanan', 'key' => 'dashboard.pesanan-angkutan', 'icon' => self::ICON_CONTENT]
+            ]],
             ['name' => 'Juragan Gudang', 'key' => 'mk01', 'icon' => self::ICON_PARENT, 'children' => [
                 ['name' => 'Registrasi Juragan', 'key' => 'dashboard.create.juragan-gudang', 'icon' => self::ICON_ADD],
                 ['name' => 'Daftar Juragan', 'key' => 'dashboard.juragan-gudang', 'icon' => self::ICON_CONTENT],
