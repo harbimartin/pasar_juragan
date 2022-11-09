@@ -66,7 +66,7 @@ class PesananAngkutanDetailController extends Controller {
             $order->detail()->create($credentials);
             return back();
         } else
-            return back()->withErrors('add', 'Pesanan tidak ditemukan!');
+            return back()->withErrors(['add' => 'Pesanan tidak ditemukan!']);
     }
 
     /**

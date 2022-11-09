@@ -55,13 +55,18 @@ class Menu {
                     ['name' => 'Tambah Angkutan', 'key' => 'dashboard.create.transport', 'icon' => self::ICON_CONTENT],
                     ['name' => 'List Angkutan', 'key' => 'dashboard.transport', 'icon' => self::ICON_CONTENT]
                 ]],
+                ['name' => 'Kelola Sopir', 'key' => 'mk05', 'icon' => self::ICON_PARENT, 'children' => [
+                    ['name' => 'Tambah Sopir', 'key' => 'dashboard.create.driver', 'icon' => self::ICON_CONTENT],
+                    ['name' => 'List Sopir', 'key' => 'dashboard.driver', 'icon' => self::ICON_CONTENT]
+                ]],
                 ['name' => 'Tambah Kontrak', 'key' => 'dashboard.create.kontrak-barang', 'icon' => self::ICON_ADD],
                 ['name' => 'Daftar Kontrak', 'key' => 'dashboard.kontrak-barang', 'icon' => self::ICON_CONTENT],
+                ['name' => 'Daftar Pesanan', 'key' => 'dashboard.pesanan.juragan-angkutan', 'icon' => self::ICON_CONTENT],
             ]],
-            ['name' => 'Juragan Alat Berat', 'key' => 'mk05', 'icon' => self::ICON_PARENT, 'children' => [
+            ['name' => 'Juragan Alat Berat', 'key' => 'mk06', 'icon' => self::ICON_PARENT, 'children' => [
                 ['name' => 'Registrasi Juragan', 'key' => 'dashboard.create.juragan-alatberat', 'icon' => self::ICON_CONTENT],
                 ['name' => 'Daftar Alat Berat', 'key' => 'dashboard.juragan-alatberat', 'icon' => self::ICON_CONTENT],
-                ['name' => 'Kelola Alat Berat', 'key' => 'mk06', 'icon' => self::ICON_PARENT, 'children' => [
+                ['name' => 'Kelola Alat Berat', 'key' => 'mk07', 'icon' => self::ICON_PARENT, 'children' => [
                     ['name' => 'Tambah Alat Berat', 'key' => 'dashboard.create.heavy', 'icon' => self::ICON_CONTENT],
                     ['name' => 'List Alat Berat', 'key' => 'dashboard.heavy', 'icon' => self::ICON_CONTENT]
                 ]]

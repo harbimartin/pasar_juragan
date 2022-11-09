@@ -14,13 +14,14 @@
 </head>
 
 <body>
-    <section class="fixed h-screen navigation w-full md:h-screen md:max-h-screen md:border-gray-300" style="width:15vw;">
+    <section id="vue-menu" class="fixed navigation w-full md:max-h-screen md:border-gray-300 overflow-auto"
+        style="width:15vw;">
         <div class="md:hidden block">
-            <div class="flex justify-end py-2 px-2" v-on:click="show = !show">
+            <div class="flex justify-end py-2 px-2">
                 <img src="{{ url('/assets/menu.svg') }}" alt="menu">
             </div>
         </div>
-        <div class="md:block top-0 left-0 bottom-0 right-0" hidden v-bind:class="{block:show}">
+        <div class="md:block top-0 left-0 bottom-0 right-0">
             <div class="avatar inline-flex md:block md:text-center md:my-5 md:mb-5 px-3">
                 <img src="{{ url('/assets/avatar.svg') }}" class="rounded-full mr-4 md:mx-auto bg-black" alt="avatar"
                     width="96" height="96">

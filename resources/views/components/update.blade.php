@@ -156,13 +156,17 @@
                     $txt = '';
                     $by = isset($param->by) ? $param->by : $key;
                     if ($datas[$by]) {
-                        foreach ($param->child as $on => $child) {
-                            $str = $datas[$by][$child];
-                            if ($on == 0) {
-                                $txt = $str == '' ? $blank : $str;
-                            } else {
-                                $txt = $txt . ' - ' . $str;
+                        if (isset($param->child)) {
+                            foreach ($param->child as $on => $child) {
+                                $str = $datas[$by][$child];
+                                if ($on == 0) {
+                                    $txt = $str == '' ? $blank : $str;
+                                } else {
+                                    $txt = $txt . ' - ' . $str;
+                                }
                             }
+                        } else {
+                            $txt = $datas[$by][$key];
                         }
                     }
                     ?>
@@ -170,8 +174,9 @@
                         type="text"
                         class="rounded border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->class){{ $param->class }}@endisset" />
                 @break
+
                 @case('SLink')
-                <?php
+                    <?php
                     $link = route($param->route, $datas[$param->key]);
                     $blank = isset($param->noblank) ? '' : '(Blank)';
                     $txt = '';
@@ -186,12 +191,13 @@
                             }
                         }
                     }
-                ?>
+                    ?>
                     <input readonly id="{{ $key }}" name="{{ $key }}" value="{{ $txt }}"
                         type="text"
                         class="rounded border col-end-3 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->class){{ $param->class }}@endisset" />
-                    <a href="{{$link}}" class="mx-3 text-center rounded-full border col-start-4 md:col-start-3 py-1 transition bg-blue-600 hover:bg-blue-600 text-white font-semibold cursor-pointer">
-                        {{$param->val}}
+                    <a href="{{ $link }}"
+                        class="mx-3 text-center rounded-full border col-start-4 md:col-start-3 py-1 transition bg-blue-600 hover:bg-blue-600 text-white font-semibold cursor-pointer">
+                        {{ $param->val }}
                     </a>
                 @break
 
@@ -392,11 +398,28 @@
                 @case('TextArea')
                     <textarea id="{{ $key }}" name="{{ $key }}" type="textarea"
                         rows="{{ isset($param->rows) ? $param->rows : 4 }}" @if ($detail || isset($param->off)) readonly @endif
-                        class="rounded border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->class){{ $param->class }}@endisset">{{ isset($param->child) ? $datas[$param->by][$param->child] : $datas[$param->by] }}</textarea>
+                        class="rounded border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->class){{ $param->class }}@endisset">{{ $datas[$param->by] }}</textarea>
+                @break
+
+                @case('STextArea')
+                    @php
+                        if (isset($param->by)) {
+                            if (isset($param->child)) {
+                                $txt = $datas[$param->by][$param->child];
+                            } else {
+                                $txt = $datas[$param->by][$key];
+                            }
+                        } else {
+                            $txt = $datas[$key][$param->child];
+                        }
+                    @endphp
+                    <textarea id="{{ $key }}" name="{{ $key }}" type="textarea"
+                        rows="{{ isset($param->rows) ? $param->rows : 4 }}" @if ($detail || isset($param->off)) readonly @endif
+                        class="rounded border col-end-7 col-start-1 md:col-start-2 px-2 py-1 focus:shadow-inner focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-transparent transition @isset($param->class){{ $param->class }}@endisset">{{$txt}}</textarea>
                 @break
 
                 @case('Upload')
-                {{-- {{sizeof($item->image)}} --}}
+                    {{-- {{sizeof($item->image)}} --}}
                     @php
                         $readonly = $detail || isset($param->off);
                         if (isset($param->force)) {

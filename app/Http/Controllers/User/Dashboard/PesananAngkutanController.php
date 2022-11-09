@@ -72,7 +72,7 @@ class PesananAngkutanController extends Controller {
             't_truck_contract_id' => ['required']
         ]);
         DB::beginTransaction();
-        $credentials['to_no'] = GenSerial::generateCode('DO');
+        $credentials['to_no'] = GenSerial::generateCode('TO');
         $credentials['to_date'] = now();
         $credentials['status'] = 'Draft';
         $company_id = Auth::guard('user')->user()->company->id;
@@ -131,7 +131,7 @@ class PesananAngkutanController extends Controller {
                         'status_note' => ''
                     ]);
                 } else
-                    return back()->withErrors('proposed', "Mohon maaf, status Kontrak ini bukan berbentuk Draft");
+                    return back()->withErrors(['proposed' => "Mohon maaf, status Kontrak ini bukan berbentuk Draft"]);
                 break;
             case 'update':
                 $credentials = $request->validate([

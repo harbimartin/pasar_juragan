@@ -149,7 +149,7 @@ class KontrakBarangController extends Controller {
                         'status_note' => ''
                     ]);
                 } else
-                    return back()->withErrors('proposed', "Mohon maaf, status Kontrak ini bukan berbentuk Draft");
+                    return back()->withErrors(['proposed' => "Mohon maaf, status Kontrak ini bukan berbentuk Draft"]);
                 break;
             case 'update':
                 $credentials = $request->validate([

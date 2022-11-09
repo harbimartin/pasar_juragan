@@ -7,8 +7,7 @@ use App\Models\Image;
 use App\Models\Provider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Truck extends _List
-{
+class Truck extends _List {
     use HasFactory;
     protected $table = "m_truck_tab";
 
@@ -50,7 +49,7 @@ class Truck extends _List
         return $this->hasMany(Image::class, 'm_code_id', 'id')->where('image_type', Provider::TRANSPORT);
     }
 
-    public function type(){
+    public function type() {
         return $this->hasOne(TruckType::class, 'id', 'm_truck_type_id');
     }
 }

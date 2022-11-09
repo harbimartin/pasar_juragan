@@ -19,8 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
-class TransportController extends Controller
-{
+class TransportController extends Controller {
     protected $baseRoute = 'dashboard.transport';
     public function getMySelect() {
         $company = Auth::guard('user')->user()->company;
@@ -30,18 +29,15 @@ class TransportController extends Controller
         ];
     }
 
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $sel_filter = [
-            'type' => ['name'=>'Type', 'key'=>'truck_type', 'option' => TruckType::get()],
-            'province' => ['name' => 'Provinsi', 'key' => 'province_name', 'option' => GeoProvince::where('status', 1)->get()],
-            'city' => ['name' => 'Kota', 'key' => 'city_name', 'option' => GeoCity::where('status', 1)->get()],
+            'type' => ['name' => 'Type', 'key' => 'truck_type', 'option' => TruckType::get()],
         ];
         $company_id = Auth::guard('user')->user()->company->id;
-        $data = Truck::filter($request)->whereHas('provider', function($q)use($company_id)    {
+        $data = Truck::filter($request)->whereHas('provider', function ($q) use ($company_id) {
             $q->where('m_company_id', $company_id);
         })->paginate(10);
-        return view('dashboard.transport.list', ['data' => $data->getCollection(), 'prop'=>Table::tableProp($data), 'sel_filter'=>$sel_filter]);
+        return view('dashboard.transport.list', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'sel_filter' => $sel_filter]);
     }
 
     /**
@@ -49,8 +45,7 @@ class TransportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         return view('dashboard.transport.add', ['select' => $this->getMySelect()]);
     }
 
@@ -60,8 +55,7 @@ class TransportController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         // return $request->toArray();
         $credentials = $request->validate([
             'm_provider_id' => ['required', 'exists:t_provider_tab,id'],
@@ -87,8 +81,7 @@ class TransportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -98,8 +91,7 @@ class TransportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $provider = Truck::find($id);
         if ($provider)
             return view('dashboard.transport.edit', ['data' => $provider, 'select' => $this->getMySelect()]);
@@ -113,8 +105,7 @@ class TransportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         switch ($request->__type) {
             case 'toggle':
                 Truck::find($id)->update(['status' => $request->toggle]);
@@ -171,8 +162,7 @@ class TransportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
 }

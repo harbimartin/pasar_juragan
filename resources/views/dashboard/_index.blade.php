@@ -107,7 +107,7 @@
         input:checked+label {
             filter: none;
             font-weight: 500;
-            color:black;
+            color: black;
         }
 
         input:checked+label>span {
@@ -188,7 +188,7 @@
         </nav>
     </header> --}}
 
-    <section id="vue-menu" class="fixed h-screen navigation w-full md:h-screen md:max-h-screen md:border-gray-300"
+    <section id="vue-menu" class="fixed navigation w-full md:max-h-screen md:border-gray-300 overflow-auto"
         style="width:15vw;">
         {{-- < class=" md:border-r fw-nav"> --}}
         <div class="md:hidden block">

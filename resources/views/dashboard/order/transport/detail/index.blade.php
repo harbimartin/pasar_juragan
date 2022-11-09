@@ -56,7 +56,7 @@
                 'due_date' => ['name' => 'Barang Diambil', 'type' => 'Date', 'class' => 'font-semibold text-xs text-gray-500 pt-1 text-right'],
             ],
         ],
-
+    
         'tonage' => ['name' => 'Tonase', 'type' => 'Number', 'step' => '0.01', 'full' => true],
         'estimate_truck_required' => ['name' => 'Estimasi Truk Diperlukan', 'type' => 'String', 'align' => 'center'],
         'order_note' => ['name' => 'Catatan', 'type' => 'TextArea', 'empty' => 'Tidak ada Catatan'],
@@ -68,4 +68,5 @@
     ?>
     <x-table :lim="false" :column="$table_detail" :datas="$data->detail">
     </x-table>
+    @yield('more-content')
 @endsection

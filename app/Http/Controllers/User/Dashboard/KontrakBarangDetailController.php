@@ -69,7 +69,7 @@ class KontrakBarangDetailController extends Controller {
             $contract->detail()->create($credentials);
             return back();
         } else
-            return back()->withErrors('add', 'Contract tidak ditemukan!');
+            return back()->withErrors(['add' => 'Contract tidak ditemukan!']);
     }
 
     /**

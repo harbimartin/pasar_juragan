@@ -4,10 +4,11 @@
         $column = [
             'status' => Provider::status_attr(),
             'to_desc' => ['name' => 'Deskripsi Order', 'type' => 'TextArea', 'full' => true],
-            't_truck_contract_id' => ['name' => 'Kontrak', 'type' => 'TextSel', 'val' => ['contract_no', 'contract_desc'], 'desc' => ['contract_desc'], 'share' => ['contract_desc' => 0, 'contract_date' => 0, 'contract_expired' => 0], 'api' => 'contract', 'full' => true],
-            'contract_desc' => ['key' => 't_truck_contract_id', 'val' => 'contract_desc', 'name' => 'Deskripsi Kontrak', 'type' => 'RefArea', 'full' => true],
-            'contract_date' => ['key' => 't_truck_contract_id', 'val' => 'contract_date', 'name' => 'Tanggal Kontrak', 'type' => 'Reference', 'full' => true],
-            'contract_expired' => ['key' => 't_truck_contract_id', 'val' => 'contract_expired', 'name' => 'Tgl Kadaluarsa Kontrak', 'type' => 'Reference', 'full' => true],
+            't_truck_contract_id' => $detail ? null : ['name' => 'Kontrak', 'type' => 'TextSel', 'val' => ['contract_no', 'contract_desc'], 'desc' => ['contract_desc'], 'share' => ['contract_desc' => 0, 'contract_date' => 0, 'contract_expired' => 0], 'api' => 'contract', 'full' => true],
+            'contract' => $detail ? ['name' => 'Kontrak', 'type' => 'SString', 'child' => ['contract_no', 'contract_desc'], 'full' => true] : null,
+            'contract_desc' => $detail ? ['by' => 'contract', 'name' => 'Deskripsi Kontrak', 'type' => 'STextArea', 'full' => true] : ['by' => 'contract', 'name' => 'Deskripsi Kontrak', 'type' => 'SString', 'full' => true],
+            'contract_date' => $detail ? ['by' => 'contract', 'name' => 'Tanggal Kontrak', 'type' => 'SString', 'full' => true] : ['key' => 't_truck_contract_id', 'val' => 'contract_date', 'name' => 'Tanggal Kontrak', 'type' => 'Reference', 'full' => true],
+            'contract_expired' => $detail ? ['by' => 'contract', 'name' => 'Tgl Kadaluarsa Kontrak', 'type' => 'SString', 'full' => true] : ['key' => 't_truck_contract_id', 'val' => 'contract_expired', 'name' => 'Tgl Kadaluarsa Kontrak', 'type' => 'Reference', 'full' => true],
         ];
         $column = json_encode($column);
     @endphp

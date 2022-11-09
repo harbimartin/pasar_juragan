@@ -33,4 +33,7 @@ class OrderTransport extends Model {
     public function log_approved() {
         return $this->hasMany(OrderTransportLog::class, 't_truck_order_id', 'id')->where('status', 'Approved')->latest();
     }
+    public function voucher() {
+        return $this->hasMany(OrderTransportVoucher::class, 't_truck_order_id', 'id');
+    }
 }
