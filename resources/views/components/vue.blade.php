@@ -52,6 +52,7 @@
             @php
                 echo 'this.tmenu = undefined;';
                 $current_route = Routing::getCurrentRouteName();
+
                 foreach ($menus as $ind => $menu) {
                     if (consoling($menu, 'this.tmenu', $ind, $current_route)) {
                         "this.tmenu = '" . $menu['key'] . "';";
