@@ -91,7 +91,7 @@
 
         .thidden.block {
             transition: .5s;
-            max-height: 350px;
+            max-height: 400px;
         }
 
         input+label {
