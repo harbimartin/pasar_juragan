@@ -7,6 +7,18 @@ use App\Http\Controllers\Admin\Angkutan\AngkutanRegistController;
 use App\Http\Controllers\Admin\Gudang\GudangListController;
 use App\Http\Controllers\Admin\Gudang\GudangRegistController;
 use App\Http\Controllers\Admin\HomeController as AdminHomeController;
+use App\Http\Controllers\Admin\MasterData\BusinessCategoryController;
+use App\Http\Controllers\Admin\MasterData\CityController;
+use App\Http\Controllers\Admin\MasterData\ContactTypeController;
+use App\Http\Controllers\Admin\MasterData\DestinationController;
+use App\Http\Controllers\Admin\MasterData\DocController;
+use App\Http\Controllers\Admin\MasterData\HeavyTypeController;
+use App\Http\Controllers\Admin\MasterData\OriginController;
+use App\Http\Controllers\Admin\MasterData\ProvinceController;
+use App\Http\Controllers\Admin\MasterData\TruckTypeController;
+use App\Http\Controllers\Admin\MasterData\WarehouseCategoryController;
+use App\Http\Controllers\Admin\MasterData\WarehouseFunctionController;
+use App\Http\Controllers\Admin\MasterData\WarehouseStorageController;
 use App\Http\Controllers\Admin\ProfileUserController as AdminProfileUserController;
 use App\Http\Controllers\Auth\AuthAdminController;
 use App\Http\Controllers\Auth\AuthUserController;
@@ -49,6 +61,8 @@ use App\Http\Controllers\User\Dashboard\Warehouse\WarehouseController;
 use App\Http\Controllers\User\RegisterController;
 use App\Http\Controllers\User\ViewController;
 use App\Http\Helper\Routing;
+use App\Models\BusinessCategory;
+use App\Models\ContactType;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -224,6 +238,24 @@ Route::group([
         ], function () {
             Route::resource('list', AlatBeratListController::class, Routing::setName('list'));
             Route::resource('regist', AlatBeratRegistController::class, Routing::setName('regist'));
+        });
+        Route::group([
+            'prefix' => 'master',
+            'as' => 'master.',
+        ], function () {
+            Route::resource('city', CityController::class, Routing::setName('city'));
+            Route::resource('province', ProvinceController::class, Routing::setName('province'));
+            Route::resource('contact-type', ContactTypeController::class, Routing::setName('contact-type'));
+            Route::resource('business-category', BusinessCategoryController::class, Routing::setName('business-category'));
+            Route::resource('destination', DestinationController::class, Routing::setName('destination'));
+            Route::resource('doc', DocController::class, Routing::setName('doc'));
+            Route::resource('origin', OriginController::class, Routing::setName('origin'));
+            Route::resource('province', ProvinceController::class, Routing::setName('province'));
+            Route::resource('truck-type', TruckTypeController::class, Routing::setName('truck-type'));
+            Route::resource('warehouse-category', WarehouseCategoryController::class, Routing::setName('wh-category'));
+            Route::resource('warehouse-function', WarehouseFunctionController::class, Routing::setName('wh-function'));
+            Route::resource('warehouse-storage', WarehouseStorageController::class, Routing::setName('wh-storage'));
+            Route::resource('heavy-type', HeavyTypeController::class, Routing::setName('heavy-type'));
         });
     });
 });

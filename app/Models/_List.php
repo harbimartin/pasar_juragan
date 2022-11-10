@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 
 abstract class _List extends Model {
-    public $timestamps = false;
     protected $searchable = [];
     protected $sortable = [];
     protected $filterable = [];

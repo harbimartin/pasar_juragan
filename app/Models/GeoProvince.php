@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class GeoProvince extends Model {
+class GeoProvince extends _List {
     use HasFactory;
     protected $table = "m_province_tab";
     /**
@@ -18,6 +18,19 @@ class GeoProvince extends Model {
         'province_name',
         // 'iso2',
         'status'
+    ];
+    protected $sortable = [
+        'province_code' => null,
+        'province_name' => null,
+        'status' => null
+    ];
+    protected $searchable = [
+        'province_code' => 0,
+        'province_name' => 1,
+    ];
+    protected $filterable = [
+        'province_code',
+        'province_name'
     ];
 
     public function city() {

@@ -25,7 +25,7 @@ class Menu {
         $menu = Session::get('menu');
 
         if ($menu)
-            return Session::get('menu');
+            return $menu;
 
         $menu = [
             ['name' => 'Profile User', 'key' => 'dashboard.profile-user', 'icon' => self::ICON_CONTENT],

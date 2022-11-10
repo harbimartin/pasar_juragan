@@ -9,8 +9,111 @@
     <meta name="description"
         content="Get started with a free landing page built with Tailwind CSS and the Flowbite Blocks system.">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
-    {{-- <script src="https://unpkg.com/vue/dist/vue.min.js"></script> --}}
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        input.hide-ico::-webkit-calendar-picker-indicator {
+            display: none !important;
+        }
+
+        .bg-sky-500 {
+            background-color: rgb(14 165 233);
+        }
+
+        .hover\:bg-sky-600:hover {
+            background-color: rgb(2 132 199);
+        }
+
+        .hshow {
+            display: block !important;
+        }
+
+        .loader {
+            border: 4px solid #e0f2ff;
+            /* Light grey */
+            border-top: 3px solid #66abd8;
+            /* Blue */
+            border-radius: 90%;
+            width: 25px;
+            height: 25px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .chat {
+            /* background-color:currentColor; */
+            transition: background-color .25s;
+        }
+
+        .minimize {
+            visibility: hidden;
+            max-width: 0px;
+        }
+
+        @media (min-width: 768px) {
+            .max-w-90 {
+                max-width: 90vw;
+            }
+
+            .fw-nav {
+                min-width: 14rem;
+                max-width: 14rem;
+            }
+
+            .group:hover .group-hover\:ml-2 {
+                margin-left: 0.5rem
+                    /* 8px */
+                ;
+            }
+
+            .group:hover .group-hover\:maxim {
+                visibility: visible;
+                transition: max-width .75s;
+                max-width: 1000px;
+                /* display: block; */
+            }
+        }
+
+        .thidden {
+            transition: max-height .5s;
+            transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+            max-height: 0px;
+            overflow: hidden;
+        }
+
+        .thidden.block {
+            transition: .5s;
+            max-height: 350px;
+        }
+
+        input+label {
+            filter: grayscale(80%);
+        }
+
+        input+label:hover {
+            background-color: #edf8ff;
+            filter: grayscale(40%);
+            cursor: pointer;
+        }
+
+        input:checked+label {
+            filter: none;
+            font-weight: 500;
+            color: black;
+        }
+
+        input:checked+label>span {
+            display: block;
+        }
+    </style>
 </head>
 
 <body>

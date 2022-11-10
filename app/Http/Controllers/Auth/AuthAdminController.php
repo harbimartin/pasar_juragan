@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AuthAdminController extends Controller {
     /**
@@ -17,6 +18,7 @@ class AuthAdminController extends Controller {
     }
 
     public function logout() {
+        Session::forget('menu_admin');
         Auth::guard('admin')->logout();
         return redirect(route('admin.login'));
     }
