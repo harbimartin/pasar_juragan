@@ -6,15 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Models\GenSerial;
 use App\Models\OrderTransport\OrderTransport;
 use App\Models\OrderTransport\OrderTransportVoucher;
+use App\Models\OrderTransport\OrderTransportVoucherDetail;
+use App\Models\OrderTransport\OrderTransportVoucherLog;
+use App\Models\OrderTransport\OrderTransportVoucherRpt;
+use App\Models\OrderTransport\OrderTransportVoucherStatus;
 use App\Models\Transport\Driver;
 use App\Models\Transport\Truck;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class TransportPesananVoucherController extends Controller {
     protected $baseRoute = 'dashboard.order.transport.voucher';
     public static function base_index($voucher) {
-        $voucher = OrderTransportVoucher::find($voucher);
+        $voucher = OrderTransportVoucherRpt::find($voucher);
         if ($voucher) {
             $detail = $voucher->order->status != 'Approved';
             $submenu = [
@@ -22,13 +28,12 @@ class TransportPesananVoucherController extends Controller {
             ];
             $select = $voucher->order->status == 'Approved' ? self::getMySelect($voucher) : [];
             return [$voucher, $select, $detail, $submenu];
-        } else {
-            return back();
         }
     }
     public static function getMySelect($voucher_id) {
         $my_company_id = Auth::guard('user')->user()->m_company_id;
         return [
+            'status' => OrderTransportVoucherStatus::where('status', 1)->get(),
             'truck' => Truck::where('status', 1)->whereHas('provider', function ($q) use ($my_company_id) {
                 $q->where('m_company_id', $my_company_id);
             })->get(),
@@ -93,7 +98,7 @@ class TransportPesananVoucherController extends Controller {
 
         $order = OrderTransport::find($order_id);
         if ($order) {
-            $credentials['status'] = 1;
+            $credentials['status_id'] = 1;
             $credentials['voucher_code'] = GenSerial::generateCode('VC');
             $order->voucher()->create($credentials);
             return back();
@@ -141,6 +146,36 @@ class TransportPesananVoucherController extends Controller {
      */
     public function update(Request $request, $contract, $id) {
         switch ($request->__type) {
+            case 'update_status':
+                $credentials = $request->validate([
+                    'new_status_id' => ['required'],
+                    'reason' => ['nullable'],
+                    'select' => ['required'],
+                ]);
+                try {
+                    $status_id = $request->new_status_id;
+                    $note = $request->has('status_note') ? $request->reason : null;
+                    $user_id = Auth::guard('user')->user()->id;
+                    DB::beginTransaction();
+                    OrderTransportVoucher::whereIn('id', $request->select)->update([
+                        'status_id' => $request->new_status_id
+                    ]);
+                    foreach ($request->select as $sel) {
+                        OrderTransportVoucherLog::create([
+                            't_truck_order_voucher_id' => $sel,
+                            'status' => $status_id,
+                            'status_note' => $note,
+                            'user_id' => $user_id
+                        ]);
+                    }
+                } catch (Throwable $th) {
+                    DB::rollBack();
+                    return back()->withErrors([
+                        'update_status' => 'Error : ' . $th->getMessage()
+                    ]);
+                }
+                DB::commit();
+                break;
             case 'toggle':
                 OrderTransportVoucher::find($id)->update(['status' => $request->toggle]);
                 break;
@@ -150,21 +185,29 @@ class TransportPesananVoucherController extends Controller {
                     'm_driver_id' => ['required'],
                     'voucher_date' => ['required'],
                     'voucher_close_date' => ['required'],
-                    'notes' => ['nullable']
+                    'notes' => ['nullable'],
+                    'status_id' => ['required']
                 ]);
                 $my_company_id = Auth::guard('user')->user()->m_company_id;
                 if (
-                    Truck::whereHas('provider', function ($q) use ($my_company_id) {
+                    !Truck::whereHas('provider', function ($q) use ($my_company_id) {
                         $q->where('m_company_id', $my_company_id);
-                    })->first() &&
-                    Driver::whereHas('provider', function ($q) use ($my_company_id) {
+                    })->first() ||
+                    !Driver::whereHas('provider', function ($q) use ($my_company_id) {
                         $q->where('m_company_id', $my_company_id);
                     })->first()
                 )
                     return back()->withErrors(['add' => 'Truck atau Driver tidak valid!']);
-
+                $voucher = OrderTransportVoucher::find($id);
+                if ($credentials['status_id'] != $voucher->status_id) {
+                    $voucher->log()->create([
+                        'status' => $voucher->status_id,
+                        'status_note' => $request->has('status_note') ? $request->status_note : null,
+                        'user_id' => Auth::guard('user')->user()->id
+                    ]);
+                }
                 // return $credentials;
-                OrderTransportVoucher::find($id)->update($credentials);
+                $voucher->update($credentials);
                 break;
         }
         return back();

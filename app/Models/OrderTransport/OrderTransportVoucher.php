@@ -18,7 +18,7 @@ class OrderTransportVoucher extends Model {
         'voucher_close_date',
         'm_truck_id',
         'm_driver_id',
-        'status',
+        'status_id',
         'notes'
     ];
 
@@ -36,5 +36,13 @@ class OrderTransportVoucher extends Model {
 
     public function driver() {
         return $this->hasOne(Driver::class, 'id', 'm_driver_id');
+    }
+
+    public function log() {
+        return $this->hasMany(OrderTransportVoucherLog::class, 't_truck_order_voucher_id', 'id');
+    }
+
+    public function status() {
+        return $this->hasOne(OrderTransportVoucherStatus::class, 'id', 'status_id');
     }
 }

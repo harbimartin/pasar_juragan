@@ -50,9 +50,7 @@ class DriverController extends Controller {
             'm_provider_id' => ['required', 'exists:t_provider_tab,id'],
             'driver_name' => ['required'],
             'license_no' => ['required'],
-            'expired_license' => ['required'],
-            'phone' => ['required'],
-            'email' => ['required', 'email']
+            'expired_license' => ['required']
         ]);
         $credentials['status'] = 1;
 

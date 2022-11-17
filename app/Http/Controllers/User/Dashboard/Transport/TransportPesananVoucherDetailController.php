@@ -9,17 +9,27 @@ use App\Models\OrderTransport\OrderTransportDetail;
 use App\Models\OrderTransport\OrderTransportDetailRpt;
 use App\Models\OrderTransport\OrderTransportVoucher;
 use App\Models\OrderTransport\OrderTransportVoucherDetail;
+use App\Models\OrderTransport\OrderTransportVoucherDetailRpt;
 use App\Models\OrderTransport\OrderTransportVoucherRpt;
 use Illuminate\Http\Request;
 
 class TransportPesananVoucherDetailController extends Controller {
     protected $baseRoute = 'dashboard.order.transport.voucher-detail';
-    public function getMySelect($order_id) {
-        return [
-            'voucher' => OrderTransportVoucherRpt::where(['t_truck_order_id' => $order_id, 'status' => 1])->get(),
-            'order' => OrderTransportDetailRpt::where(['t_truck_order_id' => $order_id, 'status' => 1])->get(),
-            // 'unloading' => UnloadingAddress::where('status', 1)->get()
-        ];
+    public function getMySelect($order_id, $detail) {
+        if ($detail)
+            return [];
+        else
+            return [
+                'order' => OrderTransportDetailRpt::where(['t_truck_order_id' => $order_id, 'status' => 1])->get(),
+                // 'unloading' => UnloadingAddress::where('status', 1)->get()
+            ];
+    }
+    public function getDetail($order_id, $voucher_id) {
+        $voucher = OrderTransportVoucher::where(['id' => $voucher_id, 't_truck_order_id' => $order_id])->first();
+        if ($voucher)
+            return !$voucher->status->editable;
+        else
+            return true;
     }
     /**
      * Display a listing of the resource.
@@ -34,16 +44,18 @@ class TransportPesananVoucherDetailController extends Controller {
         // } else {
         //     $default_voucher = $voucher[0]->id;
         // }
+        $detail = $this->getDetail($order_id, $voucher_id);
         $data = OrderTransportVoucherDetail::where('t_truck_order_voucher_id', $voucher_id)->paginate(10);
         return view($this->baseRoute . '.index', [
             'data' => $voucher,
-            'select' => array_merge($select, $this->getMySelect($order_id)),
+            'select' => array_merge($select, $this->getMySelect($order_id, $detail)),
             'detail' => $detail,
             'submenu' => $submenu,
             // 'voucher' => $voucher,
             // 'default_voucher' => $default_voucher,
             'list' => $data->getCollection(),
-            'prop' => Table::tableProp($data)
+            'prop' => Table::tableProp($data),
+            'detail' => $detail
         ]);
     }
 
@@ -94,7 +106,7 @@ class TransportPesananVoucherDetailController extends Controller {
      */
     public function show($order_id, $voucher_id,  $id) {
         $data = OrderTransportVoucherDetail::find($id);
-        return view($this->baseRoute . '.index', ['data' => $data, 'select' => [], 'detail' => false]);
+        return view($this->baseRoute . '.edit', ['data' => $data, 'select' => [], 'detail' => true]);
     }
 
     /**
@@ -105,7 +117,8 @@ class TransportPesananVoucherDetailController extends Controller {
      */
     public function edit($order_id, $voucher_id, $id) {
         $data = OrderTransportVoucherDetail::find($id);
-        return view($this->baseRoute . '.edit', ['data' => $data, 'select' => $this->getMySelect($order_id), 'detail' => false]);
+        $detail = $this->getDetail($order_id, $voucher_id);
+        return view($this->baseRoute . '.edit', ['data' => $data, 'select' => $this->getMySelect($order_id, $detail), 'detail' => $detail]);
     }
 
     /**

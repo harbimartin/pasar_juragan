@@ -5,6 +5,8 @@ namespace App\Http\Helper;
 class VueControl {
     static $singleton;
     public $pool = array();
+    public $useMap = false;
+    public $pos = array();
     public static function Mono() {
         if (self::$singleton)
             return self::$singleton;

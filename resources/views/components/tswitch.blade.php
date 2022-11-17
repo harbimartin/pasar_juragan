@@ -15,7 +15,7 @@
     @break
 
     @case('Check')
-        <input type="checkbox" name="{{ $key }}[]" value="{{ $item[$param->key] }}" />
+        <input id="{{$key}}" form="{{$param->form}}" class="checkbox" type="checkbox" name="{{ $key }}[]" value="{{ $item[$param->key] }}" />
     @break
 
     @case('Multiply')
@@ -282,9 +282,23 @@
                     @endif
                 @break
 
+                @case('SDate')
+                    @php
+                        if (isset($param->child))
+                            $txt = isset($param->by) ? $item[$param->by][$param->child] : $item[$key][$param->child];
+                        else
+                        if (isset($param->by))
+                            $txt = $item[$param->by][$key];
+                        else
+                            $txt = $item[$key];
+                    @endphp
                 @case('Date')
+                    @php
+                        $txt = isset($txt) ? $txt : $item[$key];
+                    @endphp
                     <div class="text-gray-900 @isset($param->class){{ $param->class }}@endisset">
-                        {{ date('j F, Y', strtotime($item[$key])) }}</div>
+                            {{ date('j F, Y', strtotime($txt)) }}
+                    </div>
                 @break
 
                 @case('DateTime')
@@ -321,6 +335,16 @@
                     </small>
                 @break
 
+                @case('CState')
+                    <?php
+                    $data = $item[$key];
+                    ?>
+                    <small
+                        class="px-2 inline-flex mx-auto leading-5 font-semibold rounded-full bg-{{ $data['color'] }}-100 text-{{ $data['color'] }}-800">
+                        {{ $data[$param->child] }}
+                    </small>
+                @break
+
                 @case('State')
                     {{-- <small class="flex"> --}}
                     @if ($item[$key])
@@ -333,6 +357,12 @@
                         </small>
                     @endif
                     {{-- </div> --}}
+                @break
+
+                @case('Direct')
+                <a href="{{ Routing::getRouteWithNextID($item[$idk], $param->sub) }}" class="text-indigo-600 hover:text-indigo-900">
+                    {{$param->text}}
+                </a>
                 @break
 
                 @case('Show')
@@ -355,10 +385,6 @@
                         <input hidden name="_last_" value="{{ request()->fullUrl() }}">
                         <button type="submit" class="text-indigo-600 hover:text-indigo-900">Delete</button>
                     </form>
-                @break
-
-                @case('Direct')
-                    <a href="{{ $param->url . '/view' }}" class="text-indigo-600 hover:text-indigo-900">View</a>
                 @break
 
                 @case('Post')
@@ -401,8 +427,8 @@
                                         <div class="mr-2 truncate flex">
                                             <div class="my-auto mr-3">{{ $vfile[$param->name] }}</div>
                                             <div class="text-blue-300 ml-auto group-hover:bg-blue-500 group-hover:text-white p-1 rounded">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                                    class="bi bi-cloud-arrow-down-fill" viewBox="0 0 16 16">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-cloud-arrow-down-fill" viewBox="0 0 16 16">
                                                     <path
                                                         d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z" />
                                                 </svg>

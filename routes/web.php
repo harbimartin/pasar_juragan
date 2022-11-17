@@ -48,6 +48,8 @@ use App\Http\Controllers\User\Dashboard\KontrakBarangDetailController;
 use App\Http\Controllers\User\Dashboard\PesananAngkutanApprovalController;
 use App\Http\Controllers\User\Dashboard\PesananAngkutanController;
 use App\Http\Controllers\User\Dashboard\PesananAngkutanDetailController;
+use App\Http\Controllers\User\Dashboard\PesananAngkutanMonitoringController;
+use App\Http\Controllers\User\Dashboard\PesananAngkutanMonitoringDetailController;
 use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyAddressController;
 use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyContactController;
 use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyController;
@@ -161,11 +163,24 @@ Route::group([
     ], function () {
         Route::resource('/voucher', TransportPesananVoucherController::class, Routing::setName('voucher'))->except('destroy');
         Route::resource('/detail', TransportPesananDetailController::class, Routing::setName('detail'))->except('destroy');
+
         Route::group([
             'prefix' => 'voucher-detail/{voucher}',
             'as' => ''
         ], function () {
             Route::resource('/detail', TransportPesananVoucherDetailController::class, Routing::setName('voucher-detail'));
+        });
+        Route::group([
+            'prefix' => 'monitoring/{voucher}',
+            'as' => 'detail.'
+        ], function () {
+            Route::resource('/detail', PesananAngkutanMonitoringController::class, Routing::setName('monitoring'))->except('create');
+            Route::group([
+                'prefix' => 'detail/{detail}',
+                'as' => 'monitoring.'
+            ], function () {
+                Route::resource('/truck', PesananAngkutanMonitoringDetailController::class, Routing::setName('truck'))->except('create');
+            });
         });
     });
     Route::resource('/pesanan/juragan-angkutan', TransportPesananController::class, Routing::setName('pesanan.juragan-angkutan'))->except('destroy');
@@ -198,6 +213,18 @@ Route::group([
         'as' => 'pesanan-angkutan.',
     ], function () {
         Route::resource('/detail', PesananAngkutanDetailController::class, Routing::setName('detail'))->except('create');
+        Route::group([
+            'prefix' => 'monitoring/{voucher}',
+            'as' => 'detail.'
+        ], function () {
+            Route::resource('/detail', PesananAngkutanMonitoringController::class, Routing::setName('monitoring'))->except('create');
+            Route::group([
+                'prefix' => 'detail/{detail}',
+                'as' => 'monitoring.'
+            ], function () {
+                Route::resource('/truck', PesananAngkutanMonitoringDetailController::class, Routing::setName('truck'))->except('create');
+            });
+        });
     });
     Route::resource('/pesanan-angkutan', PesananAngkutanController::class, Routing::setName('pesanan-angkutan'))->except('destroy');
 });

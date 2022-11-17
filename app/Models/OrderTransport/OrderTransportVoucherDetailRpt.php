@@ -2,22 +2,13 @@
 
 namespace App\Models\OrderTransport;
 
+use App\Models\_List;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrderTransportVoucherDetail extends Model {
+class OrderTransportVoucherDetailRpt extends _List {
     use HasFactory;
-    protected $table = "t_truck_order_voucher_detail_tab";
-
-    protected $fillable = [
-        't_truck_order_voucher_id',
-        't_truck_order_detail_id',
-        'cargo_code',
-        'tonnage',
-        'pcs',
-        'notes'
-    ];
-
+    protected $table = "t_truck_order_voucher_detail_rpt";
     public function voucher() {
         return $this->hasOne(OrderTransportVoucher::class, 'id', 't_truck_order_voucher_id');
     }
@@ -29,5 +20,8 @@ class OrderTransportVoucherDetail extends Model {
     }
     public function order_detail_rpt() {
         return $this->hasOne(OrderTransportDetailRpt::class, 'id', 't_truck_order_detail_id');
+    }
+    public function status() {
+        return $this->hasOne(OrderTransportVoucherStatus::class, 'id', 'status_id');
     }
 }

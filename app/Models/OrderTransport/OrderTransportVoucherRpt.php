@@ -22,4 +22,12 @@ class OrderTransportVoucherRpt extends Model {
     public function detail() {
         return $this->hasMany(OrderTransportVoucherDetail::class, 't_truck_order_voucher_detail_id', 'id');
     }
+
+    public function loading() {
+        return $this->hasOne(LoadingAddress::class, 'id', 'm_loading_address_id');
+    }
+
+    public function unloading() {
+        return $this->hasOne(UnloadingAddress::class, 'id', 'm_loading_address_id');
+    }
 }

@@ -56,17 +56,17 @@
                 'due_date' => ['name' => 'Barang Diambil', 'type' => 'Date', 'class' => 'font-semibold text-xs text-gray-500 pt-1 text-right'],
             ],
         ],
-    
+
         'tonage' => ['name' => 'Tonase', 'type' => 'Number', 'step' => '0.01', 'full' => true],
         'estimate_truck_required' => ['name' => 'Estimasi Truk Diperlukan', 'type' => 'String', 'align' => 'center'],
         'order_note' => ['name' => 'Catatan', 'type' => 'TextArea', 'empty' => 'Tidak ada Catatan'],
         // 'status' => $detail ? null : ['name' => 'Status', 'type' => 'State'],
         // 'toggle' => $detail ? null : ['by' => 'status', 'name' => 'Aktifkan', 'type' => 'Toggle', 'sort' => false, 'align' => 'center', 'value' => 'toggle-comp_contact'],
-        'delete' => $detail ? null : ['name' => 'Action', 'type' => 'Delete', 'align' => 'center', 'sort' => false],
-        'act' => $detail ? null : ['name' => 'Action', 'type' => 'Edit', 'align' => 'center', 'sort' => false],
+        // 'delete' => $detail ? null : ['name' => 'Action', 'type' => 'Delete', 'align' => 'center', 'sort' => false],
+        'act' => $detail ? ['name' => 'Action', 'type' => 'Direct', 'sub' => '.monitoring', 'text' => 'Monitoring', 'align' => 'center', 'sort' => false] : ['name' => 'Action', 'type' => 'Edit', 'align' => 'center', 'sort' => false],
     ]);
     ?>
-    <x-table :lim="false" :column="$table_detail" :datas="$data->detail">
+    <x-table title="Daftar Truk" :lim="false" :column="$table_detail" :datas="$data->detail">
     </x-table>
     @yield('more-content')
 @endsection

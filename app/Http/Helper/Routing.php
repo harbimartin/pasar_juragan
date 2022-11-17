@@ -34,6 +34,12 @@ class Routing {
         ];
     }
 
+    public static function getRouteWithNextID($next_id, $sub) {
+        $param = self::getCurrentParameters();
+        $param[] = $next_id;
+        return route(self::getCurrentRouteName() . $sub , $param);
+    }
+
     public static function getEditWithNextID($next_id) {
         $param = self::getCurrentParameters();
         $param[] = $next_id;

@@ -2,7 +2,78 @@
 {{-- @isset($graph)
     <script src="https://www.gstatic.com/charts/loader.js"></script>
 @endisset --}}
+@php
+    $vueMono = VueControl::Mono();
+@endphp
+@if($vueMono->useMap)
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZHRIvIzXUR9ZFsUaUf74xZl_04GmDpdM&callback=initMap&v=weekly"
+        defer
+    ></script>
+@endif
 <script>
+    @if($vueMono->useMap)
+        function magnitude (posA, posB){
+            const mag = Math.sqrt((Math.pow((posA.lat - posB.lat) * 2, 2)) + (Math.pow(posA.lng - posB.lng, 2)));
+            if (mag > 0)
+                return mag;
+            else
+                return -mag;
+        }
+        function initMap() {
+            @php
+                $lat = 0;
+                $lng = 0;
+                $icon_total = sizeof($vueMono->pos);
+            @endphp
+            @foreach($vueMono->pos as $ind => $pos)
+                pos{{$ind}} = { lat: {{$pos->lat}}, lng: {{$pos->lng}}};
+                @php
+                    $lat += $pos->lat;
+                    $lng += $pos->lng;
+                @endphp
+            @endforeach
+            @if($icon_total)
+                @php
+                    $lat = $lat / sizeof($vueMono->pos);
+                    $lng = $lng / sizeof($vueMono->pos);
+                @endphp
+                console.log([{{$lat}}, {{$lng}}])
+                const map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 1,
+                    center: { lat : {{$lat}}, lng : {{$lng}} },
+                    gestureHandling: "cooperative",
+                });
+                var bounds = new google.maps.LatLngBounds();
+                @foreach($vueMono->pos as $ind => $pos)
+                    pos{{$ind}} = { lat: {{$pos->lat}}, lng: {{$pos->lng}}};
+                    bounds.extend(pos{{$ind}});
+                    @if(!isset($pos->icon))
+                        mark{{$ind}} = addMarker(pos{{$ind}}, map, "{{$pos->label}}");
+                    @else
+                        mark{{$ind}} = addMarkerIcon(pos{{$ind}}, map, "{{url('/assets/'.$pos->icon)}}");
+                    @endif
+                @endforeach
+                map.fitBounds(bounds);
+            @endif
+        }
+        function addMarker(location, map, label) {
+            return new google.maps.Marker({
+                position: location,
+                label: label,
+                map: map,
+            });
+        }
+        function addMarkerIcon(location, map, icon) {
+            return new google.maps.Marker({
+                position: location,
+                icon:icon,
+                map: map,
+            });
+        }
+        window.initMap = initMap;
+    @endif
+    // marker.setMap(null);
     // @isset($graph)
     //     google.charts.load('current', {
     //         'packages': ['bar', 'corechart'],
@@ -101,7 +172,7 @@
             onPopup: undefined,
             checkbox_state: false,
             files: {
-                @foreach (VueControl::Mono()->pool as $key => $files)
+                @foreach ($vueMono->pool as $key => $files)
                     {{$key}} : [
                         @foreach ($files as $file)
                             {
@@ -120,6 +191,26 @@
         created() {
         },
         methods: {
+            selectCheck(key){
+                const el = document.querySelectorAll('.checkbox');
+                const select = document.getElementById('unselect');
+                console.log(select);
+                var unselect = true;
+                el.forEach((x) => {
+                    console.log(x)
+                    if (!x.checked) {
+                        x.checked = true;
+                        unselect = false;
+                    }
+                    select.value = 'Unselect All';
+                });
+                if (unselect){
+                    el.forEach((x) => {
+                        x.checked = false;
+                    });
+                    select.value = 'Select All';
+                }
+            },
             checkboxCheck(id,index, event){
                 var box_input_time_open = document.getElementById('inputan-time-open-' + index);
                 var box_input_time_close = document.getElementById('inputan-time-close-' + index);
