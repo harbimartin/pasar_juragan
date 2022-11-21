@@ -30,4 +30,7 @@ class OrderTransportVoucherRpt extends Model {
     public function unloading() {
         return $this->hasOne(UnloadingAddress::class, 'id', 'm_loading_address_id');
     }
+    public function status() {
+        return $this->hasOne(OrderTransportVoucherStatus::class, 'id', 'status_id');
+    }
 }

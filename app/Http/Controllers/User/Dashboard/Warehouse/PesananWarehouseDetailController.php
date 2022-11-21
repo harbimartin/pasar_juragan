@@ -1,22 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\User\Dashboard;
+namespace App\Http\Controllers\User\Dashboard\Warehouse;
 
 use App\Http\Controllers\Controller;
-use App\Models\Item\LoadingAddress;
-use App\Models\Item\UnloadingAddress;
-use App\Models\OrderTransport\OrderTransport;
-use App\Models\OrderTransport\OrderTransportDetail;
-use App\Models\Transport\TruckContractDetailRpt;
+use App\Models\GenSerial;
+use App\Models\OrderWarehouse\OrderWarehouse;
+use App\Models\OrderWarehouse\OrderWarehouseDetail;
+use App\Models\Warehouse\WarehouseContractDetail;
+use App\Models\Warehouse\WarehouseContractDetailRpt;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class PesananAngkutanDetailController extends Controller {
-    protected $baseRoute = 'dashboard.order.transport.detail';
+class PesananWarehouseDetailController extends Controller {
+    protected $baseRoute = 'dashboard.order.warehouse.detail';
     public function getMySelect($contract_id) {
         return [
-            'tariff' => TruckContractDetailRpt::where('t_truck_contract_id', $contract_id)->get(),
-            'loading' => LoadingAddress::where('status', 1)->get(),
-            'unloading' => UnloadingAddress::where('status', 1)->get()
+            'warehouse' => WarehouseContractDetailRpt::where('t_wh_contract_id', $contract_id)->get(),
         ];
     }
     /**
@@ -25,11 +24,11 @@ class PesananAngkutanDetailController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request, $order) {
-        [$data, $select, $detail, $submenu] = PesananAngkutanController::base_index($order);
+        [$data, $select, $detail, $submenu] = PesananWarehouseController::base_index($order);
         if ($data)
             return view($this->baseRoute . '.index', [
                 'data' => $data,
-                'select' => array_merge($select, $this->getMySelect($data->t_truck_contract_id)),
+                'select' => array_merge($select, $this->getMySelect($data->t_wh_contract_id)),
                 'detail' => $detail,
                 'submenu' => $submenu,
             ]);
@@ -54,16 +53,14 @@ class PesananAngkutanDetailController extends Controller {
      */
     public function store(Request $request, $order_id) {
         $credentials = $request->validate([
-            't_truck_contract_detail_id' => ['required', 'exists:t_truck_contract_detail_tab,id'],
-            'picking_date' => ['required'],
-            'm_loading_address_id' => ['required'],
-            'due_date' => ['required'],
-            'm_unloading_address_id' => ['required'],
-            'tonage' => ['required'],
-            'estimate_truck_required' => ['required'],
+            't_wh_contract_detail_id' => ['required', 'exists:t_wh_contract_detail_tab,id'],
+            'start_project' => ['required'],
+            'wh_large' => ['required'],
+            'flag_daily_monthly' => ['required'],
+            'long_used' => ['required'],
             'order_note' => ['nullable'],
         ]);
-        $order = OrderTransport::find($order_id);
+        $order = OrderWarehouse::find($order_id);
         if ($order) {
             $credentials['status'] = 1;
             $order->detail()->create($credentials);
@@ -87,9 +84,11 @@ class PesananAngkutanDetailController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($contract, $id) {
-        $data = OrderTransportDetail::find($id);
-        return view($this->baseRoute . '.edit', ['data' => $data, 'select' => $this->getMySelect($contract)]);
+    public function edit($order, $id) {
+        $order = OrderWarehouse::find($order);
+        $detail = $order->status != 'Draft';
+        $data = OrderWarehouseDetail::find($id);
+        return view($this->baseRoute . '.edit', ['data' => $data, 'select' => $detail ? [] : $this->getMySelect($order->t_wh_contract_id), 'detail' => $detail]);
     }
 
     /**
@@ -102,16 +101,18 @@ class PesananAngkutanDetailController extends Controller {
     public function update(Request $request, $contract, $id) {
         switch ($request->__type) {
             case 'toggle':
-                OrderTransportDetail::find($id)->update(['status' => $request->toggle]);
+                OrderWarehouseDetail::find($id)->update(['status' => $request->toggle]);
                 break;
             case 'update':
                 $credentials = $request->validate([
-                    't_truck_contract_detail_id' => ['required', 'exists:t_truck_contract_detail_tab,id'],
-                    'picking_date' => ['required'],
-                    'due_date' => ['required'],
-                    'tonage' => ['required'],
+                    't_wh_contract_detail_id' => ['required', 'exists:t_wh_contract_detail_tab,id'],
+                    'start_project' => ['required'],
+                    'wh_large' => ['required'],
+                    'flag_daily_monthly' => ['required'],
+                    'long_used' => ['required'],
+                    'order_note' => ['nullable'],
                 ]);
-                OrderTransportDetail::find($id)->update($credentials);
+                OrderWarehouseDetail::find($id)->update($credentials);
                 break;
         }
         return back();
@@ -124,7 +125,7 @@ class PesananAngkutanDetailController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy($order, $id) {
-        $data = OrderTransportDetail::find($id);
+        $data = OrderWarehouseDetail::find($id);
         if ($data->order->status == 'Draft')
             $data->delete();
         return back();

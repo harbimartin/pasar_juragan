@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\FileApiController;
 use App\Http\Controllers\API\utils\UtilsApiController;
 use App\Http\Controllers\Auth\AuthApiController;
+use App\Http\Controllers\Auth\AuthDriverController;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,14 @@ Route::post('v1/auth/login', [AuthApiController::class, "api_login"]);
 Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('v1/auth/logout', [AuthApiController::class, "api_logout"]);
     Route::get('v1/auth/me', [AuthApiController::class, "api_me"]);
+});
+Route::group(['middleware' => 'driver'], function () {
+    Route::post('v1/driver/auth/login', [AuthDriverController::class, "api_login"]);
+
+    Route::group(['middleware' => 'jwt.auth'], function () {
+        Route::get('v1/driver/auth/logout', [AuthDriverController::class, "api_logout"]);
+        Route::get('v1/driver/auth/me', [AuthDriverController::class, "api_me"]);
+    });
 });
 
 Route::post('v1/util/province', [UtilsApiController::class, 'store_province']);

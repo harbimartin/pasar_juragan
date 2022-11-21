@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\User\Dashboard;
+namespace App\Http\Controllers\User\Dashboard\Warehouse;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helper\Table;
 use App\Models\Company;
 use App\Models\Provider;
-use App\Models\Transport\TruckContract;
-use App\Models\Transport\TruckContractLog;
+use App\Models\Warehouse\WarehouseContract;
+use App\Models\Warehouse\WarehouseContractLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
-class KontrakBarangController extends Controller {
-    protected $baseRoute = 'dashboard.kontrak-barang';
+class KontrakWarehouseController extends Controller {
+    protected $baseRoute = 'dashboard.kontrak-gudang';
     public static function base_index($id) {
-        $contract = TruckContract::find($id);
+        $contract = WarehouseContract::find($id);
         if ($contract) {
             $detail = $contract->status != 'Draft';
             // if ($detail) {
@@ -27,15 +27,14 @@ class KontrakBarangController extends Controller {
             // } else {
             // }
             return [$contract, $select, $detail, $submenu];
-        } else {
-            return back();
         }
+        return null;
     }
 
     public static function getMySelect() {
         $company_id = Auth::guard('user')->user()->company->id;
         return [
-            'angkutan' => Provider::where(['m_company_id' => $company_id, 'provider_type_id' => Provider::TRANSPORT, 'status' => 'Approved'])->get(),
+            'gudang' => Provider::where(['m_company_id' => $company_id, 'provider_type_id' => Provider::WAREHOUSE, 'status' => 'Approved'])->get(),
             'barang' => Company::where(['status' => 1])->get()
             // 'barang' => Provider::where(['provider_type_id' => Provider::ITEM, 'status' => 'Approved'])->get()
         ];
@@ -48,11 +47,11 @@ class KontrakBarangController extends Controller {
      */
     public function index(Request $request) {
         $company_id = Auth::guard('user')->user()->company->id;
-        $data = TruckContract::whereHas('juragan_angkutan', function ($q) use ($company_id) {
+        $data = WarehouseContract::whereHas('juragan_gudang', function ($q) use ($company_id) {
             $q->where('m_company_id', $company_id);
         })->paginate(10);
 
-        return view('dashboard.contract.item.index', ['data' => $data, 'prop' => Table::tableProp($data)]);
+        return view('dashboard.contract.warehouse.index', ['data' => $data, 'prop' => Table::tableProp($data)]);
     }
 
     /**
@@ -61,7 +60,7 @@ class KontrakBarangController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('dashboard.contract.item.regist', ['select' => $this->getMySelect()]);
+        return view('dashboard.contract.warehouse.regist', ['select' => $this->getMySelect()]);
     }
 
     /**
@@ -71,34 +70,33 @@ class KontrakBarangController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        // return $request->toArray();
-        $credentials = $request->validate([
-            'juragan_angkutan_id' => ['required', 'exists:t_provider_tab,id'],
+         $credentials = $request->validate([
+            'juragan_gudang_id' => ['required', 'exists:t_provider_tab,id'],
             'juragan_barang_id' => ['required', 'exists:m_company_tab,id'],
-            // 'juragan_angkutan_id' => ['required', 'exists:t_contract_tab,id'],
+            // 'juragan_gudang_id' => ['required', 'exists:t_contract_tab,id'],
             'contract_no' => ['required'],
             'contract_desc' => ['required'],
             'contract_date' => ['required'],
             'contract_expired' => ['required']
         ]);
         $credentials['status'] = 'Draft';
-        $contract_angkutan = Provider::find($request->juragan_angkutan_id);
+        $contract_gudang = Provider::find($request->juragan_gudang_id);
         $contract_barang = Company::find($request->juragan_barang_id);
         if (
-            !$contract_barang || !$contract_angkutan
+            !$contract_barang || !$contract_gudang
             // || $contract_barang->contract_type_id != Provider::ITEM
-            || $contract_angkutan->provider_type_id != Provider::TRANSPORT
+            || $contract_gudang->provider_type_id != Provider::WAREHOUSE
         ) {
             return back()->withErrors([
                 'add' => "Provider pilihan anda tidak sesuai."
             ]);
         }
         DB::beginTransaction();
-        $contract = TruckContract::create($credentials);
+        $contract = WarehouseContract::create($credentials);
         if ($request->has('file')) {
             try {
                 foreach ($request->file as $ind => $file) {
-                    $filename = 'CO' . $contract->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+                    $filename = 'CW' . $contract->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
                     $file->move(storage_path('file_contract/'), $filename);
                     $contract->doc()->create([
                         'doc_name' => $filename,
@@ -124,7 +122,7 @@ class KontrakBarangController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        return redirect(route('dashboard.kontrak-barang.detail', $id));
+        return redirect(route('dashboard.kontrak-gudang.detail', $id));
     }
 
     /**
@@ -137,13 +135,13 @@ class KontrakBarangController extends Controller {
     public function update(Request $request, $id) {
         switch ($request->__type) {
             case 'propose':
-                $contract = TruckContract::find($id);
+                $contract = WarehouseContract::find($id);
                 if ($contract->status == 'Draft') {
                     $contract->update([
                         'status' => 'Proposed'
                     ]);
                     $contract->log()->create([
-                        'user_type' => TruckContractLog::JURAGAN_ANGKUTAN,
+                        'user_type' => WarehouseContractLog::JURAGAN_GUDANG,
                         'user_id' => Auth::guard('user')->user()->id,
                         'status' => 'Proposed',
                         'status_note' => ''
@@ -153,7 +151,7 @@ class KontrakBarangController extends Controller {
                 break;
             case 'update':
                 $credentials = $request->validate([
-                    'juragan_angkutan_id' => ['required', 'exists:t_provider_tab,id'],
+                    'juragan_gudang_id' => ['required', 'exists:t_provider_tab,id'],
                     'juragan_barang_id' => ['required', 'exists:m_company_tab,id'],
                     'contract_no' => ['required'],
                     'contract_desc' => ['required'],
@@ -161,7 +159,7 @@ class KontrakBarangController extends Controller {
                     'contract_expired' => ['required']
                 ]);
                 try {
-                    $contract = TruckContract::find($id);
+                    $contract = WarehouseContract::find($id);
                     if ($request->has('file')) {
                         foreach ($request->file as $ind => $file) {
                             $filename = 'CO' . $contract->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);

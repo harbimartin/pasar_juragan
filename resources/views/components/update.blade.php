@@ -233,7 +233,7 @@
                             @case('Radio')
                                 <div class="flex">
                                     @foreach ($param->option as $i => $opt)
-                                        <?php $selected = $datas[$key] == $param->value[$i]; ?>
+                                        <?php $selected = $datas[$key] == $opt; ?>
                                         <div class='px-4 whitespace-nowrap my-auto'>
                                             <input type="radio" id="{{ $key }}{{ $i }}" name="{{ $key }}"
                                                 value="{{ $i }}" @if ($selected) checked @endif

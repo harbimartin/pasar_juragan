@@ -50,6 +50,7 @@ use App\Http\Controllers\User\Dashboard\PesananAngkutanController;
 use App\Http\Controllers\User\Dashboard\PesananAngkutanDetailController;
 use App\Http\Controllers\User\Dashboard\PesananAngkutanMonitoringController;
 use App\Http\Controllers\User\Dashboard\PesananAngkutanMonitoringDetailController;
+use App\Http\Controllers\User\Dashboard\Warehouse\PesananWarehouseController;
 use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyAddressController;
 use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyContactController;
 use App\Http\Controllers\User\Dashboard\ProfileCompany\ProfileCompanyController;
@@ -59,7 +60,14 @@ use App\Http\Controllers\User\Dashboard\Transport\TransportPesananController;
 use App\Http\Controllers\User\Dashboard\Transport\TransportPesananDetailController;
 use App\Http\Controllers\User\Dashboard\Transport\TransportPesananVoucherController;
 use App\Http\Controllers\User\Dashboard\Transport\TransportPesananVoucherDetailController;
+use App\Http\Controllers\User\Dashboard\Warehouse\KontrakWarehouseApprovalController;
+use App\Http\Controllers\User\Dashboard\Warehouse\KontrakWarehouseController;
+use App\Http\Controllers\User\Dashboard\Warehouse\KontrakWarehouseDetailController;
+use App\Http\Controllers\User\Dashboard\Warehouse\PesananWarehouseApprovalController;
+use App\Http\Controllers\User\Dashboard\Warehouse\PesananWarehouseDetailController;
 use App\Http\Controllers\User\Dashboard\Warehouse\WarehouseController;
+use App\Http\Controllers\User\Dashboard\Warehouse\WarehousePesananController;
+use App\Http\Controllers\User\Dashboard\Warehouse\WarehousePesananDetailController;
 use App\Http\Controllers\User\RegisterController;
 use App\Http\Controllers\User\ViewController;
 use App\Http\Helper\Routing;
@@ -185,6 +193,31 @@ Route::group([
     });
     Route::resource('/pesanan/juragan-angkutan', TransportPesananController::class, Routing::setName('pesanan.juragan-angkutan'))->except('destroy');
 
+    Route::group([
+        'prefix' => 'kontrak-gudang/{provider}',
+        'as' => 'kontrak-gudang.',
+    ], function () {
+        Route::resource('/detail', KontrakWarehouseDetailController::class, Routing::setName('detail'))->except('create', 'destroy');
+    });
+    Route::resource('/kontrak-gudang', KontrakWarehouseController::class, Routing::setName('kontrak-gudang'))->except('destroy');
+
+    Route::group([
+        'prefix' => 'pesanan-gudang/{order}',
+        'as' => 'pesanan-gudang.',
+    ], function () {
+        // Route::resource('/voucher', WarehousePesananVoucherController::class, Routing::setName('voucher'))->except('destroy');
+        Route::resource('/detail', PesananWarehouseDetailController::class, Routing::setName('detail'))->except('destroy');
+    });
+    Route::resource('/pesanan-gudang', PesananWarehouseController::class, Routing::setName('pesanan-gudang'))->except('destroy');
+    Route::group([
+        'prefix' => 'pesanan/juragan-gudang/{order}',
+        'as' => 'pesanan.juragan-gudang.',
+    ], function () {
+        Route::resource('/detail', WarehousePesananDetailController::class, Routing::setName('detail'))->except('destroy');
+    });
+    Route::resource('/pesanan/juragan-gudang', WarehousePesananController::class, Routing::setName('pesanan.juragan-gudang'))->except('destroy');
+
+
     // Route::group([
     //     'prefix' => 'warehouse',
     //     'as' => 'warehouse.',
@@ -205,8 +238,10 @@ Route::group([
     });
     Route::resource('profile-company', ProfileCompanyController::class, Routing::setName('profile-company'))->only('index', 'update');
 
+    Route::resource('approval/warehouse-contract', KontrakWarehouseApprovalController::class, Routing::setName('approval.warehouse.contract'))->only('index', 'show', 'update');
     Route::resource('approval/item-contract', KontrakBarangApprovalController::class, Routing::setName('approval.item.contract'))->only('index', 'show', 'update');
     Route::resource('approval/transport-order', PesananAngkutanApprovalController::class, Routing::setName('approval.transport.order'))->only('index', 'show', 'update');
+    Route::resource('approval/warehouse-order', PesananWarehouseApprovalController::class, Routing::setName('approval.warehouse.order'))->only('index', 'show', 'update');
 
     Route::group([
         'prefix' => 'pesanan-angkutan/{order}',

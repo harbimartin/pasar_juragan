@@ -1,13 +1,13 @@
 @extends('dashboard._index')
 @section('content')
     <?php
-    $title = 'PERMINTAAN KONTRAK BARANG';
+    $title = 'PERMINTAAN KONTRAK GUDANG';
     $code = 'Kode';
     $isVerify = false;
     $hasVFile = [];
     $sort = false;
     ?>
-    <form action="{{ Routing::getUpdateWithID($data->id, 'dashboard.approval.item.contract') }}" method="POST"
+    <form action="{{ Routing::getUpdateWithID($data->id, 'dashboard.approval.warehouse.contract') }}" method="POST"
         class="md:px-3 text-sm md:text-base" enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -36,12 +36,12 @@
                 <div class="mt-2 text-gray-700">
                     @php
                         $attr = [
-                            'juragan_barang' => ['name' => 'Juragan Barang', 'type' => 'SString', 'child'=>'comp_name'],
-                            'juragan_angkutan' => ['name' => 'Juragan Angkutan', 'type' => 'SString', 'child'=>'provider_name'],
+                            'juragan_barang' => ['name' => 'Juragan Barang', 'type' => 'SString', 'child' => 'comp_name'],
+                            'juragan_gudang' => ['name' => 'Juragan Gudang', 'type' => 'SString', 'child' => 'provider_name'],
                             'contract_no' => ['name' => 'No. Kontrak', 'type' => 'String'],
                             'contract_desc' => ['name' => 'Judul Kontrak', 'type' => 'String'],
-                            'contract_date' => ['name' => 'Tgl Kontrak', 'type'=> 'Date'],
-                            'contract_expired' => ['name' => 'Tgl Kadaluarsa', 'type'=> 'Date']
+                            'contract_date' => ['name' => 'Tgl Kontrak', 'type' => 'Date'],
+                            'contract_expired' => ['name' => 'Tgl Kadaluarsa', 'type' => 'Date'],
                         ];
                     @endphp
                     <table>
@@ -84,23 +84,23 @@
             @php
                 $column_detail = [
                     'index' => ['name' => 'No.', 'type' => 'Index'],
-                    'origin' => ['name' => 'Asal', 'type' => 'SString', 'child' => 'origin_name'],
-                    'destination' => ['name' => 'Tujuan', 'type' => 'SString', 'child' => ['destination_name']],
-                    'truck_type' => ['name' => 'Tipe Truk', 'type' => 'SString', 'child' => ['truck_type']],
-                    'commodity' => ['name' => 'Barang', 'type' => 'SString', 'child' => ['commodity_name']],
-                    'price_per_ton' => ['name' => 'Harga Per Ton', 'type' => 'Number', 'full' => true],
-                    'price_per_rit' => ['name' => 'Harga Per Rit', 'type' => 'Number', 'full' => true],
-                    'minimum_ton' => ['name' => 'Minimum Tonase', 'type' => 'Number', 'full' => true],
+                    'wh' => [
+                        'name' => 'Gudang',
+                        'type' => 'Multi',
+                        'children' => [
+                            'wh_name' => ['by' => 'warehouse', 'name' => 'Gudang', 'type' => 'SString'],
+                            'warehouse' => ['child' => 'address_detail', 'name' => 'Alamat', 'type' => 'STextArea'],
+                        ],
+                    ],
+                    'price_per_meter_daily' => ['name' => 'Harga Per Meter<br>Perhari', 'type' => 'Number', 'full' => true],
+                    'price_per_meter_monthly' => ['name' => 'Harga Per Meter<br>Sebulan Tonase', 'type' => 'Number', 'full' => true],
                 ];
                 $column_lampiran = [
                     'index' => ['name' => 'No.', 'type' => 'Index'],
                     'user_types' => ['name' => 'User', 'type' => 'String'],
-                    'doc' => ['name' => 'Lampiran', 'type' => 'Upload', 'folder' => 'file_contract', 'id'=>'id', 'name'=>'doc_name'],
+                    'doc' => ['name' => 'Lampiran', 'type' => 'Upload', 'folder' => 'file_contract', 'id' => 'id', 'name' => 'doc_name'],
                 ];
-                $tables = [
-                    ['title' => 'Barang', 'data' => $data->detail, 'column' => $column_detail],
-                    ['title' => 'Lampiran', 'data' => $data->log_proposed, 'column' => $column_lampiran],
-                ];
+                $tables = [['title' => 'Barang', 'data' => $data->detail, 'column' => $column_detail], ['title' => 'Lampiran', 'data' => $data->log_proposed, 'column' => $column_lampiran]];
             @endphp
             @if (sizeof($tables) > 0)
                 @foreach ($tables as $table)
