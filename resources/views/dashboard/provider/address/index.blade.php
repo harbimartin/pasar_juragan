@@ -22,7 +22,7 @@
         'provider_address_detail' => ['name' => 'Alamat', 'type' => 'TextArea'],
         'city' => ['name' => 'Kota', 'type' => 'SString', 'child' => ['city_name']],
         'province' => ['name' => 'Provinsi', 'type' => 'SString', 'child' => ['province_code', 'province_name']],
-        'country' => ['name' => 'Negara', 'type' => 'SString', 'child' => ['city_name']],
+        'provider_country' => ['name' => 'Negara', 'type' => 'String'],
         'status' => $detail ? null : ['name' => 'Status', 'type' => 'State'],
         'toggle' => $detail ? null : ['by' => 'status', 'name' => 'Aktifkan', 'type' => 'Toggle', 'sort' => false, 'align' => 'center', 'value' => 'toggle-comp_contact'],
         'act' => $detail ? null : ['name' => 'Action', 'type' => 'Edit', 'align' => 'center', 'sort' => false],
