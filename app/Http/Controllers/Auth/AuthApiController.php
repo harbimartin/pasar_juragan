@@ -3,17 +3,31 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helper\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthApiController extends Controller {
+
+    protected $helper;
+
+    public function __construct(ApiResponse $helper){
+        $this->helper = $helper;
+    }
+
+
     public function api_login(Request $request) {
-        $credentials = $request->validate([
+        // if($credentials = $this->helper->validasi($request->all(),[
+            // 'username_mail' => ['required', 'email'],
+            // 'password' => ['required'],
+        // ]))
+        //     return $credentials;
+        $credential = $this->helper->credentialize($request,[
             'username_mail' => ['required', 'email'],
             'password' => ['required'],
         ]);
-        if ($token = Auth::guard('api')->attempt($credentials)) {
+        if ($token = Auth::guard('api')->attempt($credential)) {
             $user = Auth::guard('api')->user();
 
             if ($user->status == 0)
