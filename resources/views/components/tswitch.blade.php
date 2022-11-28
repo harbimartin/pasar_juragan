@@ -48,7 +48,7 @@
                 $txt = '';
                 if (is_array($child)) {
                     foreach ($child as $kk => $val) {
-                        $str = $item[$pkey][$val];
+                        $str = isset($item[$pkey]) ? $item[$pkey][$val] : '';
                         if ($kk == 0) {
                             $txt = $txt . ($str == '' ? '(Blank)' : $str);
                         } else {
