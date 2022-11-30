@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helper\ApiResponse;
 use App\Models\UserDriver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,12 +11,26 @@ use Illuminate\Support\Facades\Config;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthDriverController extends Controller {
+
+    protected $helper;
+
+    public function __construct(ApiResponse $helper){
+        $this->helper = $helper;
+    }
+
+
     public function api_login(Request $request) {
-        $credentials = $request->validate([
+        // if($credentials = $this->helper->validasi($request->all(),[
+        //     'email' => ['required', 'email'],
+        //     'password' => ['required'],
+        // ]))
+        //     return $credentials;
+
+        $credential = $this->helper->credentialize($request,[
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
-        if ($token = Auth::guard('driver')->attempt($credentials)) {
+        if ($token = Auth::guard('driver')->attempt($credential)) {
             $user = Auth::guard('driver')->user();
 
             if ($user->status == 0)
