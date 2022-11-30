@@ -7,7 +7,7 @@
         $column = json_encode($column);
     @endphp
 
-    <x-add unique="bussinescategory" :column="$column" title="Tambah Kategori Bisnis" :select="$select" idk="id">
+    <x-add unique="bussines-category" :column="$column" title="Tambah Kategori Bisnis" :select="$select" idk="id">
     </x-add>
 
     <?php
