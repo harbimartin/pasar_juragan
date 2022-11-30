@@ -18,9 +18,8 @@ if ($uri !== '' && file_exists(__DIR__.'/public'.$uri)) {
     return false;
 }else
 if ($uri == '/pasar_juragan/'){
-    header("Location: ". $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'].'home');
+    header("Location: http://". $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'].'home');
     die();
-    return;
 }
 
 require_once __DIR__.'/public/index.php';
