@@ -40,7 +40,7 @@ class FileApiController extends Controller {
     public function getImage($folder, $filename){
         switch($folder){
             case 'foto_epod':
-                return Response::download(storage_path($folder.'\\'.$filename));
+                return Response::download(storage_path($folder.'/'.$filename));
                 break;
         }
         return abort(400, "File not found!");
