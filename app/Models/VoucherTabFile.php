@@ -18,6 +18,6 @@ class VoucherTabFile extends Model
 
     public function getUrlAttribute(){
         // return "http://". $_SERVER['SERVER_NAME']."/pasar_juragan/" ."storage/foto/". $this->file_url;
-        return url('/storage/foto_epod'. $this->file_url);
+        return route('get-image', ['foto_epod', $this->file_url]);
     }
 }

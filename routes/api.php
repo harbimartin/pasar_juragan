@@ -52,4 +52,4 @@ Route::get('status/store', [ApiOrderController::class, "indexStatus"]);
 // Route::post('v1/util/city', [UtilsApiController::class, 'store_city']);
 
 Route::post('v1/download', [FileApiController::class, 'download']);
-Route::get('v1/get:image/{folder}/{filename}', [FileApiController::class, 'getImage']);
+Route::get('v1/get:image/{folder}/{filename}', [FileApiController::class, 'getImage'])->name('get-image');
