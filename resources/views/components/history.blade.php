@@ -10,7 +10,7 @@
                     <div class="border-b text-base md:text-xl md:pb-2 border-gray-200 md:mb-3">
                         {{ $timel['title'] }}
                     </div>
-                    @if ($data->{'log_' . $timek})
+                    @if (sizeof($data->{'log_' . $timek}) > 0)
                         <div class="grid grid-cols-12 text-gray-50">
                             @foreach ($data->{'log_' . $timek} as $appr)
                                 <div class="contents">

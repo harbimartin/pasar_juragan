@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class PesananAngkutanController extends Controller {
-    protected $baseRoute = 'dashboard.pesanan-angkutan';
     public static function base_index($id) {
         $order = OrderTransport::find($id);
         if ($order) {
@@ -77,7 +76,7 @@ class PesananAngkutanController extends Controller {
         $company_id = Auth::guard('user')->user()->company->id;
         $contract = TruckContract::find($request->t_truck_contract_id);
         if (
-            !$contract || $contract->juragan_barang_id == $company_id
+            !$contract || $contract->juragan_barang_id != $company_id
         ) {
             return back()->withErrors([
                 'add' => "Provider pilihan anda tidak sesuai."
@@ -120,17 +119,20 @@ class PesananAngkutanController extends Controller {
             case 'propose':
                 $order = OrderTransport::find($id);
                 if ($order->status == 'Draft') {
-                    $order->update([
-                        'status' => 'Proposed'
-                    ]);
-                    $order->log()->create([
-                        'user_type' => OrderTransportLog::JURAGAN_BARANG,
-                        'user_id' => Auth::guard('user')->user()->id,
-                        'status' => 'Proposed',
-                        'status_note' => ''
-                    ]);
+                    if ($order->detail->count() > 0) {
+                        $order->update([
+                            'status' => 'Proposed'
+                        ]);
+                        $order->log()->create([
+                            'user_type' => OrderTransportLog::JURAGAN_BARANG,
+                            'user_id' => Auth::guard('user')->user()->id,
+                            'status' => 'Proposed',
+                            'status_note' => ''
+                        ]);
+                    } else
+                        return back()->withErrors(['header' => "Mohon maaf, Pesanan harus memiliki minimal 1 (satu) Detail Pesanan."]);
                 } else
-                    return back()->withErrors(['proposed' => "Mohon maaf, status Kontrak ini bukan berbentuk Draft"]);
+                    return back()->withErrors(['header' => "Mohon maaf, status Kontrak ini bukan berbentuk Draft"]);
                 break;
             case 'update':
                 $credentials = $request->validate([
@@ -157,7 +159,7 @@ class PesananAngkutanController extends Controller {
                     $order->update($credentials);
                 } catch (Throwable $th) {
                     return back()->withErrors([
-                        'update' => $th->getMessage()
+                        'header' => $th->getMessage()
                     ]);
                 }
                 break;

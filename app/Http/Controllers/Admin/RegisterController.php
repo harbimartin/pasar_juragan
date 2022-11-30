@@ -54,7 +54,7 @@ class RegisterController extends Controller {
 
         if ($request->password != $request->repassword)
             return back()->withErrors([
-                'password' => 'Password dan konfirmasi password tidak sama!'
+                'register' => 'Password dan konfirmasi password tidak sama!'
             ]);
 
         $request['password'] = Hash::make($request->password);
@@ -94,7 +94,7 @@ class RegisterController extends Controller {
         } catch (Throwable $th) {
             DB::rollBack();
             return back()->withErrors([
-                'error' => $th->getMessage()
+                'register' => $th->getMessage()
             ]);
         }
         return redirect(route('register'));

@@ -36,7 +36,9 @@
                 <x-popup-submit name="Propose" key="propose" color="blue" route="dashboard.kontrak-barang"></x-popup-submit>
             </x-slot>
         </x-popup-header>
-        <x-history :timelines="$timelines" :data="$data" module="Pesanan"></x-history>
+        @if ($data->status != 'Draft')
+            <x-history :timelines="$timelines" :data="$data" module="Pesanan"></x-history>
+        @endif
     </x-update>
     @php
         $routeName = Routing::getCurrentRouteName();
