@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ViewController extends Controller {
+    public function base(){
+        return redirect(route('home'));
+    }
     //
     public function get_file(Request $request, $module, $name, $id) {
         // return json_encode([$request->toArray(), $module]);
