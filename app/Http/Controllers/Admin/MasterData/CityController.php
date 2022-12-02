@@ -26,7 +26,7 @@ class CityController extends Controller {
             'province' => ['name' => 'Provinsi', 'key' => 'province', 'option' => GeoProvince::get()],
         ];
         $data = GeoCity::filter($request)->paginate(10);
-        return view($this->baseRoute . '.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'select' => $this->getMySelect(), 'sel_filter' => $sel_filter]);
+        return view('admin.master.city.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'select' => $this->getMySelect(), 'sel_filter' => $sel_filter]);
     }
 
     /**
@@ -54,7 +54,7 @@ class CityController extends Controller {
     public function edit($id) {
         $data = GeoCity::find($id);
         if ($data)
-            return view($this->baseRoute . '.edit', ['data' => $data, 'select' => $this->getMySelect()]);
+            return view('admin.master.city.edit', ['data' => $data, 'select' => $this->getMySelect()]);
         return back();
     }
 
@@ -80,7 +80,7 @@ class CityController extends Controller {
                     $city->update($store);
                 } catch (Throwable $th) {
                     return back()->withErrors([
-                        'update' => $th->getMessage()
+                        'city' => $th->getMessage()
                     ]);
                 }
                 break;

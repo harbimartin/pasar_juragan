@@ -74,7 +74,7 @@ class ProfileUserController extends Controller {
                     Admin::find($user->id)->update($request->toArray());
                 } catch (Throwable $th) {
                     return back()->withErrors([
-                        'update' => $th->getMessage()
+                        'profile-user' => $th->getMessage()
                     ]);
                 }
                 break;

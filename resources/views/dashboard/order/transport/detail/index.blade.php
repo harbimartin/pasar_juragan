@@ -16,6 +16,8 @@
                 'm_unloading_address_id' => ['name' => 'Alamat Diterima', 'type' => 'TextSel', 'val' => ['name'], 'desc' => ['address'], 'share' => ['address' => 0], 'api' => 'unloading', 'full' => true],
                 'unloading_address' => ['key' => 'm_unloading_address_id', 'val' => 'address', 'name' => 'Rincian Alamat Penerima', 'type' => 'RefArea', 'desc' => ['address'], 'full' => true],
                 'tonage' => ['name' => 'Tonase', 'type' => 'Number', 'step' => '0.01', 'full' => true],
+                'estimate_truck_required' => ['name' => 'Estimasi Truk Dibutuhkan', 'type' => 'Number', 'step' => '1', 'full' => true],
+                'order_note' => ['name' => 'Catatan Pesanan', 'type' => 'TextArea', 'rows' => '3', 'full' => true],
             ];
             $column_detail = json_encode($column_detail);
         @endphp

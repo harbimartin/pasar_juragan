@@ -21,7 +21,7 @@ class ContactTypeController extends Controller {
     public function index(Request $request) {
         $sel_filter = [];
         $data = ContactType::filter($request)->paginate(10);
-        return view($this->baseRoute . '.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'select' => $this->getMySelect(), 'sel_filter' => $sel_filter]);
+        return view('admin.master.contact-type.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'select' => $this->getMySelect(), 'sel_filter' => $sel_filter]);
     }
 
     /**
@@ -48,7 +48,7 @@ class ContactTypeController extends Controller {
     public function edit($id) {
         $data = ContactType::find($id);
         if ($data)
-            return view($this->baseRoute . '.edit', ['data' => $data, 'select' => $this->getMySelect()]);
+            return view('admin.master.contact-type.edit', ['data' => $data, 'select' => $this->getMySelect()]);
         return back();
     }
 
@@ -73,7 +73,7 @@ class ContactTypeController extends Controller {
                     $contact_type->update($store);
                 } catch (Throwable $th) {
                     return back()->withErrors([
-                        'update' => $th->getMessage()
+                        'contact_type' => $th->getMessage()
                     ]);
                 }
                 break;

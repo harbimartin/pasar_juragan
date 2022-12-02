@@ -10,15 +10,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use NunoMaduro\Collision\Adapters\Phpunit\State;
 
-class UtilsApiController extends Controller
-{
+class UtilsApiController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         //
     }
 
@@ -27,8 +25,7 @@ class UtilsApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
@@ -38,36 +35,34 @@ class UtilsApiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store_city(Request $request)
-    {
+    public function store_city(Request $request) {
         // $get_list_state = States::all();
         $array_city = array();
         // foreach ($get_list_state as $value) {
-            $call_city_api = Http::post($request->url_postman, [
-                'country' => 'Indonesia',
-                'state' => 'Aceh'
-                // 'state' => $value['province_name']
-            ]);
-// Maluku Island,
-            foreach ($call_city_api['data'] as $item) {
-                $data = [
-                    'm_province_id' => 1,
-                    'city_name' => $item,
-                    'status' => 1,
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ];
-                array_push($array_city, $data);
-            }
+        $call_city_api = Http::post($request->url_postman, [
+            'country' => 'Indonesia',
+            'state' => 'Aceh'
+            // 'state' => $value['province_name']
+        ]);
+        // Maluku Island,
+        foreach ($call_city_api['data'] as $item) {
+            $data = [
+                'm_province_id' => 1,
+                'city_name' => $item,
+                'status' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ];
+            array_push($array_city, $data);
+        }
         // }
 
         // $state = City::insert($array_city);
-        
+
         return response()->json($array_city);
     }
 
-    public function store_province(Request $request)
-    {
+    public function store_province(Request $request) {
         // // All Country
         // // $call_province = Http::get($request->url_postman);
         // // $province = array();
@@ -101,11 +96,11 @@ class UtilsApiController extends Controller
             ];
             array_push($province, $items);
         }
-        
+
         // $state = States::insert($province);
-        
-        
-        return response()->json($state);
+
+
+        // return response()->json($state);
     }
 
     /**
@@ -114,8 +109,7 @@ class UtilsApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -125,8 +119,7 @@ class UtilsApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         //
     }
 
@@ -137,8 +130,7 @@ class UtilsApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         //
     }
 
@@ -148,8 +140,7 @@ class UtilsApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
 }

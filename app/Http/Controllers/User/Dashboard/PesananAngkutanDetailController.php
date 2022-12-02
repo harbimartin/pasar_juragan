@@ -11,7 +11,6 @@ use App\Models\Transport\TruckContractDetailRpt;
 use Illuminate\Http\Request;
 
 class PesananAngkutanDetailController extends Controller {
-    protected $baseRoute = 'dashboard.order.transport.detail';
     public function getMySelect($contract_id) {
         return [
             'tariff' => TruckContractDetailRpt::where('t_truck_contract_id', $contract_id)->get(),
@@ -27,7 +26,7 @@ class PesananAngkutanDetailController extends Controller {
     public function index(Request $request, $order) {
         [$data, $select, $detail, $submenu] = PesananAngkutanController::base_index($order);
         if ($data)
-            return view($this->baseRoute . '.index', [
+            return view('dashboard.order.transport.detail.index', [
                 'data' => $data,
                 'select' => array_merge($select, $this->getMySelect($data->t_truck_contract_id)),
                 'detail' => $detail,

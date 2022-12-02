@@ -76,6 +76,8 @@ class PesananWarehouseDetailController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
+        $data = OrderWarehouseDetail::find($id);
+        return view('dashboard.order.warehouse.detail.edit', ['data' => $data, 'select' => [], 'detail' => true]);
     }
 
     /**

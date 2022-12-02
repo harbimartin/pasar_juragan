@@ -79,7 +79,7 @@ class PesananWarehouseController extends Controller {
         $company_id = Auth::guard('user')->user()->company->id;
         $contract = WarehouseContract::find($request->t_wh_contract_id);
         if (
-            !$contract || $contract->juragan_gudang_id == $company_id
+            !$contract || $contract->juragan_barang_id != $company_id
         ) {
             return back()->withErrors([
                 'add' => "Provider pilihan anda tidak sesuai."

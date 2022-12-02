@@ -36,4 +36,13 @@ class FileApiController extends Controller {
                 return $this->resFailed(400, "Name mismatch!");
         }
     }
+
+    public function getImage($folder, $filename){
+        switch($folder){
+            case 'foto_epod':
+                return Response::file(storage_path($folder.'/'.$filename));
+                break;
+        }
+        return abort(400, "File not found!");
+    }
 }

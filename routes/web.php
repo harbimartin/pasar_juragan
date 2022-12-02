@@ -86,9 +86,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return redirect(route('home'));
-});
+Route::get('/', [ViewController::class, 'base'])->name('base');
 Route::resource('login', AuthUserController::class, Routing::setName('login'));
 Route::get('logout', [AuthUserController::class, 'logout'])->name('logout');
 Route::resource('register', RegisterController::class, Routing::setName('register'));

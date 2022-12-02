@@ -17,6 +17,7 @@ class VoucherTabFile extends Model
     protected $hidden = ["file_name"];
 
     public function getUrlAttribute(){
-        return "http://". $_SERVER['SERVER_NAME']."/pasar_juragan/" ."storage/foto/". $this->file_url;
+        // return "http://". $_SERVER['SERVER_NAME']."/pasar_juragan/" ."storage/foto/". $this->file_url;
+        return route('get-image', ['foto_epod', $this->file_url]);
     }
 }

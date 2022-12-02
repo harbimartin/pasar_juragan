@@ -19,11 +19,11 @@ use Illuminate\Support\Facades\Auth;
 class TransportPesananDetailController extends Controller {
     protected $baseRoute = 'dashboard.order.transport.detail';
     public function getMySelect($contract_id) {
-        return [
-            'truck' => Truck::where('status', 1)->get(),
-            'driver' => Driver::where('status', 1)->get(),
-            // 'unloading' => UnloadingAddress::where('status', 1)->get()
-        ];
+        return [];
+        // [
+        //     'truck' => Truck::where('status', 1)->get(),
+        //     'driver' => Driver::where('status', 1)->get(),
+        // ];
     }
     /**
      * Display a listing of the resource.

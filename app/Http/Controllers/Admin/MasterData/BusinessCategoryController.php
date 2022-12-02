@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Throwable;
 
 class BusinessCategoryController extends Controller {
-    protected $baseRoute = 'admin.master.business-category';
     private function getMySelect() {
         return [];
     }
@@ -21,7 +20,7 @@ class BusinessCategoryController extends Controller {
     public function index(Request $request) {
         $sel_filter = [];
         $data = BusinessCategory::filter($request)->paginate(10);
-        return view($this->baseRoute . '.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'select' => $this->getMySelect(), 'sel_filter' => $sel_filter]);
+        return view('admin.master.business-category.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'select' => $this->getMySelect(), 'sel_filter' => $sel_filter]);
     }
 
     /**
@@ -48,7 +47,7 @@ class BusinessCategoryController extends Controller {
     public function edit($id) {
         $data = BusinessCategory::find($id);
         if ($data)
-            return view($this->baseRoute . '.edit', ['data' => $data, 'select' => $this->getMySelect()]);
+            return view('admin.master.business-category.edit', ['data' => $data, 'select' => $this->getMySelect()]);
         return back();
     }
 
@@ -73,7 +72,7 @@ class BusinessCategoryController extends Controller {
                     $busscat->update($store);
                 } catch (Throwable $th) {
                     return back()->withErrors([
-                        'update' => $th->getMessage()
+                        'bussines-category' => $th->getMessage()
                     ]);
                 }
                 break;
