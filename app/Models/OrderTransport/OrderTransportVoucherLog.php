@@ -12,6 +12,7 @@ class OrderTransportVoucherLog extends Model {
         't_truck_order_voucher_id',
         'status',
         'status_note',
-        'user_id'
+        'user_id',
+        'driver_id'
     ];
 }

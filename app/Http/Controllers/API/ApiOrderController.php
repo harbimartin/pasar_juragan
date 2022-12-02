@@ -7,18 +7,18 @@ use App\Http\Helper\ApiResponse;
 use App\Models\OrderDetailForMobile;
 use App\Models\OrderForMobile;
 use App\Models\OrderTransport\OrderTransportVoucher;
+use App\Models\OrderTransport\OrderTransportVoucherLog;
 use App\Models\OrderTransport\OrderTransportVoucherStatus;
 use App\Models\VoucherTabFile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class ApiOrderController extends Controller
-{
+class ApiOrderController extends Controller {
 
     protected $helper;
 
-    public function __construct(ApiResponse $helper)
-    {
+    public function __construct(ApiResponse $helper) {
         $this->helper = $helper;
     }
     /**
@@ -26,24 +26,27 @@ class ApiOrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         //
     }
 
-    public function indexStatus()
-    {
+    public function indexStatus() {
         $statused = OrderTransportVoucherStatus::all();
         return $this->helper->respon_success($statused);
     }
 
-    public function updateStatus(Request $request)
-    {
+    public function updateStatus(Request $request) {
         $statused = OrderTransportVoucher::where('id', $request->id)->first();
         $statused->update([
             "status_id" => $request->status_id,
         ]);
-        $now_status = OrderTransportVoucherStatus::where('id',$statused->status_id)->first();
+        OrderTransportVoucherLog::create([
+            't_truck_order_voucher_id' => $statused->id,
+            'status' => $request->status_id,
+            // 'status_note' => $request-,
+            'driver_id' => Auth::guard('driver')->user()->id
+        ]);
+        $now_status = OrderTransportVoucherStatus::where('id', $statused->status_id)->first();
         return $this->helper->respon_success($now_status);
     }
 
@@ -52,8 +55,7 @@ class ApiOrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
@@ -63,9 +65,8 @@ class ApiOrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        if($validasi = $this->helper->validasi($request->all(),[
+    public function store(Request $request) {
+        if ($validasi = $this->helper->validasi($request->all(), [
             "id" => 'required',
             'isactive' => "required",
         ]))
@@ -81,9 +82,8 @@ class ApiOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
-    {
-        if($validasi = $this->helper->validasi($request->all(),[
+    public function show(Request $request) {
+        if ($validasi = $this->helper->validasi($request->all(), [
             "id" => 'required',
         ]))
             return $validasi;
@@ -100,8 +100,7 @@ class ApiOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         //
     }
 
@@ -112,19 +111,18 @@ class ApiOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function upload(Request $request)
-    {
-        if($validasi = $this->helper->validasi($request->all(),[
+    public function upload(Request $request) {
+        if ($validasi = $this->helper->validasi($request->all(), [
             "file" => 'required',
         ]))
             return $validasi;
 
         $orders = [];
 
-        foreach($request->file as $key => $file){
-            if ($request->hasFile('file.'.$key)) {
-                $file = $request->file('file.'.$key);
-                $filename = 'epod_'.$key.'_'.$request->id.'.'. $file['file_name']->getClientOriginalExtension();
+        foreach ($request->file as $key => $file) {
+            if ($request->hasFile('file.' . $key)) {
+                $file = $request->file('file.' . $key);
+                $filename = 'epod_' . $key . '_' . $request->id . '.' . $file['file_name']->getClientOriginalExtension();
                 $file['file_name']->move(storage_path('foto_epod/'), $filename);
                 $data = [
                     "status" => 1,
@@ -134,15 +132,12 @@ class ApiOrderController extends Controller
                     "created_at" => now(),
                     "updated_at" => now(),
                 ];
-                array_push($orders,$data);
-
-            } else return $this->resFailed("3",$key." file not emitted!");
+                array_push($orders, $data);
+            } else return $this->resFailed("3", $key . " file not emitted!");
         }
 
         $upload = VoucherTabFile::insert($orders);
         return $this->helper->respon_success($upload);
-
-
     }
 
     /**
@@ -151,8 +146,7 @@ class ApiOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
 }
