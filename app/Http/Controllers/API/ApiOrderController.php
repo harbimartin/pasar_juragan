@@ -33,7 +33,7 @@ class ApiOrderController extends Controller
 
     public function indexStatus()
     {
-        $statused = OrderTransportVoucherStatus::all();
+        $statused = OrderTransportVoucherStatus::where('isactive',1)->get();
         return $this->helper->respon_success($statused);
     }
 
@@ -124,7 +124,7 @@ class ApiOrderController extends Controller
         foreach($request->file as $key => $file){
             if ($request->hasFile('file.'.$key)) {
                 $file = $request->file('file.'.$key);
-                $filename = 'epod_'.$key.'_'.$request->id.'.'. $file['file_name']->getClientOriginalExtension();
+                $filename = 'epod_'.$key.'_'.$request->id.'_'.date('Hmmss', strtotime(now())).'.'. $file['file_name']->getClientOriginalExtension();
                 if(!is_dir(storage_path('foto'))) mkdir(storage_path('foto'),0755,true);
                 if (is_file(storage_path('foto' . $filename))) $this->unlink_file($filename);
                 $file['file_name']->move(storage_path('foto'), $filename);
