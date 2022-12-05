@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class PesananHeavyEquipmentController extends Controller {
-    protected $baseRoute = 'dashboard.pesanan-gudang';
     public static function base_index($id) {
         $order = OrderHeavyEquipment::find($id);
         if ($order) {
@@ -47,7 +46,7 @@ class PesananHeavyEquipmentController extends Controller {
         $data = OrderHeavyEquipment::whereHas('contract', function ($q) use ($company_id) {
             $q->where('juragan_barang_id', $company_id);
         })->paginate(10);
-        return view('dashboard.order.warehouse.index', ['data' => $data, 'prop' => Table::tableProp($data)]);
+        return view('dashboard.order.heavy.index', ['data' => $data, 'prop' => Table::tableProp($data)]);
     }
 
     /**
@@ -56,7 +55,7 @@ class PesananHeavyEquipmentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('dashboard.order.warehouse.regist', ['select' => $this->getMySelect()]);
+        return view('dashboard.order.heavy.regist', ['select' => $this->getMySelect()]);
     }
 
     /**
@@ -69,7 +68,7 @@ class PesananHeavyEquipmentController extends Controller {
         // return $request->toArray();
         $credentials = $request->validate([
             'who_date' => ['required'],
-            't_heavy_contract_id' => ['required'],
+            't_he_contract_id' => ['required'],
             'who_desc' => ['nullable']
         ]);
         DB::beginTransaction();
@@ -77,7 +76,7 @@ class PesananHeavyEquipmentController extends Controller {
         $credentials['who_date'] = now();
         $credentials['status'] = 'Draft';
         $company_id = Auth::guard('user')->user()->company->id;
-        $contract = HeavyEquipmentContract::find($request->t_heavy_contract_id);
+        $contract = HeavyEquipmentContract::find($request->t_he_contract_id);
         if (
             !$contract || $contract->juragan_barang_id != $company_id
         ) {
@@ -87,7 +86,7 @@ class PesananHeavyEquipmentController extends Controller {
         }
         $order = OrderHeavyEquipment::create($credentials);
         DB::commit();
-        return redirect(route($this->baseRoute . '.show', $order->id));
+        return redirect(route('dashboard.pesanan-gudang.show', $order->id));
     }
 
     /**
@@ -136,7 +135,7 @@ class PesananHeavyEquipmentController extends Controller {
                 break;
             case 'update':
                 $credentials = $request->validate([
-                    'juragan_angkutan_id' => ['required', 'exists:t_provider_tab,id'],
+                    'juragan_a2b_id' => ['required', 'exists:t_provider_tab,id'],
                     'juragan_gudang_id' => ['required', 'exists:m_company_tab,id'],
                     'order_no' => ['required'],
                     'order_desc' => ['required'],

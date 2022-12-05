@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HeavyEquipmentPesananController extends Controller {
-    protected $baseRoute = 'dashboard.order.warehouse';
+    protected $baseRoute = 'dashboard.order.heavy';
     public static function base_index($id) {
         $order = OrderHeavyEquipment::find($id);
         if ($order) {
@@ -45,7 +45,7 @@ class HeavyEquipmentPesananController extends Controller {
                 $qq->where('m_company_id', $company_id);
             });
         })->where('status', '!=', 'Draft')->paginate(10);
-        return view('dashboard.order.warehouse.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'module' => 'Gudang']);
+        return view('dashboard.order.heavy.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'module' => 'Gudang']);
     }
 
     /**

@@ -14,10 +14,10 @@ use App\Models\Heavy\HeavyEquipmentContractDetail;
 use Illuminate\Http\Request;
 
 class KontrakHeavyEquipmentDetailController extends Controller {
-    protected $baseRoute = 'dashboard.contract.warehouse.detail';
+    protected $baseRoute = 'dashboard.contract.heavy.detail';
     public function getMySelect($data) {
         return [
-            'warehouse' => HeavyEquipment::where(['m_provider_id' => $data, 'status' => 1])->get(),
+            'heavy' => HeavyEquipment::where(['m_provider_id' => $data, 'status' => 1])->get(),
         ];
     }
     /**
@@ -28,7 +28,7 @@ class KontrakHeavyEquipmentDetailController extends Controller {
     public function index(Request $request, $id) {
         [$data, $select, $detail, $submenu] = KontrakHeavyEquipmentController::base_index($id);
         if ($data)
-            return view('dashboard.contract.warehouse.detail.index', [
+            return view('dashboard.contract.heavy.detail.index', [
                 'data' => $data,
                 'select' => array_merge($select, $this->getMySelect($data->juragan_gudang_id)),
                 'detail' => $detail,
@@ -55,7 +55,7 @@ class KontrakHeavyEquipmentDetailController extends Controller {
      */
     public function store(Request $request, $contract_id) {
         $credentials = $request->validate([
-            'm_warehouse_id' => ['required', 'exists:m_warehouse_tab,id'],
+            'm_heavy_equipment_id' => ['required', 'exists:m_heavy_equipment_tab,id'],
             'price_per_meter_daily' => ['required'],
             'price_per_meter_monthly' => ['required'],
         ]);
@@ -103,7 +103,7 @@ class KontrakHeavyEquipmentDetailController extends Controller {
                 break;
             case 'update':
                 $credentials = $request->validate([
-                    'm_warehouse_id' => ['required', 'exists:m_warehouse_tab,id'],
+                    'm_heavy_equipment_id' => ['required', 'exists:m_heavy_equipment_tab,id'],
                     'price_per_meter_daily' => ['required'],
                     'price_per_meter_monthly' => ['required'],
                 ]);

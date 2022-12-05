@@ -9,14 +9,14 @@ class HeavyEquipmentContractLog extends Model {
     use HasFactory;
     const JURAGAN_GUDANG = 0;
     const JURAGAN_BARANG = 1;
-    protected $table = "t_heavy_contract_status_tab";
+    protected $table = "t_wh_contract_status_tab";
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        't_heavy_contract_id',
+        't_wh_contract_id',
         'user_type',
         'user_id',
         'status',
@@ -24,13 +24,13 @@ class HeavyEquipmentContractLog extends Model {
     ];
 
     public function parent() {
-        return $this->hasOne(HeavyEquipmentContract::class, 'id', 't_heavy_contract_id');
+        return $this->hasOne(HeavyEquipmentContract::class, 'id', 't_wh_contract_id');
     }
     public function getUserTypesAttribute() {
         return ['Juragan Angkutan', 'Juragan Barang'][$this->user_type];
     }
     public function doc() {
-        return $this->hasMany(HeavyEquipmentContractDoc::class, 't_heavy_contract_id', 't_heavy_contract_id');
+        return $this->hasMany(HeavyEquipmentContractDoc::class, 't_wh_contract_id', 't_wh_contract_id');
     }
     public function user() {
         return $this->hasOne(User::class, 'id', 'user_id');
