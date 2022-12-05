@@ -28,7 +28,7 @@ class ApiResponse {
             'code' => 0,
             'message' => $message ?? 'success',
             'data' => $data
-        ]);
+        ], 200);
     }
 
     public function respon_failure($message=null){
@@ -36,7 +36,7 @@ class ApiResponse {
             'code' => 1,
             'message' => $message ?? 'Request anda gagal !',
             'data' => null
-        ]);
+        ], 500);
     }
 }
 
