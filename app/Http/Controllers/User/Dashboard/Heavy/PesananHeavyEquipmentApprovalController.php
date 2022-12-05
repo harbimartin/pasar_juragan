@@ -24,7 +24,7 @@ class PesananHeavyEquipmentApprovalController extends Controller {
                 $qq->where('m_company_id', $company_id);
             });
         })->where('status', 'Proposed')->paginate(10);
-        return view('dashboard.order.warehouse.approval.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'module' => 'Gudang']);
+        return view('dashboard.order.heavy.approval.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'module' => 'Gudang']);
     }
 
     /**
@@ -55,7 +55,7 @@ class PesananHeavyEquipmentApprovalController extends Controller {
     public function show($id) {
         $order = OrderHeavyEquipment::find($id);
         if ($order && $order->status == "Proposed")
-            return view('dashboard.order.warehouse.approval.show', ['data' => $order]);
+            return view('dashboard.order.heavy.approval.show', ['data' => $order]);
         return back();
     }
 
@@ -85,7 +85,7 @@ class PesananHeavyEquipmentApprovalController extends Controller {
                     'status' => 'Approved'
                 ]);
                 $order->log()->create([
-                    'user_type' => OrderHeavyEquipmentLog::JURAGAN_GUDANG,
+                    'user_type' => OrderHeavyEquipmentLog::JURAGAN_ALATBERAT,
                     'user_id' => Auth::guard('user')->user()->id,
                     'status' => "Approved"
                 ]);
@@ -98,7 +98,7 @@ class PesananHeavyEquipmentApprovalController extends Controller {
                     'status' => 'Pending'
                 ]);
                 $order->log()->create([
-                    'user_type' => OrderHeavyEquipmentLog::JURAGAN_GUDANG,
+                    'user_type' => OrderHeavyEquipmentLog::JURAGAN_ALATBERAT,
                     'user_id' => Auth::guard('user')->user()->id,
                     'status' => "Pending",
                     'status_note' => $request->reason
@@ -112,7 +112,7 @@ class PesananHeavyEquipmentApprovalController extends Controller {
                     'status' => 'Rejected'
                 ]);
                 $order->log()->create([
-                    'user_type' => OrderHeavyEquipmentLog::JURAGAN_GUDANG,
+                    'user_type' => OrderHeavyEquipmentLog::JURAGAN_ALATBERAT,
                     'user_id' => Auth::guard('user')->user()->id,
                     'status' => "Rejected",
                     'status_note' => $request->reason

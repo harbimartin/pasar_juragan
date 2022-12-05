@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderHeavyEquipmentLog extends Model {
     use HasFactory;
-    const JURAGAN_GUDANG = 0;
+    const JURAGAN_ALATBERAT = 0;
     const JURAGAN_BARANG = 1;
-    protected $table = "t_heavy_order_status_tab";
+    protected $table = "t_he_order_status_tab";
 
     protected $fillable = [
-        't_heavy_order_id',
+        't_he_order_id',
         'user_type',
         'user_id',
         'status',
@@ -21,7 +21,7 @@ class OrderHeavyEquipmentLog extends Model {
     ];
 
     public function parent() {
-        return $this->hasOne(TruckContract::class, 'id', 't_heavy_order_id');
+        return $this->hasOne(TruckContract::class, 'id', 't_he_order_id');
     }
     public function getUserTypesAttribute() {
         return ['Juragan Gudang', 'Juragan Barang'][$this->user_type];

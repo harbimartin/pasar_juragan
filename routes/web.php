@@ -24,6 +24,8 @@ use App\Http\Controllers\Auth\AuthAdminController;
 use App\Http\Controllers\Auth\AuthUserController;
 use App\Http\Controllers\User\Dashboard\Driver\DriverController;
 use App\Http\Controllers\User\Dashboard\Heavy\HeavyController;
+use App\Http\Controllers\User\Dashboard\HeavyEquipment\KontrakHeavyEquipmentApprovalController;
+use App\Http\Controllers\User\Dashboard\HeavyEquipment\PesananHeavyEquipmentApprovalController;
 use App\Http\Controllers\User\Dashboard\Home\HomeHeavyController;
 use App\Http\Controllers\User\Dashboard\Home\HomeTransportController;
 use App\Http\Controllers\User\Dashboard\Home\HomeWarehouseController;
@@ -216,6 +218,30 @@ Route::group([
     Route::resource('/pesanan/juragan-gudang', WarehousePesananController::class, Routing::setName('pesanan.juragan-gudang'))->except('destroy');
 
 
+    Route::group([
+        'prefix' => 'kontrak-alatberat/{provider}',
+        'as' => 'kontrak-alatberat.',
+    ], function () {
+        Route::resource('/detail', KontrakWarehouseDetailController::class, Routing::setName('detail'))->except('create', 'destroy');
+    });
+    Route::resource('/kontrak-alatberat', KontrakWarehouseController::class, Routing::setName('kontrak-alatberat'))->except('destroy');
+
+    Route::group([
+        'prefix' => 'pesanan-alatberat/{order}',
+        'as' => 'pesanan-alatberat.',
+    ], function () {
+        // Route::resource('/voucher', WarehousePesananVoucherController::class, Routing::setName('voucher'))->except('destroy');
+        Route::resource('/detail', PesananWarehouseDetailController::class, Routing::setName('detail'))->except('destroy');
+    });
+    Route::resource('/pesanan-alatberat', PesananWarehouseController::class, Routing::setName('pesanan-alatberat'))->except('destroy');
+    Route::group([
+        'prefix' => 'pesanan/juragan-alatberat/{order}',
+        'as' => 'pesanan.juragan-alatberat.',
+    ], function () {
+        Route::resource('/detail', WarehousePesananDetailController::class, Routing::setName('detail'))->except('destroy');
+    });
+    Route::resource('/pesanan/juragan-alatberat', WarehousePesananController::class, Routing::setName('pesanan.juragan-alatberat'))->except('destroy');
+
     // Route::group([
     //     'prefix' => 'warehouse',
     //     'as' => 'warehouse.',
@@ -238,8 +264,10 @@ Route::group([
 
     Route::resource('approval/warehouse-contract', KontrakWarehouseApprovalController::class, Routing::setName('approval.warehouse.contract'))->only('index', 'show', 'update');
     Route::resource('approval/item-contract', KontrakBarangApprovalController::class, Routing::setName('approval.item.contract'))->only('index', 'show', 'update');
+    Route::resource('approval/heavy-equipment-contract', KontrakHeavyEquipmentApprovalController::class, Routing::setName('approval.heavy.contract'))->only('index', 'show', 'update');
     Route::resource('approval/transport-order', PesananAngkutanApprovalController::class, Routing::setName('approval.transport.order'))->only('index', 'show', 'update');
     Route::resource('approval/warehouse-order', PesananWarehouseApprovalController::class, Routing::setName('approval.warehouse.order'))->only('index', 'show', 'update');
+    Route::resource('approval/heavy-equipment-order', PesananHeavyEquipmentApprovalController::class, Routing::setName('approval.heavy.order'))->only('index', 'show', 'update');
 
     Route::group([
         'prefix' => 'pesanan-angkutan/{order}',

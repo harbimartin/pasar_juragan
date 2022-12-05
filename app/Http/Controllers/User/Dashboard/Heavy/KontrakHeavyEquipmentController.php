@@ -51,7 +51,7 @@ class KontrakHeavyEquipmentController extends Controller {
             $q->where('m_company_id', $company_id);
         })->paginate(10);
 
-        return view('dashboard.contract.warehouse.index', ['data' => $data, 'prop' => Table::tableProp($data)]);
+        return view('dashboard.contract.heavy.index', ['data' => $data, 'prop' => Table::tableProp($data)]);
     }
 
     /**
@@ -60,7 +60,7 @@ class KontrakHeavyEquipmentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('dashboard.contract.warehouse.regist', ['select' => $this->getMySelect()]);
+        return view('dashboard.contract.heavy.regist', ['select' => $this->getMySelect()]);
     }
 
     /**
@@ -141,7 +141,7 @@ class KontrakHeavyEquipmentController extends Controller {
                         'status' => 'Proposed'
                     ]);
                     $contract->log()->create([
-                        'user_type' => HeavyEquipmentContractLog::JURAGAN_GUDANG,
+                        'user_type' => HeavyEquipmentContractLog::JURAGAN_ALATBERAT,
                         'user_id' => Auth::guard('user')->user()->id,
                         'status' => 'Proposed',
                         'status_note' => ''

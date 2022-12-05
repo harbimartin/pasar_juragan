@@ -16,7 +16,7 @@ class HeavyEquipmentPesananDetailController  extends Controller {
     // protected $baseRoute = '';
     public function getMySelect($contract_id) {
         return [
-            'warehouse' => HeavyEquipmentContractDetail::where('t_heavy_contract_id', $contract_id)->get()
+            'heavy' => HeavyEquipmentContractDetail::where('t_he_contract_id', $contract_id)->get()
         ];
     }
     /**
@@ -27,10 +27,10 @@ class HeavyEquipmentPesananDetailController  extends Controller {
     public function index(Request $request, $order) {
         [$data, $select, $detail, $submenu] = HeavyEquipmentPesananController::base_index($order);
         if ($data) {
-            // $data = OrderHeavyEquipmentDetail::where('t_heavy_data_id', $data->id)->paginate(10);
-            return view('dashboard.order.warehouse.detail.index', [
+            // $data = OrderHeavyEquipmentDetail::where('t_he_data_id', $data->id)->paginate(10);
+            return view('dashboard.order.heavy.detail.index', [
                 'data' => $data,
-                'select' => array_merge($select, $this->getMySelect($data->t_heavy_contract_id)),
+                'select' => array_merge($select, $this->getMySelect($data->t_he_contract_id)),
                 // 'data' => $data->getCollection(),
                 // 'prop' => Table::tableProp($data),
                 'detail' => $detail,
@@ -91,7 +91,7 @@ class HeavyEquipmentPesananDetailController  extends Controller {
      */
     public function show($contract, $id) {
         $data = OrderHeavyEquipmentDetail::find($id);
-        return view('dashboard.order.warehouse.detail.edit', ['data' => $data, 'select' => [], 'detail' => true]);
+        return view('dashboard.order.heavy.detail.edit', ['data' => $data, 'select' => [], 'detail' => true]);
     }
 
     /**

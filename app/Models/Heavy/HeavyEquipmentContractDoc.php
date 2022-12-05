@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class HeavyEquipmentContractDoc extends Model {
     use HasFactory;
-    protected $table = "t_heavy_contract_doc_tab";
+    protected $table = "t_he_contract_doc_tab";
 
     protected $fillable = [
-        't_heavy_contract_id',
+        't_he_contract_id',
         'doc_name',
         'doc_desc',
         'doc_attachment',

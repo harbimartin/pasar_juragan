@@ -42,8 +42,10 @@ class Menu {
             ['name' => 'Profile Perusahaan', 'key' => 'dashboard.profile-company', 'icon' => self::ICON_CONTENT],
             ['name' => 'Kontrak Angkutan', 'key' => 'dashboard.approval.item.contract', 'icon' => self::ICON_NOTIFICATION],
             ['name' => 'Kontrak Gudang', 'key' => 'dashboard.approval.warehouse.contract', 'icon' => self::ICON_NOTIFICATION],
+            ['name' => 'Kontrak Alat Berat', 'key' => 'dashboard.approval.heavy.contract', 'icon' => self::ICON_NOTIFICATION],
             ['name' => 'Pesanan Angkutan', 'key' => 'dashboard.approval.transport.order', 'icon' => self::ICON_NOTIFICATION],
             ['name' => 'Pesanan Gudang', 'key' => 'dashboard.approval.warehouse.order', 'icon' => self::ICON_NOTIFICATION],
+            ['name' => 'Pesanan Alat Berat', 'key' => 'dashboard.approval.heavy.order', 'icon' => self::ICON_NOTIFICATION],
             // ['name' => 'Juragan Barang', 'key' => 'mk01', 'icon' => self::ICON_PARENT, 'children' => [
             //     ['name' => 'Registrasi Juragan', 'key' => 'dashboard.create.juragan-barang', 'icon' => self::ICON_ADD],
             //     ['name' => 'Daftar Juragan', 'key' => 'dashboard.juragan-barang', 'icon' => self::ICON_CONTENT]
@@ -86,7 +88,10 @@ class Menu {
                 ['name' => 'Kelola Alat Berat', 'key' => 'mk07', 'icon' => self::ICON_PARENT, 'children' => [
                     ['name' => 'Tambah Alat Berat', 'key' => 'dashboard.create.heavy', 'icon' => self::ICON_CONTENT],
                     ['name' => 'List Alat Berat', 'key' => 'dashboard.heavy', 'icon' => self::ICON_CONTENT]
-                ]]
+                ]],
+                ['name' => 'Tambah Kontrak', 'key' => 'dashboard.create.kontrak-alatberat', 'icon' => self::ICON_ADD],
+                ['name' => 'Daftar Kontrak', 'key' => 'dashboard.kontrak-alatberat', 'icon' => self::ICON_CONTENT],
+                ['name' => 'Daftar Pesanan', 'key' => 'dashboard.pesanan.juragan-alatberat', 'icon' => self::ICON_CONTENT],
             ]],
         ];
 

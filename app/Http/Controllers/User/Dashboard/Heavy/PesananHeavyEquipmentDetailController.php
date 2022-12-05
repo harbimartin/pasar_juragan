@@ -12,10 +12,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PesananHeavyEquipmentDetailController extends Controller {
-    protected $baseRoute = 'dashboard.order.warehouse.detail';
+    protected $baseRoute = 'dashboard.order.heavy.detail';
     public function getMySelect($contract_id) {
         return [
-            'warehouse' => HeavyEquipmentContractDetailRpt::where('t_heavy_contract_id', $contract_id)->get(),
+            'heavy' => HeavyEquipmentContractDetailRpt::where('t_he_contract_id', $contract_id)->get(),
         ];
     }
     /**
@@ -28,7 +28,7 @@ class PesananHeavyEquipmentDetailController extends Controller {
         if ($data)
             return view($this->baseRoute . '.index', [
                 'data' => $data,
-                'select' => array_merge($select, $this->getMySelect($data->t_heavy_contract_id)),
+                'select' => array_merge($select, $this->getMySelect($data->t_he_contract_id)),
                 'detail' => $detail,
                 'submenu' => $submenu,
             ]);
@@ -53,7 +53,7 @@ class PesananHeavyEquipmentDetailController extends Controller {
      */
     public function store(Request $request, $order_id) {
         $credentials = $request->validate([
-            't_heavy_contract_detail_id' => ['required', 'exists:t_heavy_contract_detail_tab,id'],
+            't_he_contract_detail_id' => ['required', 'exists:t_he_contract_detail_tab,id'],
             'start_project' => ['required'],
             'wh_large' => ['required'],
             'flag_daily_monthly' => ['required'],
@@ -77,7 +77,7 @@ class PesananHeavyEquipmentDetailController extends Controller {
      */
     public function show($id) {
         $data = OrderHeavyEquipmentDetail::find($id);
-        return view('dashboard.order.warehouse.detail.edit', ['data' => $data, 'select' => [], 'detail' => true]);
+        return view('dashboard.order.heavy.detail.edit', ['data' => $data, 'select' => [], 'detail' => true]);
     }
 
     /**
@@ -90,7 +90,7 @@ class PesananHeavyEquipmentDetailController extends Controller {
         $order = OrderHeavyEquipment::find($order);
         $detail = $order->status != 'Draft';
         $data = OrderHeavyEquipmentDetail::find($id);
-        return view($this->baseRoute . '.edit', ['data' => $data, 'select' => $detail ? [] : $this->getMySelect($order->t_heavy_contract_id), 'detail' => $detail]);
+        return view($this->baseRoute . '.edit', ['data' => $data, 'select' => $detail ? [] : $this->getMySelect($order->t_he_contract_id), 'detail' => $detail]);
     }
 
     /**
@@ -107,7 +107,7 @@ class PesananHeavyEquipmentDetailController extends Controller {
                 break;
             case 'update':
                 $credentials = $request->validate([
-                    't_heavy_contract_detail_id' => ['required', 'exists:t_heavy_contract_detail_tab,id'],
+                    't_he_contract_detail_id' => ['required', 'exists:t_he_contract_detail_tab,id'],
                     'start_project' => ['required'],
                     'wh_large' => ['required'],
                     'flag_daily_monthly' => ['required'],
