@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\OrderTransport;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrderDetailForMobile extends Model
-{
+class OrderTransportDetailForMobile extends Model {
     use HasFactory;
     protected $table = 't_truck_order_voucher_detail_mobile';
 

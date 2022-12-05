@@ -4,12 +4,12 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helper\ApiResponse;
-use App\Models\OrderDetailForMobile;
-use App\Models\OrderForMobile;
+use App\Models\OrderTransport\OrderTransportDetailForMobile;
+use App\Models\OrderTransport\OrderTransportForMobile;
 use App\Models\OrderTransport\OrderTransportVoucher;
+use App\Models\OrderTransport\OrderTransportVoucherFile;
 use App\Models\OrderTransport\OrderTransportVoucherLog;
 use App\Models\OrderTransport\OrderTransportVoucherStatus;
-use App\Models\VoucherTabFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -30,9 +30,8 @@ class ApiOrderController extends Controller {
         //
     }
 
-    public function indexStatus()
-    {
-        $statused = OrderTransportVoucherStatus::where('isactive',1)->get();
+    public function indexStatus() {
+        $statused = OrderTransportVoucherStatus::where('isactive', 1)->get();
         return $this->helper->respon_success($statused);
     }
 
@@ -73,7 +72,7 @@ class ApiOrderController extends Controller {
         ]))
             return $validasi;
 
-        $orders = OrderForMobile::where('m_driver_id', $request->id)->where('isactive', $request->isactive)->get();
+        $orders = OrderTransportForMobile::where('m_driver_id', $request->id)->where('isactive', $request->isactive)->get();
         return $this->helper->respon_success($orders);
     }
 
@@ -90,7 +89,7 @@ class ApiOrderController extends Controller {
             return $validasi;
 
 
-        $orders = OrderDetailForMobile::where('header_id', $request->id)
+        $orders = OrderTransportDetailForMobile::where('header_id', $request->id)
             ->with(['foto'])->first();
         return $this->helper->respon_success($orders);
     }
@@ -120,13 +119,11 @@ class ApiOrderController extends Controller {
 
         $orders = [];
 
-        foreach($request->file as $key => $file){
-            if ($request->hasFile('file.'.$key)) {
-                $file = $request->file('file.'.$key);
-                $filename = 'epod_'.$key.'_'.$request->id.'_'.date('Hmmss', strtotime(now())).'.'. $file['file_name']->getClientOriginalExtension();
-                if(!is_dir(storage_path('foto'))) mkdir(storage_path('foto'),0755,true);
-                if (is_file(storage_path('foto' . $filename))) $this->unlink_file($filename);
-                $file['file_name']->move(storage_path('foto'), $filename);
+        foreach ($request->file as $key => $file) {
+            if ($request->hasFile('file.' . $key)) {
+                $file = $request->file('file.' . $key);
+                $filename = 'epod_' . $key . '_' . $request->id . '_' . date('Hmmss', strtotime(now())) . '.' . $file['file_name']->getClientOriginalExtension();
+                $file['file_name']->move(storage_path('foto_epod'), $filename);
                 $data = [
                     "status" => 1,
                     "file_name" => "",
@@ -139,7 +136,7 @@ class ApiOrderController extends Controller {
             } else return $this->resFailed("3", $key . " file not emitted!");
         }
 
-        $upload = VoucherTabFile::insert($orders);
+        $upload = OrderTransportVoucherFile::insert($orders);
         return $this->helper->respon_success($upload);
     }
 

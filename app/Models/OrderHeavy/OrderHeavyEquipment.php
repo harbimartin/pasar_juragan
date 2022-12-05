@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Models\OrderHeavy;
+
+use App\Models\HeavyEquipment\HeavyEquipmentContract;
+use App\Models\HeavyEquipment\HeavyEquipmentContractDetailRpt;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class OrderHeavyEquipment extends Model {
+    use HasFactory;
+    protected $table = "t_heavy_order_tab";
+
+    protected $fillable = [
+        'who_no',
+        'who_desc',
+        'who_date',
+        't_heavy_contract_id',
+        'status'
+    ];
+
+    public function detail() {
+        return $this->hasMany(OrderHeavyEquipmentDetail::class, 't_heavy_order_id', 'id');
+    }
+    public function contract() {
+        return $this->hasOne(HeavyEquipmentContract::class, 'id', 't_heavy_contract_id');
+    }
+    public function log() {
+        return $this->hasMany(OrderHeavyEquipmentLog::class, 't_heavy_order_id', 'id');
+    }
+    public function log_proposed() {
+        return $this->hasMany(OrderHeavyEquipmentLog::class, 't_heavy_order_id', 'id')->where('status', 'Proposed')->latest();
+    }
+    public function log_approved() {
+        return $this->hasMany(OrderHeavyEquipmentLog::class, 't_heavy_order_id', 'id')->where('status', 'Approved')->latest();
+    }
+}

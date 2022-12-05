@@ -8,8 +8,7 @@ use App\Models\Provider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class HeavyEquipment extends _List
-{
+class HeavyEquipment extends _List {
     use HasFactory;
     public $timestamps = true;
     protected $table = "m_heavy_equipment_tab";
@@ -50,7 +49,7 @@ class HeavyEquipment extends _List
         return $this->hasMany(Image::class, 'm_code_id', 'id')->where('image_type', Provider::HEAVY_EQUIPMENT);
     }
 
-    public function type(){
+    public function type() {
         return $this->hasOne(HeavyEquipmentType::class, 'id', 'm_heavy_equipment_type_id');
     }
 }
