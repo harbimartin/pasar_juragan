@@ -10,6 +10,6 @@ class OrderTransportDetailForMobile extends Model {
     protected $table = 't_truck_order_voucher_detail_mobile';
 
     public function foto() {
-        return $this->hasMany(VoucherTabFile::class, 't_truck_order_voucher_id', 'header_id');
+        return $this->hasMany(OrderTransportVoucherFile::class, 't_truck_order_voucher_id', 'header_id');
     }
 }
