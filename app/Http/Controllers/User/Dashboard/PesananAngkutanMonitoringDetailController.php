@@ -11,7 +11,6 @@ use App\Models\OrderTransport\OrderTransportVoucherDetail;
 use Illuminate\Http\Request;
 
 class PesananAngkutanMonitoringDetailController extends Controller {
-    protected $baseRoute = 'dashboard.order.transport.monitoring.voucher-detail';
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +24,7 @@ class PesananAngkutanMonitoringDetailController extends Controller {
             $order = OrderTransportDetail::find($detail_id);
             $voucher['loading'] = $order->loading;
             $voucher['unloading'] = $order->unloading;
-            return view($this->baseRoute . '.index', [
+            return view('dashboard.order.transport.monitoring.voucher-detail.index', [
                 'data' => $voucher,
                 'select' => [],
                 'submenu' => $submenu,
@@ -64,7 +63,7 @@ class PesananAngkutanMonitoringDetailController extends Controller {
      */
     public function show($order_id, $voucher_id,  $id) {
         $data = OrderTransportVoucherDetail::find($id);
-        return view($this->baseRoute . '.edit', ['data' => $data, 'select' => [], 'detail' => true]);
+        return view('dashboard.order.transport.monitoring.voucher-detail.edit', ['data' => $data, 'select' => [], 'detail' => true]);
     }
 
     /**

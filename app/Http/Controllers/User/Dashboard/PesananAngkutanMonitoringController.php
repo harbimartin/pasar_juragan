@@ -11,7 +11,6 @@ use App\Models\OrderTransport\OrderTransportVoucherDetailRpt;
 use Illuminate\Http\Request;
 
 class PesananAngkutanMonitoringController extends Controller {
-    protected $baseRoute = 'dashboard.order.transport.monitoring';
     public static function base_index($voucher) {
         $voucher = OrderTransportVoucher::find($voucher);
         if ($voucher) {

@@ -45,4 +45,7 @@ class OrderTransportVoucher extends Model {
     public function status() {
         return $this->hasOne(OrderTransportVoucherStatus::class, 'id', 'status_id');
     }
+    public function file() {
+        return $this->hasMany(OrderTransportVoucherFile::class, 't_truck_order_voucher_id', 'id');
+    }
 }
