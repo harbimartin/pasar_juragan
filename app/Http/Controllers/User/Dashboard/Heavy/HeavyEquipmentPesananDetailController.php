@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User\Dashboard\HeavyEquipment;
+namespace App\Http\Controllers\User\Dashboard\Heavy;
 
 use App\Http\Controllers\Controller;
 use App\Models\GenSerial;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User\Dashboard\HeavyEquipment;
+namespace App\Http\Controllers\User\Dashboard\Heavy;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helper\Table;
@@ -67,13 +67,13 @@ class PesananHeavyEquipmentController extends Controller {
     public function store(Request $request) {
         // return $request->toArray();
         $credentials = $request->validate([
-            'who_date' => ['required'],
+            'heo_date' => ['required'],
             't_he_contract_id' => ['required'],
-            'who_desc' => ['nullable']
+            'heo_desc' => ['nullable']
         ]);
         DB::beginTransaction();
-        $credentials['who_no'] = GenSerial::generateCode('WO');
-        $credentials['who_date'] = now();
+        $credentials['heo_no'] = GenSerial::generateCode('HO');
+        $credentials['heo_date'] = now();
         $credentials['status'] = 'Draft';
         $company_id = Auth::guard('user')->user()->company->id;
         $contract = HeavyEquipmentContract::find($request->t_he_contract_id);
@@ -86,7 +86,7 @@ class PesananHeavyEquipmentController extends Controller {
         }
         $order = OrderHeavyEquipment::create($credentials);
         DB::commit();
-        return redirect(route('dashboard.pesanan-gudang.show', $order->id));
+        return redirect(route('dashboard.pesanan-alatberat.show', $order->id));
     }
 
     /**
@@ -96,7 +96,7 @@ class PesananHeavyEquipmentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        return redirect(route('dashboard.pesanan-gudang.detail', $id));
+        return redirect(route('dashboard.pesanan-alatberat.detail', $id));
     }
 
     /**
@@ -136,7 +136,7 @@ class PesananHeavyEquipmentController extends Controller {
             case 'update':
                 $credentials = $request->validate([
                     'juragan_a2b_id' => ['required', 'exists:t_provider_tab,id'],
-                    'juragan_gudang_id' => ['required', 'exists:m_company_tab,id'],
+                    'juragan_a2b_id' => ['required', 'exists:m_company_tab,id'],
                     'order_no' => ['required'],
                     'order_desc' => ['required'],
                     'order_date' => ['required'],
@@ -146,7 +146,7 @@ class PesananHeavyEquipmentController extends Controller {
                     $order = HeavyEquipmentContract::find($id);
                     if ($request->has('file')) {
                         foreach ($request->file as $ind => $file) {
-                            $filename = 'CO' . $order->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+                            $filename = 'CH' . $order->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
                             $file->move(storage_path('file_order/'), $filename);
                             $order->doc()->create([
                                 'doc_name' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),

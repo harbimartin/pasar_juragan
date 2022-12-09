@@ -1,21 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\User\Dashboard\HeavyEquipment;
+namespace App\Http\Controllers\User\Dashboard\Heavy;
 
 use App\Http\Controllers\Controller;
-use App\Models\GenSerial;
 use App\Models\OrderHeavy\OrderHeavyEquipment;
 use App\Models\OrderHeavy\OrderHeavyEquipmentDetail;
-use App\Models\Heavy\HeavyEquipmentContractDetail;
 use App\Models\Heavy\HeavyEquipmentContractDetailRpt;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class PesananHeavyEquipmentDetailController extends Controller {
-    protected $baseRoute = 'dashboard.order.heavy.detail';
     public function getMySelect($contract_id) {
         return [
-            'heavy' => HeavyEquipmentContractDetailRpt::where('t_he_contract_id', $contract_id)->get(),
+            'a2b' => HeavyEquipmentContractDetailRpt::where('t_he_contract_id', $contract_id)->get(),
         ];
     }
     /**
@@ -26,7 +22,7 @@ class PesananHeavyEquipmentDetailController extends Controller {
     public function index(Request $request, $order) {
         [$data, $select, $detail, $submenu] = PesananHeavyEquipmentController::base_index($order);
         if ($data)
-            return view($this->baseRoute . '.index', [
+            return view('dashboard.order.heavy.detail.index', [
                 'data' => $data,
                 'select' => array_merge($select, $this->getMySelect($data->t_he_contract_id)),
                 'detail' => $detail,
@@ -55,7 +51,6 @@ class PesananHeavyEquipmentDetailController extends Controller {
         $credentials = $request->validate([
             't_he_contract_detail_id' => ['required', 'exists:t_he_contract_detail_tab,id'],
             'start_project' => ['required'],
-            'wh_large' => ['required'],
             'flag_daily_monthly' => ['required'],
             'long_used' => ['required'],
             'order_note' => ['nullable'],
@@ -90,7 +85,7 @@ class PesananHeavyEquipmentDetailController extends Controller {
         $order = OrderHeavyEquipment::find($order);
         $detail = $order->status != 'Draft';
         $data = OrderHeavyEquipmentDetail::find($id);
-        return view($this->baseRoute . '.edit', ['data' => $data, 'select' => $detail ? [] : $this->getMySelect($order->t_he_contract_id), 'detail' => $detail]);
+        return view('dashboard.order.heavy.detail.edit', ['data' => $data, 'select' => $detail ? [] : $this->getMySelect($order->t_he_contract_id), 'detail' => $detail]);
     }
 
     /**
@@ -109,11 +104,11 @@ class PesananHeavyEquipmentDetailController extends Controller {
                 $credentials = $request->validate([
                     't_he_contract_detail_id' => ['required', 'exists:t_he_contract_detail_tab,id'],
                     'start_project' => ['required'],
-                    'wh_large' => ['required'],
                     'flag_daily_monthly' => ['required'],
                     'long_used' => ['required'],
                     'order_note' => ['nullable'],
                 ]);
+                // return $credentials;
                 OrderHeavyEquipmentDetail::find($id)->update($credentials);
                 break;
         }

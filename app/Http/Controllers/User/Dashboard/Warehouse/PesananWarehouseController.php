@@ -147,7 +147,7 @@ class PesananWarehouseController extends Controller {
                     $order = WarehouseContract::find($id);
                     if ($request->has('file')) {
                         foreach ($request->file as $ind => $file) {
-                            $filename = 'CO' . $order->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+                            $filename = 'WC' . $order->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
                             $file->move(storage_path('file_order/'), $filename);
                             $order->doc()->create([
                                 'doc_name' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),

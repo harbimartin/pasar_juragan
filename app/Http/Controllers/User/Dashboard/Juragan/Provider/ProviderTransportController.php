@@ -28,7 +28,7 @@ class ProviderTransportController extends Controller {
             'type' => ['name' => 'Tipe', 'key' => 'truck_type', 'option' => TruckType::where('status', 1)->get()],
         ];
         $transports = Truck::filter($request)->where('m_provider_id', $data->id)->paginate(10);
-        return view(self::baseRoute . '.index', [
+        return view('dashboard.provider.transport.index', [
             'data' => $data,
             'transports' => $transports,
             'select' => array_merge($select, $this->getMySelect()),
@@ -84,7 +84,7 @@ class ProviderTransportController extends Controller {
                 ['name' => 'Minggu', 'id' => 7],
             ]
         ];
-        return view(self::baseRoute . '.show', ['data' => Truck::find($id), 'select' => $select]);
+        return view('dashboard.provider.transport.show', ['data' => Truck::find($id), 'select' => $select]);
     }
 
     /**
@@ -94,7 +94,7 @@ class ProviderTransportController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($provider, $id) {
-        return view(self::baseRoute . '.edit', ['data' => Truck::find($id), 'select' => $this->getMySelect()]);
+        return view('dashboard.provider.transport.edit', ['data' => Truck::find($id), 'select' => $this->getMySelect()]);
     }
 
     /**

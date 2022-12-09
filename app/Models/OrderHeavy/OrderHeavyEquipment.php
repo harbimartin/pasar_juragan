@@ -2,8 +2,7 @@
 
 namespace App\Models\OrderHeavy;
 
-use App\Models\HeavyEquipment\HeavyEquipmentContract;
-use App\Models\HeavyEquipment\HeavyEquipmentContractDetailRpt;
+use App\Models\Heavy\HeavyEquipmentContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

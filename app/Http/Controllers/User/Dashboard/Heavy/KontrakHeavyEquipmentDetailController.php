@@ -1,13 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\User\Dashboard\HeavyEquipment;
+namespace App\Http\Controllers\User\Dashboard\Heavy;
 
 use App\Http\Controllers\Controller;
-use App\Models\Contract\Commodity;
-use App\Models\Contract\Destination;
-use App\Models\Contract\Origin;
-use App\Models\Contract\TariffType;
-use App\Models\Transport\TruckType;
 use App\Models\Heavy\HeavyEquipment;
 use App\Models\Heavy\HeavyEquipmentContract;
 use App\Models\Heavy\HeavyEquipmentContractDetail;
@@ -17,7 +12,7 @@ class KontrakHeavyEquipmentDetailController extends Controller {
     protected $baseRoute = 'dashboard.contract.heavy.detail';
     public function getMySelect($data) {
         return [
-            'heavy' => HeavyEquipment::where(['m_provider_id' => $data, 'status' => 1])->get(),
+            'a2b' => HeavyEquipment::where(['m_provider_id' => $data, 'status' => 1])->get(),
         ];
     }
     /**
@@ -30,7 +25,7 @@ class KontrakHeavyEquipmentDetailController extends Controller {
         if ($data)
             return view('dashboard.contract.heavy.detail.index', [
                 'data' => $data,
-                'select' => array_merge($select, $this->getMySelect($data->juragan_gudang_id)),
+                'select' => array_merge($select, $this->getMySelect($data->juragan_a2b_id)),
                 'detail' => $detail,
                 'submenu' => $submenu,
             ]);
@@ -56,8 +51,7 @@ class KontrakHeavyEquipmentDetailController extends Controller {
     public function store(Request $request, $contract_id) {
         $credentials = $request->validate([
             'm_heavy_equipment_id' => ['required', 'exists:m_heavy_equipment_tab,id'],
-            'price_per_meter_daily' => ['required'],
-            'price_per_meter_monthly' => ['required'],
+            'price' => ['required'],
         ]);
         $contract = HeavyEquipmentContract::find($contract_id);
         if ($contract) {
@@ -86,7 +80,7 @@ class KontrakHeavyEquipmentDetailController extends Controller {
     public function edit($contract, $id) {
         $data = HeavyEquipmentContractDetail::find($id);
         $wc = HeavyEquipmentContract::find($contract);
-        return view($this->baseRoute . '.edit', ['data' => $data, 'select' => $this->getMySelect($wc->juragan_gudang_id)]);
+        return view($this->baseRoute . '.edit', ['data' => $data, 'select' => $this->getMySelect($wc->juragan_a2b_id)]);
     }
 
     /**
@@ -104,8 +98,7 @@ class KontrakHeavyEquipmentDetailController extends Controller {
             case 'update':
                 $credentials = $request->validate([
                     'm_heavy_equipment_id' => ['required', 'exists:m_heavy_equipment_tab,id'],
-                    'price_per_meter_daily' => ['required'],
-                    'price_per_meter_monthly' => ['required'],
+                    'price' => ['required']
                 ]);
                 HeavyEquipmentContractDetail::find($id)->update($credentials);
                 break;

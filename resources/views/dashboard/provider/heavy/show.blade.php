@@ -2,27 +2,14 @@
 @section('content')
     @php
         $column = [
-            'provider' => ['name' => 'Juragan Gudang', 'type' => 'SString', 'child' => ['provider_name'], 'full' => true],
-            'wh_name' => ['name' => 'Nama Gudang', 'type' => 'String', 'full' => true],
-            'province' => ['name' => 'Provinsi', 'type' => 'SString', 'child' => ['province_code', 'province_name'], 'full' => false],
-            'city' => ['name' => 'Kota', 'type' => 'SString', 'child' => ['city_name'], 'full' => false],
-            'address_detail' => ['name' => 'Alamat Gudang', 'type' => 'TextArea', 'full' => true],
-            'longitude' => ['name' => 'Latitude', 'type' => 'String', 'full' => false],
-            'latitude' => ['name' => 'Longitude', 'type' => 'String', 'full' => false],
-            'wh_pic_email' => ['name' => 'Email PIC', 'type' => 'String', 'full' => false],
-            'wh_pic_telephone' => ['name' => 'No. Telp PIC', 'type' => 'String', 'full' => false],
-            'wh_pic_fax' => ['name' => 'No. Fax PIC', 'type' => 'String', 'full' => false],
-            'wh_pic_phone' => ['name' => 'No. Handphone PIC', 'type' => 'String', 'full' => false],
-            'tdg_no' => ['name' => 'No. TDG', 'type' => 'String', 'full' => false],
-            'tdg_date' => ['name' => 'Tanggal TDG', 'type' => 'Date', 'full' => false],
-            'tdg_expired_date' => ['name' => 'Expired TDG', 'type' => 'Date', 'full' => false],
-            'tdg_attachment' => ['name' => 'Lampiran TDG', 'type' => 'Upload', 'accept' => 'pdf/*', 'key' => 'file', 'folder' => 'file_tdg', 'mono' => true, 'full' => true],
-
-            'category' => ['name' => 'Kategori', 'type' => 'SString', 'child' => ['wh_category'], 'api' => 'category', 'full' => true],
-            'function' => ['name' => 'Tipe Fungsi', 'type' => 'SString', 'child' => ['wh_function'], 'api' => 'function', 'full' => true],
-            'storage_method' => ['name' => 'Metode Penyimpanan', 'type' => 'SString', 'child' => ['wh_storage_methode'], 'api' => 'storage_methode', 'full' => true],
-
-            'day_open' => ['name' => 'Hari & Jam Buka', 'type' => 'OpenHour', 'val' => ['name'], 'api' => 'days', 'full' => true],
+            'provider' => ['name' => 'Juragan Alat Berat', 'type' => 'SString', 'child' => ['provider_name'], 'full' => true],
+            'type' => ['name' => 'Equipment Type', 'type' => 'SString', 'child' => ['heavy_equipment_type']],
+            'equipment_code' => ['name' => 'Equipment Code', 'type' => 'String'],
+            'equipment_brand' => ['name' => 'Equipment Brand', 'type' => 'String', 'full' => false],
+            'operational_weight' => ['name' => 'Operational Weight', 'type' => 'Number', 'full' => false],
+            'equipment_desc' => ['name' => 'Equipment Desc', 'type' => 'TextArea', 'full' => true],
+            'equipment_attachment' => ['name' => 'Upload', 'type' => 'Upload', 'accept' => 'pdf/*', 'key' => 'file_equipment', 'folder' => 'file_tdg', 'mono' => true, 'full' => true],
+            'image' => ['name' => 'Foto Alat Berat', 'type' => 'Upload', 'accept' => 'image/*', 'key' => 'file_image', 'desc_key' => 'image_desc', 'folder' => 'image_product', 'full' => true],
         ];
         $column = json_encode($column);
     @endphp

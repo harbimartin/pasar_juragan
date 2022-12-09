@@ -70,7 +70,7 @@ class KontrakWarehouseController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-         $credentials = $request->validate([
+        $credentials = $request->validate([
             'juragan_gudang_id' => ['required', 'exists:t_provider_tab,id'],
             'juragan_barang_id' => ['required', 'exists:m_company_tab,id'],
             // 'juragan_gudang_id' => ['required', 'exists:t_contract_tab,id'],
@@ -162,7 +162,7 @@ class KontrakWarehouseController extends Controller {
                     $contract = WarehouseContract::find($id);
                     if ($request->has('file')) {
                         foreach ($request->file as $ind => $file) {
-                            $filename = 'CO' . $contract->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+                            $filename = 'CW' . $contract->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
                             $file->move(storage_path('file_contract/'), $filename);
                             $contract->doc()->create([
                                 'doc_name' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),

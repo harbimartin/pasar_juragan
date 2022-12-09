@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User\Dashboard\HeavyEquipment;
+namespace App\Http\Controllers\User\Dashboard\Heavy;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helper\Table;
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class KontrakHeavyEquipmentController extends Controller {
-    protected $baseRoute = 'dashboard.kontrak-gudang';
+    protected $baseRoute = 'dashboard.kontrak-alatberat';
     public static function base_index($id) {
         $contract = HeavyEquipmentContract::find($id);
         if ($contract) {
@@ -34,7 +34,7 @@ class KontrakHeavyEquipmentController extends Controller {
     public static function getMySelect() {
         $company_id = Auth::guard('user')->user()->company->id;
         return [
-            'gudang' => Provider::where(['m_company_id' => $company_id, 'provider_type_id' => Provider::WAREHOUSE, 'status' => 'Approved'])->get(),
+            'a2b' => Provider::where(['m_company_id' => $company_id, 'provider_type_id' => Provider::HEAVY_EQUIPMENT, 'status' => 'Approved'])->get(),
             'barang' => Company::where(['status' => 1])->get()
             // 'barang' => Provider::where(['provider_type_id' => Provider::ITEM, 'status' => 'Approved'])->get()
         ];
@@ -47,7 +47,7 @@ class KontrakHeavyEquipmentController extends Controller {
      */
     public function index(Request $request) {
         $company_id = Auth::guard('user')->user()->company->id;
-        $data = HeavyEquipmentContract::whereHas('juragan_gudang', function ($q) use ($company_id) {
+        $data = HeavyEquipmentContract::whereHas('juragan_a2b', function ($q) use ($company_id) {
             $q->where('m_company_id', $company_id);
         })->paginate(10);
 
@@ -71,21 +71,21 @@ class KontrakHeavyEquipmentController extends Controller {
      */
     public function store(Request $request) {
         $credentials = $request->validate([
-            'juragan_gudang_id' => ['required', 'exists:t_provider_tab,id'],
+            'juragan_a2b_id' => ['required', 'exists:t_provider_tab,id'],
             'juragan_barang_id' => ['required', 'exists:m_company_tab,id'],
-            // 'juragan_gudang_id' => ['required', 'exists:t_contract_tab,id'],
+            // 'juragan_a2b_id' => ['required', 'exists:t_contract_tab,id'],
             'contract_no' => ['required'],
             'contract_desc' => ['required'],
             'contract_date' => ['required'],
             'contract_expired' => ['required']
         ]);
         $credentials['status'] = 'Draft';
-        $contract_gudang = Provider::find($request->juragan_gudang_id);
+        $contract_alatberat = Provider::find($request->juragan_a2b_id);
         $contract_barang = Company::find($request->juragan_barang_id);
         if (
-            !$contract_barang || !$contract_gudang
+            !$contract_barang || !$contract_alatberat
             // || $contract_barang->contract_type_id != Provider::ITEM
-            || $contract_gudang->provider_type_id != Provider::WAREHOUSE
+            || $contract_alatberat->provider_type_id != Provider::HEAVY_EQUIPMENT
         ) {
             return back()->withErrors([
                 'add' => "Provider pilihan anda tidak sesuai."
@@ -96,7 +96,7 @@ class KontrakHeavyEquipmentController extends Controller {
         if ($request->has('file')) {
             try {
                 foreach ($request->file as $ind => $file) {
-                    $filename = 'CW' . $contract->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+                    $filename = 'CH' . $contract->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
                     $file->move(storage_path('file_contract/'), $filename);
                     $contract->doc()->create([
                         'doc_name' => $filename,
@@ -122,7 +122,7 @@ class KontrakHeavyEquipmentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        return redirect(route('dashboard.kontrak-gudang.detail', $id));
+        return redirect(route('dashboard.kontrak-alatberat.detail', $id));
     }
 
     /**
@@ -137,21 +137,27 @@ class KontrakHeavyEquipmentController extends Controller {
             case 'propose':
                 $contract = HeavyEquipmentContract::find($id);
                 if ($contract->status == 'Draft') {
-                    $contract->update([
-                        'status' => 'Proposed'
-                    ]);
-                    $contract->log()->create([
-                        'user_type' => HeavyEquipmentContractLog::JURAGAN_ALATBERAT,
-                        'user_id' => Auth::guard('user')->user()->id,
-                        'status' => 'Proposed',
-                        'status_note' => ''
-                    ]);
+                    DB::beginTransaction();
+                    try {
+                        $contract->update([
+                            'status' => 'Proposed'
+                        ]);
+                        $contract->log()->create([
+                            'user_type' => HeavyEquipmentContractLog::JURAGAN_ALATBERAT,
+                            'user_id' => Auth::guard('user')->user()->id,
+                            'status' => 'Proposed',
+                            'status_note' => ''
+                        ]);
+                    } catch (Throwable $th) {
+                        return back()->withErrors(['contract' => $th->getMessage()]);
+                    }
+                    DB::commit();
                 } else
-                    return back()->withErrors(['proposed' => "Mohon maaf, status Kontrak ini bukan berbentuk Draft"]);
+                    return back()->withErrors(['contract' => "Mohon maaf, status Kontrak ini bukan berbentuk Draft"]);
                 break;
             case 'update':
                 $credentials = $request->validate([
-                    'juragan_gudang_id' => ['required', 'exists:t_provider_tab,id'],
+                    'juragan_a2b_id' => ['required', 'exists:t_provider_tab,id'],
                     'juragan_barang_id' => ['required', 'exists:m_company_tab,id'],
                     'contract_no' => ['required'],
                     'contract_desc' => ['required'],
@@ -162,7 +168,7 @@ class KontrakHeavyEquipmentController extends Controller {
                     $contract = HeavyEquipmentContract::find($id);
                     if ($request->has('file')) {
                         foreach ($request->file as $ind => $file) {
-                            $filename = 'CO' . $contract->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+                            $filename = 'CH' . $contract->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
                             $file->move(storage_path('file_contract/'), $filename);
                             $contract->doc()->create([
                                 'doc_name' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),

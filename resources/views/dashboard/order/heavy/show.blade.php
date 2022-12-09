@@ -3,18 +3,18 @@
     @php
         $column = [
             'status' => Provider::status_attr(),
-            't_wh_contract_id' => $detail ? null : ['name' => 'Kontrak', 'type' => 'TextSel', 'val' => ['contract_no', 'contract_desc'], 'desc' => ['contract_desc'], 'share' => ['contract_desc' => 0, 'contract_date' => 0, 'contract_expired' => 0], 'api' => 'contract', 'full' => true],
-            'contract_desc' => $detail ? null : ['key' => 't_wh_contract_id', 'val' => 'contract_desc', 'name' => 'Deskripsi Kontrak', 'type' => 'RefArea', 'full' => true],
-            'contract_date' => $detail ? null : ['key' => 't_wh_contract_id', 'val' => 'contract_date', 'name' => 'Tanggal Kontrak', 'type' => 'Reference', 'full' => true],
-            'contract_expired' => $detail ? null : ['key' => 't_wh_contract_id', 'val' => 'contract_expired', 'name' => 'Tgl Kadaluarsa Kontrak', 'type' => 'Reference', 'full' => true],
-            // 'who_no' => ['name' => 'No.', 'type' => 'String', 'full' => true],
-            'who_desc' => ['name' => 'Deskripsi', 'type' => 'TextArea', 'full' => true],
-            'who_date' => ['name' => 'Tgl Order', 'type' => 'Date', 'full' => true],
+            't_he_contract_id' => $detail ? null : ['name' => 'Kontrak', 'type' => 'TextSel', 'val' => ['contract_no', 'contract_desc'], 'desc' => ['contract_desc'], 'share' => ['contract_desc' => 0, 'contract_date' => 0, 'contract_expired' => 0], 'api' => 'contract', 'full' => true],
+            'contract_desc' => $detail ? null : ['key' => 't_he_contract_id', 'val' => 'contract_desc', 'name' => 'Deskripsi Kontrak', 'type' => 'RefArea', 'full' => true],
+            'contract_date' => $detail ? null : ['key' => 't_he_contract_id', 'val' => 'contract_date', 'name' => 'Tanggal Kontrak', 'type' => 'Reference', 'full' => true],
+            'contract_expired' => $detail ? null : ['key' => 't_he_contract_id', 'val' => 'contract_expired', 'name' => 'Tgl Kadaluarsa Kontrak', 'type' => 'Reference', 'full' => true],
+            // 'heo_no' => ['name' => 'No.', 'type' => 'String', 'full' => true],
+            'heo_desc' => ['name' => 'Deskripsi', 'type' => 'TextArea', 'full' => true],
+            'heo_date' => ['name' => 'Tgl Order', 'type' => 'Date', 'full' => true],
         ];
         $column = json_encode($column);
     @endphp
-    <x-update unique="kontrak-gudang" :column="$column" title="Pesanan Gudang ({{ $data->who_no }})" :data="$data"
-        burl="none" route="dashboard.pesanan-gudang" :select="$select" idk="id" :detail="$detail">
+    <x-update unique="kontrak-alatberat" :column="$column" title="Pesanan Alat Berat ({{ $data->heo_no }})"
+        :data="$data" burl="none" route="dashboard.pesanan-alatberat" :select="$select" idk="id" :detail="$detail">
 
         <?php
         $timelines = [

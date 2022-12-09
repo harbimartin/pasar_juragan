@@ -98,7 +98,7 @@ class KontrakBarangController extends Controller {
         if ($request->has('file')) {
             try {
                 foreach ($request->file as $ind => $file) {
-                    $filename = 'CO' . $contract->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+                    $filename = 'CT' . $contract->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
                     $file->move(storage_path('file_contract/'), $filename);
                     $contract->doc()->create([
                         'doc_name' => $filename,
@@ -164,7 +164,7 @@ class KontrakBarangController extends Controller {
                     $contract = TruckContract::find($id);
                     if ($request->has('file')) {
                         foreach ($request->file as $ind => $file) {
-                            $filename = 'CO' . $contract->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+                            $filename = 'CT' . $contract->id . date("YmdHms") . $ind . '.' . pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
                             $file->move(storage_path('file_contract/'), $filename);
                             $contract->doc()->create([
                                 'doc_name' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),

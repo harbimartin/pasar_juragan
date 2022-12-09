@@ -2,6 +2,8 @@
 
 namespace App\Http\Helper;
 
+use App\Models\Heavy\HeavyEquipmentContract;
+use App\Models\OrderHeavy\OrderHeavyEquipment;
 use App\Models\OrderTransport\OrderTransport;
 use App\Models\OrderWarehouse\OrderWarehouse;
 use App\Models\Transport\TruckContract;
@@ -22,6 +24,9 @@ class Menu {
         Session::put('notif_dashboard.approval.warehouse.contract', WarehouseContract::where(['status' => 'Proposed'])->whereHas('juragan_barang', function ($q) use ($company_id) {
             $q->where('id', $company_id);
         })->count());
+        Session::put('notif_dashboard.approval.heavy.contract', HeavyEquipmentContract::where(['status' => 'Proposed'])->whereHas('juragan_barang', function ($q) use ($company_id) {
+            $q->where('id', $company_id);
+        })->count());
         Session::put('notif_dashboard.approval.transport.order', OrderTransport::whereHas('contract', function ($q) use ($company_id) {
             $q->whereHas('juragan_angkutan', function ($qq) use ($company_id) {
                 $qq->where('m_company_id', $company_id);
@@ -29,6 +34,11 @@ class Menu {
         })->where('status', 'Proposed')->count());
         Session::put('notif_dashboard.approval.warehouse.order', OrderWarehouse::whereHas('contract', function ($q) use ($company_id) {
             $q->whereHas('juragan_gudang', function ($qq) use ($company_id) {
+                $qq->where('m_company_id', $company_id);
+            });
+        })->where('status', 'Proposed')->count());
+        Session::put('notif_dashboard.approval.heavy.order', OrderHeavyEquipment::whereHas('contract', function ($q) use ($company_id) {
+            $q->whereHas('juragan_a2b', function ($qq) use ($company_id) {
                 $qq->where('m_company_id', $company_id);
             });
         })->where('status', 'Proposed')->count());
@@ -54,7 +64,9 @@ class Menu {
                 ['name' => 'Pesan Angkutan', 'key' => 'dashboard.create.pesanan-angkutan', 'icon' => self::ICON_ADD],
                 ['name' => 'Daftar Pesanan', 'key' => 'dashboard.pesanan-angkutan', 'icon' => self::ICON_CONTENT],
                 ['name' => 'Pesan Gudang', 'key' => 'dashboard.create.pesanan-gudang', 'icon' => self::ICON_ADD],
-                ['name' => 'Daftar Pesanan', 'key' => 'dashboard.pesanan-gudang', 'icon' => self::ICON_CONTENT]
+                ['name' => 'Daftar Pesanan', 'key' => 'dashboard.pesanan-gudang', 'icon' => self::ICON_CONTENT],
+                ['name' => 'Pesan Alat Berat', 'key' => 'dashboard.create.pesanan-alatberat', 'icon' => self::ICON_ADD],
+                ['name' => 'Daftar Alat Berat', 'key' => 'dashboard.pesanan-alatberat', 'icon' => self::ICON_CONTENT]
             ]],
             ['name' => 'Juragan Gudang', 'key' => 'mk01', 'icon' => self::ICON_PARENT, 'children' => [
                 ['name' => 'Registrasi Juragan', 'key' => 'dashboard.create.juragan-gudang', 'icon' => self::ICON_ADD],

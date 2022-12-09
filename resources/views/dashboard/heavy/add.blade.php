@@ -8,7 +8,7 @@
             'equipment_brand' => ['name' => 'Equipment Brand', 'type' => 'String', 'full' => false],
             'operational_weight' => ['name' => 'Operational Weight', 'type' => 'Number', 'full' => false],
             'equipment_desc' => ['name' => 'Equipment Desc', 'type' => 'TextArea', 'full' => true],
-            'equipment_attachment' => ['name' => 'Upload', 'type' => 'Upload', 'accept' => 'pdf/*', 'key' => 'file', 'folder' => 'file_tdg', 'mono' => true, 'full' => true],
+            'equipment_attachment' => ['name' => 'Upload', 'type' => 'Upload', 'accept' => 'pdf/*', 'key' => 'file', 'folder' => 'file_equipment', 'mono' => true, 'full' => true],
         ];
         $column = json_encode($column);
     @endphp

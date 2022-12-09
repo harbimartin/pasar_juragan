@@ -23,9 +23,14 @@ use App\Http\Controllers\Admin\ProfileUserController as AdminProfileUserControll
 use App\Http\Controllers\Auth\AuthAdminController;
 use App\Http\Controllers\Auth\AuthUserController;
 use App\Http\Controllers\User\Dashboard\Driver\DriverController;
-use App\Http\Controllers\User\Dashboard\Heavy\HeavyController;
-use App\Http\Controllers\User\Dashboard\HeavyEquipment\KontrakHeavyEquipmentApprovalController;
-use App\Http\Controllers\User\Dashboard\HeavyEquipment\PesananHeavyEquipmentApprovalController;
+use App\Http\Controllers\User\Dashboard\Heavy\HeavyEquipmentPesananController;
+use App\Http\Controllers\User\Dashboard\Heavy\HeavyEquipmentPesananDetailController;
+use App\Http\Controllers\User\Dashboard\Heavy\KontrakHeavyEquipmentApprovalController;
+use App\Http\Controllers\User\Dashboard\Heavy\KontrakHeavyEquipmentController;
+use App\Http\Controllers\User\Dashboard\Heavy\KontrakHeavyEquipmentDetailController;
+use App\Http\Controllers\User\Dashboard\Heavy\PesananHeavyEquipmentApprovalController;
+use App\Http\Controllers\User\Dashboard\Heavy\PesananHeavyEquipmentController;
+use App\Http\Controllers\User\Dashboard\Heavy\PesananHeavyEquipmentDetailController;
 use App\Http\Controllers\User\Dashboard\Home\HomeHeavyController;
 use App\Http\Controllers\User\Dashboard\Home\HomeTransportController;
 use App\Http\Controllers\User\Dashboard\Home\HomeWarehouseController;
@@ -206,7 +211,7 @@ Route::group([
         'as' => 'pesanan-gudang.',
     ], function () {
         // Route::resource('/voucher', WarehousePesananVoucherController::class, Routing::setName('voucher'))->except('destroy');
-        Route::resource('/detail', PesananWarehouseDetailController::class, Routing::setName('detail'))->except('destroy');
+        Route::resource('/detail', PesananWarehouseDetailController::class, Routing::setName('detail'));
     });
     Route::resource('/pesanan-gudang', PesananWarehouseController::class, Routing::setName('pesanan-gudang'))->except('destroy');
     Route::group([
@@ -222,25 +227,25 @@ Route::group([
         'prefix' => 'kontrak-alatberat/{provider}',
         'as' => 'kontrak-alatberat.',
     ], function () {
-        Route::resource('/detail', KontrakWarehouseDetailController::class, Routing::setName('detail'))->except('create', 'destroy');
+        Route::resource('/detail', KontrakHeavyEquipmentDetailController::class, Routing::setName('detail'))->except('create', 'destroy');
     });
-    Route::resource('/kontrak-alatberat', KontrakWarehouseController::class, Routing::setName('kontrak-alatberat'))->except('destroy');
+    Route::resource('/kontrak-alatberat', KontrakHeavyEquipmentController::class, Routing::setName('kontrak-alatberat'))->except('destroy');
 
     Route::group([
         'prefix' => 'pesanan-alatberat/{order}',
         'as' => 'pesanan-alatberat.',
     ], function () {
-        // Route::resource('/voucher', WarehousePesananVoucherController::class, Routing::setName('voucher'))->except('destroy');
-        Route::resource('/detail', PesananWarehouseDetailController::class, Routing::setName('detail'))->except('destroy');
+        // Route::resource('/voucher', HeavyEquipmentPesananVoucherController::class, Routing::setName('voucher'))->except('destroy');
+        Route::resource('/detail', PesananHeavyEquipmentDetailController::class, Routing::setName('detail'));
     });
-    Route::resource('/pesanan-alatberat', PesananWarehouseController::class, Routing::setName('pesanan-alatberat'))->except('destroy');
+    Route::resource('/pesanan-alatberat', PesananHeavyEquipmentController::class, Routing::setName('pesanan-alatberat'))->except('destroy');
     Route::group([
         'prefix' => 'pesanan/juragan-alatberat/{order}',
         'as' => 'pesanan.juragan-alatberat.',
     ], function () {
-        Route::resource('/detail', WarehousePesananDetailController::class, Routing::setName('detail'))->except('destroy');
+        Route::resource('/detail', HeavyEquipmentPesananDetailController::class, Routing::setName('detail'))->except('destroy');
     });
-    Route::resource('/pesanan/juragan-alatberat', WarehousePesananController::class, Routing::setName('pesanan.juragan-alatberat'))->except('destroy');
+    Route::resource('/pesanan/juragan-alatberat', HeavyEquipmentPesananController::class, Routing::setName('pesanan.juragan-alatberat'))->except('destroy');
 
     // Route::group([
     //     'prefix' => 'warehouse',

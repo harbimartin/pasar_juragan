@@ -11,16 +11,15 @@ class HeavyEquipmentContractDetail extends Model {
 
     protected $fillable = [
         't_he_contract_id',
-        'm_warehouse_id',
-        'price_per_meter_daily',
-        'price_per_meter_monthly',
+        'm_heavy_equipment_id',
+        'price',
         'status'
     ];
 
     public function contract() {
         return $this->hasOne(HeavyEquipmentContract::class, 'id', 't_he_contract_id');
     }
-    public function warehouse() {
-        return $this->hasOne(HeavyEquipment::class, 'id', 'm_warehouse_id');
+    public function a2b() {
+        return $this->hasOne(HeavyEquipment::class, 'id', 'm_heavy_equipment_id');
     }
 }

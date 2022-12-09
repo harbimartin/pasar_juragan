@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User\Dashboard\HeavyEquipment;
+namespace App\Http\Controllers\User\Dashboard\Heavy;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helper\Routing;
@@ -20,7 +20,7 @@ class KontrakHeavyEquipmentApprovalController extends Controller {
     public function index() {
         $company_id = Auth::guard('user')->user()->company->id;
         $data = HeavyEquipmentContract::where(['juragan_barang_id' => $company_id, 'status' => 'Proposed'])->paginate(10);
-        return view('dashboard.contract.heavy.approval.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'module' => 'Gudang']);
+        return view('dashboard.contract.heavy.approval.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'module' => 'Alat Berat']);
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User\Dashboard\HeavyEquipment;
+namespace App\Http\Controllers\User\Dashboard\Heavy;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helper\Routing;
@@ -20,11 +20,11 @@ class PesananHeavyEquipmentApprovalController extends Controller {
     public function index() {
         $company_id = Auth::guard('user')->user()->company->id;
         $data = OrderHeavyEquipment::whereHas('contract', function ($q) use ($company_id) {
-            $q->whereHas('juragan_gudang', function ($qq) use ($company_id) {
+            $q->whereHas('juragan_a2b', function ($qq) use ($company_id) {
                 $qq->where('m_company_id', $company_id);
             });
         })->where('status', 'Proposed')->paginate(10);
-        return view('dashboard.order.heavy.approval.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'module' => 'Gudang']);
+        return view('dashboard.order.heavy.approval.index', ['data' => $data->getCollection(), 'prop' => Table::tableProp($data), 'module' => 'Alat Berat']);
     }
 
     /**
