@@ -4,7 +4,7 @@
     $table_angkutan = json_encode([
         'index' => ['name' => 'No.', 'type' => 'Index'],
         'identity' => [
-            'name' => 'Plate Nomor/Type Truck',
+            'name' => 'Plat Nomor/Tipe Truk',
             'type' => 'Multi',
             'children' => [
                 'plate_no' => ['name' => 'Nama', 'type' => 'String', 'class' => 'text-gray-700 font-semibold border-b border-blue-500'],
@@ -12,7 +12,7 @@
             ],
         ],
         'place' => [
-            'name' => 'STNK No/KIR No',
+            'name' => 'No. STNK/KIR',
             'type' => 'Multi',
             'children' => [
                 'stnk_no' => ['name' => 'Nama', 'type' => 'String', 'class' => 'text-gray-700 font-semibold border-b border-blue-500'],
@@ -20,7 +20,7 @@
             ],
         ],
         'attribute' => [
-            'name' => 'Expired KIR/STNK',
+            'name' => 'Tgl. Expired KIR/STNK',
             'type' => 'Multi',
             'children' => [
                 'expired_kir' => ['name' => 'Nama', 'type' => 'String', 'class' => 'text-gray-700 font-semibold border-b border-blue-500'],

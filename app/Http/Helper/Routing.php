@@ -68,4 +68,11 @@ class Routing {
         $param = self::getCurrentParameters();
         return route(str_replace('.create', '', Routing::getCurrentRouteName()), array_values($param));
     }
+
+    public static function back() {
+        $route = self::getCurrentRouteName();
+        $param = self::getCurrentParameters();
+        array_pop($param);
+        return route(substr($route,0, strrpos($route, '.', -1)), $param);
+    }
 }

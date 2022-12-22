@@ -40,7 +40,6 @@
                 <div class="grid grid-cols-4 gap-x-3 gap-y-2">
                     @foreach ($data->file as $image)
                         <div class="bg-black w-full h-full" style="min-height:23vh;">
-                            test
                             <img src="{{ $image->url }}" title="{{ $image->url }}">
                         </div>
                     @endforeach

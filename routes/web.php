@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\ProfileUserController as AdminProfileUserControll
 use App\Http\Controllers\Auth\AuthAdminController;
 use App\Http\Controllers\Auth\AuthUserController;
 use App\Http\Controllers\User\Dashboard\Driver\DriverController;
+use App\Http\Controllers\User\Dashboard\Heavy\HeavyController;
 use App\Http\Controllers\User\Dashboard\Heavy\HeavyEquipmentPesananController;
 use App\Http\Controllers\User\Dashboard\Heavy\HeavyEquipmentPesananDetailController;
 use App\Http\Controllers\User\Dashboard\Heavy\KontrakHeavyEquipmentApprovalController;

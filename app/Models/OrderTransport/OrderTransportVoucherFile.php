@@ -17,6 +17,7 @@ class OrderTransportVoucherFile extends Model {
 
     public function getUrlAttribute() {
         // return "http://". $_SERVER['SERVER_NAME']."/pasar_juragan/" ."storage/foto/". $this->file_url;
-        return route('get-image', ['foto_epod', $this->file_url]);
+        // return route('get-image', ['foto_epod', $this->file_url]);
+        return "http://192.168.0.25/pasar_juragan/api/v1/get:image/foto_epod/" . $this->file_url;
     }
 }
